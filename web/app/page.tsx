@@ -29,8 +29,7 @@ interface Category {
 }
 
 interface LastAction {
-  blockId: number
-  blockTitle: string
+  block: Block
   channel: string
   channelLabel: string
   isCustom: boolean
@@ -179,8 +178,7 @@ export default function Home() {
     // Instant feedback
     vibrate(10)
     setLastAction({
-      blockId: block.id,
-      blockTitle: block.title || block.source?.title || '[Untitled]',
+      block,
       channel: customChannel || category,
       channelLabel: customChannel || cat?.label || category,
       isCustom: !!customChannel,
@@ -211,8 +209,7 @@ export default function Home() {
     // Instant feedback
     vibrate(10)
     setLastAction({
-      blockId: block.id,
-      blockTitle: block.title || block.source?.title || '[Untitled]',
+      block,
       channel: 'skip',
       channelLabel: 'Skipped',
       isCustom: false,
@@ -250,35 +247,27 @@ export default function Home() {
     }).catch(console.error)
   }, [filteredBlocks])
 
-  const undo = useCallback(async () => {
+  const undo = useCallback(() => {
     if (!lastAction || undoing) return
     
-    setUndoing(true)
     vibrate(10)
     
-    try {
-      const res = await fetch('/api/undo', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ 
-          blockId: lastAction.blockId, 
-          channel: lastAction.isCustom ? undefined : lastAction.channel,
-          customChannel: lastAction.isCustom ? lastAction.channel : undefined,
-          isSkip: lastAction.isSkip,
-        }),
-      })
-      
-      if (!res.ok) throw new Error('Failed to undo')
-      
-      // Reload blocks to get the undone block back
-      await loadBlocks()
-      setLastAction(null)
-    } catch (e) {
-      setError(e instanceof Error ? e.message : 'Failed to undo')
-    } finally {
-      setUndoing(false)
-    }
-  }, [lastAction, undoing, loadBlocks])
+    // Add block back to local state immediately
+    setBlocks(prev => [lastAction.block, ...prev])
+    setLastAction(null)
+    
+    // Fire undo API in background
+    fetch('/api/undo', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ 
+        blockId: lastAction.block.id, 
+        channel: lastAction.isCustom ? undefined : lastAction.channel,
+        customChannel: lastAction.isCustom ? lastAction.channel : undefined,
+        isSkip: lastAction.isSkip,
+      }),
+    }).catch(console.error)
+  }, [lastAction, undoing])
 
   const handleCreateChannel = async () => {
     if (!newChannelName.trim()) return
