@@ -116,6 +116,7 @@ export default function MatchPage() {
   const [isDragging, setIsDragging] = useState(false);
   const [images, setImages] = useState<UploadedImage[]>([]);
   const [copied, setCopied] = useState(false);
+  const [isExporting, setIsExporting] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   const isLoading = images.some(img => img.status === 'processing');
@@ -302,6 +303,44 @@ export default function MatchPage() {
     setCopied(true);
     setTimeout(() => setCopied(false), 2000);
   }, [generateCursorMarkdown]);
+
+  const downloadReferencePack = useCallback(async () => {
+    if (!aggregatedResult || isExporting) return;
+
+    setIsExporting(true);
+    try {
+      const response = await fetch('/api/export-pack', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          matches: aggregatedResult.matches,
+          extractedTags: aggregatedResult.extractedTags,
+          imageCount: aggregatedResult.imageCount,
+        }),
+      });
+
+      if (!response.ok) {
+        const data = await response.json();
+        throw new Error(data.error || 'Failed to generate pack');
+      }
+
+      // Download the ZIP
+      const blob = await response.blob();
+      const url = window.URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = 'reference-pack.zip';
+      document.body.appendChild(a);
+      a.click();
+      window.URL.revokeObjectURL(url);
+      document.body.removeChild(a);
+    } catch (err: any) {
+      console.error('Export failed:', err);
+      alert('Failed to export: ' + err.message);
+    } finally {
+      setIsExporting(false);
+    }
+  }, [aggregatedResult, isExporting]);
 
   const reset = useCallback(() => {
     setImages([]);
@@ -612,14 +651,57 @@ export default function MatchPage() {
                 </div>
 
                 {/* Actions */}
-                <div style={{ display: 'flex', gap: '8px', flexShrink: 0 }}>
+                <div style={{ display: 'flex', gap: '8px', flexShrink: 0, flexWrap: 'wrap' }}>
+                  {/* Primary: Download Reference Pack */}
+                  <button
+                    onClick={downloadReferencePack}
+                    disabled={isLoading || isExporting}
+                    style={{
+                      backgroundColor: (isLoading || isExporting) ? STYLES.colors.textMuted : STYLES.colors.accent,
+                      color: '#FFFFFF',
+                      border: 'none',
+                      padding: '10px 20px',
+                      borderRadius: STYLES.radius.sm,
+                      fontSize: '14px',
+                      fontWeight: STYLES.typography.headingWeight,
+                      cursor: (isLoading || isExporting) ? 'not-allowed' : 'pointer',
+                      transition: `all ${STYLES.motion.duration} ${STYLES.motion.easing}`,
+                      display: 'flex',
+                      alignItems: 'center',
+                      gap: '6px',
+                    }}
+                    onMouseEnter={(e) => {
+                      if (!isLoading && !isExporting) {
+                        e.currentTarget.style.backgroundColor = STYLES.colors.accentHover;
+                        e.currentTarget.style.transform = 'translateY(-1px)';
+                      }
+                    }}
+                    onMouseLeave={(e) => {
+                      if (!isLoading && !isExporting) {
+                        e.currentTarget.style.backgroundColor = STYLES.colors.accent;
+                        e.currentTarget.style.transform = 'translateY(0)';
+                      }
+                    }}
+                  >
+                    {isExporting ? (
+                      <>
+                        <span style={{ animation: 'spin 1s linear infinite', display: 'inline-block' }}>⏳</span>
+                        Generating...
+                      </>
+                    ) : (
+                      <>
+                        📦 Download Pack
+                      </>
+                    )}
+                  </button>
+                  {/* Secondary: Copy for Cursor (fallback) */}
                   <button
                     onClick={handleCopy}
                     disabled={isLoading}
                     style={{
-                      backgroundColor: isLoading ? STYLES.colors.textMuted : STYLES.colors.accent,
-                      color: '#FFFFFF',
-                      border: 'none',
+                      backgroundColor: 'transparent',
+                      color: STYLES.colors.textPrimary,
+                      border: `1px solid ${STYLES.colors.border}`,
                       padding: '10px 20px',
                       borderRadius: STYLES.radius.sm,
                       fontSize: '14px',
@@ -632,25 +714,23 @@ export default function MatchPage() {
                     }}
                     onMouseEnter={(e) => {
                       if (!isLoading) {
-                        e.currentTarget.style.backgroundColor = STYLES.colors.accentHover;
-                        e.currentTarget.style.transform = 'translateY(-1px)';
+                        e.currentTarget.style.borderColor = STYLES.colors.textMuted;
                       }
                     }}
                     onMouseLeave={(e) => {
                       if (!isLoading) {
-                        e.currentTarget.style.backgroundColor = STYLES.colors.accent;
-                        e.currentTarget.style.transform = 'translateY(0)';
+                        e.currentTarget.style.borderColor = STYLES.colors.border;
                       }
                     }}
                   >
                     {copied ? (
                       <>
-                        <span style={{ color: '#90EE90' }}>✓</span>
+                        <span style={{ color: STYLES.colors.success }}>✓</span>
                         Copied!
                       </>
                     ) : (
                       <>
-                        📋 Copy for Cursor
+                        📋 Copy URLs
                       </>
                     )}
                   </button>
