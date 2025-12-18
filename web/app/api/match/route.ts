@@ -1,5 +1,19 @@
+/**
+ * Reference Matcher API
+ * 
+ * Takes a WIP screenshot, extracts semantic tags, and finds matching references
+ * from the indexed Are.na library.
+ * 
+ * Flow:
+ * 1. Receive base64 image from client
+ * 2. Call Gemini to extract tags (component/style/context/vibe)
+ * 3. Score all indexed blocks by tag overlap
+ * 4. Generate human-readable explanations for top matches
+ * 5. Return matches with explanations
+ */
+
 import { NextRequest, NextResponse } from 'next/server';
-import { GoogleGenerativeAI } from '@google/generative-ai';
+import { GoogleGenerativeAI, GenerativeModel } from '@google/generative-ai';
 import * as fs from 'fs';
 import * as path from 'path';
 
@@ -38,7 +52,7 @@ interface MatchResult {
     context: string[];
     vibe: string[];
   };
-  relevanceNote: string;
+  relevanceNote: string;  // Human-readable explanation
 }
 
 // ============================================================================
@@ -115,23 +129,74 @@ function calculateMatchScore(
   return { score: totalScore, matched };
 }
 
-function generateRelevanceNote(matched: { component: string[]; style: string[]; context: string[]; vibe: string[] }): string {
-  const parts: string[] = [];
+// ============================================================================
+// HUMAN-READABLE EXPLANATION GENERATION
+// ============================================================================
+
+const EXPLANATION_PROMPT = `You are helping a designer understand why a reference image matches their work-in-progress.
+
+Given:
+- What they're building: "{queryDescription}"
+- Reference description: "{matchDescription}"
+- Overlapping qualities: {matchedTags}
+
+Write ONE short sentence (max 12 words) explaining why this reference is relevant.
+
+Rules:
+- Be specific about what's similar (layout, spacing, visual treatment, etc.)
+- Avoid generic phrases like "similar design" or "matches well"
+- Focus on actionable visual qualities they could borrow
+- Don't mention the tag names directly, describe what they mean visually
+
+Examples of good explanations:
+- "Clean card layout with generous whitespace and thin borders"
+- "Same metrics-heavy dashboard with subtle grid structure"
+- "Matching dark theme with high-contrast accent colors"
+
+Output ONLY the explanation sentence, nothing else.`;
+
+async function generateHumanExplanations(
+  model: GenerativeModel,
+  queryOneLiner: string,
+  matches: Array<{ block: BlockIndex; matchedTags: { component: string[]; style: string[]; context: string[]; vibe: string[] } }>
+): Promise<Map<number, string>> {
+  const explanations = new Map<number, string>();
   
-  if (matched.component.length > 0) {
-    parts.push(`Shares ${matched.component.join(', ')} components`);
-  }
-  if (matched.style.length > 0) {
-    parts.push(`similar ${matched.style.join(', ')} style`);
-  }
-  if (matched.context.length > 0) {
-    parts.push(`same ${matched.context.join('/')} context`);
-  }
-  if (matched.vibe.length > 0) {
-    parts.push(`${matched.vibe.join(', ')} vibe`);
-  }
+  // Generate explanations in parallel for speed
+  const explanationPromises = matches.map(async (match) => {
+    const matchedTagsList = [
+      ...match.matchedTags.component,
+      ...match.matchedTags.style,
+      ...match.matchedTags.context,
+      ...match.matchedTags.vibe,
+    ];
+    
+    const prompt = EXPLANATION_PROMPT
+      .replace('{queryDescription}', queryOneLiner)
+      .replace('{matchDescription}', match.block.one_liner)
+      .replace('{matchedTags}', matchedTagsList.join(', '));
+    
+    try {
+      const result = await model.generateContent(prompt);
+      const explanation = result.response.text().trim();
+      // Clean up any quotes or extra formatting
+      const cleaned = explanation.replace(/^["']|["']$/g, '').trim();
+      return { id: match.block.id, explanation: cleaned };
+    } catch (error) {
+      // Fallback to a simple description based on matched tags
+      const fallback = matchedTagsList.length > 0 
+        ? `Similar ${matchedTagsList.slice(0, 3).join(', ')} approach`
+        : 'Related visual reference';
+      return { id: match.block.id, explanation: fallback };
+    }
+  });
   
-  return parts.join('; ') || 'General relevance';
+  const results = await Promise.all(explanationPromises);
+  results.forEach(({ id, explanation }) => {
+    explanations.set(id, explanation);
+  });
+  
+  return explanations;
 }
 
 // ============================================================================
@@ -190,7 +255,11 @@ export async function POST(request: NextRequest) {
     };
 
     // Load the index
-    const indexPath = path.join(process.cwd(), '..', 'taste-profiles', 'ui-ux-uqgmlf-rw1i', 'index.json');
+    // In production (Vercel): look in web/data/
+    // In development: look in taste-profiles/ (parent directory)
+    const prodIndexPath = path.join(process.cwd(), 'data', 'index.json');
+    const devIndexPath = path.join(process.cwd(), '..', 'taste-profiles', 'ui-ux-uqgmlf-rw1i', 'index.json');
+    const indexPath = fs.existsSync(prodIndexPath) ? prodIndexPath : devIndexPath;
     
     if (!fs.existsSync(indexPath)) {
       return NextResponse.json({ 
@@ -201,26 +270,44 @@ export async function POST(request: NextRequest) {
     const index: ChannelIndex = JSON.parse(fs.readFileSync(indexPath, 'utf-8'));
 
     // Score all blocks
-    const matches: MatchResult[] = [];
+    const scoredMatches: Array<{
+      block: BlockIndex;
+      score: number;
+      matchedTags: { component: string[]; style: string[]; context: string[]; vibe: string[] };
+    }> = [];
     
     for (const block of index.blocks) {
       const { score, matched } = calculateMatchScore(extractedTags, block.tags);
       
       if (score > 0) {
-        matches.push({
+        scoredMatches.push({
           block,
           score,
           matchedTags: matched,
-          relevanceNote: generateRelevanceNote(matched),
         });
       }
     }
 
     // Sort by score descending
-    matches.sort((a, b) => b.score - a.score);
+    scoredMatches.sort((a, b) => b.score - a.score);
 
-    // Return top 6
-    const topMatches = matches.slice(0, 6);
+    // Take top 6 for explanation generation
+    const topScoredMatches = scoredMatches.slice(0, 6);
+
+    // Generate human-readable explanations for top matches
+    const explanations = await generateHumanExplanations(
+      model,
+      extractedTags.one_liner || 'UI design',
+      topScoredMatches
+    );
+
+    // Build final results with explanations
+    const topMatches: MatchResult[] = topScoredMatches.map(match => ({
+      block: match.block,
+      score: match.score,
+      matchedTags: match.matchedTags,
+      relevanceNote: explanations.get(match.block.id) || 'Related visual reference',
+    }));
 
     return NextResponse.json({
       extractedTags,

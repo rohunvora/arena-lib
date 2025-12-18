@@ -1,3 +1,18 @@
+/**
+ * Reference Matcher UI
+ * 
+ * Drop a WIP screenshot → get relevant references from your indexed Are.na library.
+ * 
+ * User flow:
+ * 1. Drop/upload screenshot(s)
+ * 2. See matched references with human-readable explanations
+ * 3. Click to toggle selection, double-click to set as primary
+ * 4. Download selected images + copy minimal prompt for Claude
+ * 
+ * The output is designed for Claude: actual images + minimal context.
+ * Claude interprets the images directly rather than through extracted specs.
+ */
+
 'use client';
 
 import { useState, useCallback, useRef, useMemo } from 'react';
@@ -118,6 +133,10 @@ export default function MatchPage() {
   const [copied, setCopied] = useState(false);
   const [isExporting, setIsExporting] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
+  
+  // Selection state for references
+  const [selectedRefs, setSelectedRefs] = useState<Set<number>>(new Set());
+  const [primaryRef, setPrimaryRef] = useState<number | null>(null);
 
   const isLoading = images.some(img => img.status === 'processing');
   const hasResults = images.some(img => img.status === 'done');
@@ -251,20 +270,8 @@ export default function MatchPage() {
     const completedImages = images.filter(img => img.status === 'done' && img.result);
     if (completedImages.length === 0) return null;
 
-    // Combine all extracted tags
-    const allExtractedTags = {
-      component: new Set<string>(),
-      style: new Set<string>(),
-      context: new Set<string>(),
-      vibe: new Set<string>(),
-    };
-
-    completedImages.forEach(img => {
-      img.result?.extractedTags.component?.forEach(t => allExtractedTags.component.add(t));
-      img.result?.extractedTags.style?.forEach(t => allExtractedTags.style.add(t));
-      img.result?.extractedTags.context?.forEach(t => allExtractedTags.context.add(t));
-      img.result?.extractedTags.vibe?.forEach(t => allExtractedTags.vibe.add(t));
-    });
+    // Get the one-liner describing what user is building
+    const queryOneLiner = completedImages[0]?.result?.oneLiner || 'UI design';
 
     // Combine all matches, dedupe by block id, re-sort by score
     const matchMap = new Map<number, MatchedBlock>();
@@ -279,64 +286,76 @@ export default function MatchPage() {
 
     const combinedMatches = Array.from(matchMap.values())
       .sort((a, b) => b.score - a.score)
-      .slice(0, 8); // Show more when multiple images
+      .slice(0, 6);
 
     return {
-      extractedTags: {
-        component: Array.from(allExtractedTags.component),
-        style: Array.from(allExtractedTags.style),
-        context: Array.from(allExtractedTags.context),
-        vibe: Array.from(allExtractedTags.vibe),
-      },
+      queryOneLiner,
       matches: combinedMatches,
       imageCount: completedImages.length,
     };
   }, [images]);
 
-  const generateCursorMarkdown = useCallback(() => {
-    if (!aggregatedResult) return '';
-
-    const tagsList = [
-      ...aggregatedResult.extractedTags.component,
-      ...aggregatedResult.extractedTags.style,
-      ...aggregatedResult.extractedTags.context,
-      ...aggregatedResult.extractedTags.vibe,
-    ].map(t => `\`${t}\``).join(', ');
-
-    let md = `## UI References from My Are.na\n\n`;
-    md += `**What I'm building:** ${tagsList}\n\n`;
-
-    aggregatedResult.matches.forEach((match, i) => {
-      const matchedTags = [
-        ...match.matchedTags.component,
-        ...match.matchedTags.style,
-      ].slice(0, 4).join(', ');
-
-      // Use one_liner as the title (it's always more descriptive than filename)
-      md += `### ${i + 1}. ${match.block.one_liner}\n`;
-      md += `![](${match.block.image_url})\n`;
-      md += `**Why:** ${matchedTags} · [Are.na](${match.block.arena_url})\n\n`;
-    });
-
-    // Add guidance section
-    md += `---\n\n`;
-    md += `**Use these references to:**\n`;
-    md += `- Match the visual density and spacing\n`;
-    md += `- Borrow color relationships and contrast levels\n`;
-    md += `- Reference component patterns (how they handle similar UI elements)\n`;
-
-    return md;
+  // Auto-select top 4 refs when results change
+  const prevMatchIds = useRef<string>('');
+  useMemo(() => {
+    if (!aggregatedResult) return;
+    const currentIds = aggregatedResult.matches.map(m => m.block.id).join(',');
+    if (currentIds !== prevMatchIds.current) {
+      prevMatchIds.current = currentIds;
+      // Auto-select top 4
+      const top4Ids = aggregatedResult.matches.slice(0, 4).map(m => m.block.id);
+      setSelectedRefs(new Set(top4Ids));
+      // Set first as primary
+      if (top4Ids.length > 0) {
+        setPrimaryRef(top4Ids[0]);
+      }
+    }
   }, [aggregatedResult]);
 
-  const handleCopy = useCallback(async () => {
-    const md = generateCursorMarkdown();
-    await navigator.clipboard.writeText(md);
+  // Generate minimal prompt for Claude
+  const generatePrompt = useCallback(() => {
+    if (!aggregatedResult) return '';
+
+    // Get selected matches in order
+    const selectedMatches = aggregatedResult.matches
+      .filter(m => selectedRefs.has(m.block.id))
+      .map((match, i) => ({
+        ...match,
+        refNum: i + 1,
+        isPrimary: match.block.id === primaryRef,
+      }));
+
+    if (selectedMatches.length === 0) return '';
+
+    let prompt = `I'm building ${aggregatedResult.queryOneLiner}. Here are references from my collection:\n\n`;
+
+    selectedMatches.forEach((match) => {
+      const primaryTag = match.isPrimary ? ' (PRIMARY)' : '';
+      prompt += `${match.refNum}. [attach ref-${match.refNum}.jpg] - ${match.relevanceNote}${primaryTag}\n`;
+    });
+
+    prompt += `\nMatch the aesthetic of #1${primaryRef ? '' : ' primarily'}. `;
+    if (selectedMatches.length > 1) {
+      prompt += `Use the others as supporting context.`;
+    }
+
+    return prompt;
+  }, [aggregatedResult, selectedRefs, primaryRef]);
+
+  // Copy minimal prompt to clipboard
+  const handleCopyPrompt = useCallback(async () => {
+    const prompt = generatePrompt();
+    await navigator.clipboard.writeText(prompt);
     setCopied(true);
     setTimeout(() => setCopied(false), 2000);
-  }, [generateCursorMarkdown]);
+  }, [generatePrompt]);
 
-  const downloadReferencePack = useCallback(async () => {
+  // Download selected images
+  const downloadImages = useCallback(async () => {
     if (!aggregatedResult || isExporting) return;
+
+    const selectedMatches = aggregatedResult.matches.filter(m => selectedRefs.has(m.block.id));
+    if (selectedMatches.length === 0) return;
 
     setIsExporting(true);
     try {
@@ -344,22 +363,19 @@ export default function MatchPage() {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          matches: aggregatedResult.matches,
-          extractedTags: aggregatedResult.extractedTags,
-          imageCount: aggregatedResult.imageCount,
+          matches: selectedMatches,
+          queryOneLiner: aggregatedResult.queryOneLiner,
+          primaryId: primaryRef,
         }),
       });
 
       const data = await response.json();
       
       if (!response.ok) {
-        throw new Error(data.error || 'Failed to generate pack');
+        throw new Error(data.error || 'Failed to download images');
       }
 
-      // Auto-copy spec to clipboard
-      await navigator.clipboard.writeText(data.spec);
-      
-      // Download the ZIP (convert base64 to blob)
+      // Download the ZIP
       const binaryString = atob(data.zip);
       const bytes = new Uint8Array(binaryString.length);
       for (let i = 0; i < binaryString.length; i++) {
@@ -367,45 +383,54 @@ export default function MatchPage() {
       }
       const blob = new Blob([bytes], { type: 'application/zip' });
       
-      // Generate unique filename: refs-{tags}-{YYYYMMDD-HHMM}.zip
-      // e.g. "refs-card-header-minimal-20251218-1430.zip"
-      // Tags come from: 2 component tags + 1 style tag (max 3)
-      const topTags = [
-        ...aggregatedResult.extractedTags.component.slice(0, 2),
-        ...aggregatedResult.extractedTags.style.slice(0, 1),
-      ].slice(0, 3)
-        .map(t => t.toLowerCase().replace(/[^a-z0-9]+/g, '-'))
-        .join('-');
-      
-      const now = new Date();
-      const timestamp = `${now.getFullYear()}${String(now.getMonth() + 1).padStart(2, '0')}${String(now.getDate()).padStart(2, '0')}-${String(now.getHours()).padStart(2, '0')}${String(now.getMinutes()).padStart(2, '0')}`;
-      
-      const filename = topTags 
-        ? `refs-${topTags}-${timestamp}.zip`
-        : `refs-${timestamp}.zip`;
-      
       const url = window.URL.createObjectURL(blob);
       const a = document.createElement('a');
       a.href = url;
-      a.download = filename;
+      a.download = `refs-${Date.now()}.zip`;
       document.body.appendChild(a);
       a.click();
       window.URL.revokeObjectURL(url);
       document.body.removeChild(a);
-      
-      // Show success feedback
-      setCopied(true);
-      setTimeout(() => setCopied(false), 3000);
     } catch (err: any) {
-      console.error('Export failed:', err);
-      alert('Failed to export: ' + err.message);
+      console.error('Download failed:', err);
+      alert('Failed to download: ' + err.message);
     } finally {
       setIsExporting(false);
     }
-  }, [aggregatedResult, isExporting]);
+  }, [aggregatedResult, selectedRefs, primaryRef, isExporting]);
+
+  // Toggle selection
+  const toggleSelection = useCallback((id: number) => {
+    setSelectedRefs(prev => {
+      const next = new Set(prev);
+      if (next.has(id)) {
+        next.delete(id);
+        // If we unselected the primary, clear it
+        if (primaryRef === id) {
+          setPrimaryRef(null);
+        }
+      } else {
+        next.add(id);
+      }
+      return next;
+    });
+  }, [primaryRef]);
+
+  // Set as primary
+  const setAsPrimary = useCallback((id: number) => {
+    // Ensure it's selected
+    setSelectedRefs(prev => {
+      const next = new Set(prev);
+      next.add(id);
+      return next;
+    });
+    setPrimaryRef(id);
+  }, []);
 
   const reset = useCallback(() => {
     setImages([]);
+    setSelectedRefs(new Set());
+    setPrimaryRef(null);
     if (fileInputRef.current) {
       fileInputRef.current.value = '';
     }
@@ -660,298 +685,221 @@ export default function MatchPage() {
         {/* Results */}
         {aggregatedResult && (
           <div>
-            {/* Combined Tags + Actions */}
+            {/* Actions Bar - simplified */}
             <div style={{
-              backgroundColor: STYLES.colors.bgSecondary,
-              borderRadius: STYLES.radius.md,
-              padding: STYLES.spacing.md,
-              marginBottom: STYLES.spacing.lg,
-              boxShadow: STYLES.shadow.subtle,
+              display: 'flex',
+              justifyContent: 'space-between',
+              alignItems: 'center',
+              marginBottom: STYLES.spacing.md,
+              flexWrap: 'wrap',
+              gap: STYLES.spacing.sm,
             }}>
-              <div style={{
-                display: 'flex',
-                justifyContent: 'space-between',
-                alignItems: 'flex-start',
-                gap: STYLES.spacing.md,
-                flexWrap: 'wrap',
-              }}>
-                <div style={{ flex: 1, minWidth: '250px' }}>
-                  <h2 style={{
+              <div>
+                <h3 style={{
+                  fontSize: '14px',
+                  fontWeight: STYLES.typography.headingWeight,
+                  color: STYLES.colors.textSecondary,
+                  margin: 0,
+                  textTransform: 'uppercase',
+                  letterSpacing: '0.5px',
+                }}>
+                  {aggregatedResult.matches.length} References Found
+                  {isLoading && <span style={{ fontWeight: '400', marginLeft: '8px' }}>(analyzing...)</span>}
+                </h3>
+                <p style={{
+                  fontSize: '13px',
+                  color: STYLES.colors.textMuted,
+                  margin: '4px 0 0 0',
+                }}>
+                  {selectedRefs.size} selected · Click card to toggle · Double-click for primary
+                </p>
+              </div>
+
+              <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap' }}>
+                <button
+                  onClick={downloadImages}
+                  disabled={isLoading || isExporting || selectedRefs.size === 0}
+                  style={{
+                    backgroundColor: (isLoading || isExporting || selectedRefs.size === 0) 
+                      ? STYLES.colors.textMuted 
+                      : STYLES.colors.accent,
+                    color: '#FFFFFF',
+                    border: 'none',
+                    padding: '10px 20px',
+                    borderRadius: STYLES.radius.sm,
                     fontSize: '14px',
                     fontWeight: STYLES.typography.headingWeight,
+                    cursor: (isLoading || isExporting || selectedRefs.size === 0) ? 'not-allowed' : 'pointer',
+                    transition: `all ${STYLES.motion.duration} ${STYLES.motion.easing}`,
+                  }}
+                >
+                  {isExporting ? 'Downloading...' : `Download ${selectedRefs.size} Images`}
+                </button>
+                <button
+                  onClick={handleCopyPrompt}
+                  disabled={isLoading || selectedRefs.size === 0}
+                  style={{
+                    backgroundColor: 'transparent',
+                    color: STYLES.colors.textPrimary,
+                    border: `1px solid ${STYLES.colors.border}`,
+                    padding: '10px 20px',
+                    borderRadius: STYLES.radius.sm,
+                    fontSize: '14px',
+                    fontWeight: STYLES.typography.headingWeight,
+                    cursor: (isLoading || selectedRefs.size === 0) ? 'not-allowed' : 'pointer',
+                    transition: `all ${STYLES.motion.duration} ${STYLES.motion.easing}`,
+                  }}
+                >
+                  {copied ? '✓ Copied!' : 'Copy Prompt'}
+                </button>
+                <button
+                  onClick={reset}
+                  style={{
+                    backgroundColor: 'transparent',
                     color: STYLES.colors.textSecondary,
-                    margin: '0 0 12px 0',
-                    textTransform: 'uppercase',
-                    letterSpacing: '0.5px',
-                  }}>
-                    Combined Tags ({aggregatedResult.imageCount} {aggregatedResult.imageCount === 1 ? 'image' : 'images'})
-                  </h2>
-
-                  {/* Tags */}
-                  <div style={{ display: 'flex', flexWrap: 'wrap', gap: '6px' }}>
-                    {['component', 'style', 'context', 'vibe'].map(category => (
-                      (aggregatedResult.extractedTags[category as keyof typeof aggregatedResult.extractedTags] || []).map(tag => (
-                        <span
-                          key={`${category}-${tag}`}
-                          style={{
-                            backgroundColor: category === 'component' ? '#E0F2FE' :
-                                           category === 'style' ? '#F3E8FF' :
-                                           category === 'context' ? '#DCFCE7' :
-                                           '#FEF3C7',
-                            color: STYLES.colors.textPrimary,
-                            padding: '4px 10px',
-                            borderRadius: STYLES.radius.full,
-                            fontSize: '12px',
-                            fontWeight: '500',
-                          }}
-                        >
-                          {tag}
-                        </span>
-                      ))
-                    ))}
-                  </div>
-                </div>
-
-                {/* Actions */}
-                <div style={{ display: 'flex', gap: '8px', flexShrink: 0, flexWrap: 'wrap' }}>
-                  {/* Primary: Download Reference Pack */}
-                  <button
-                    onClick={downloadReferencePack}
-                    disabled={isLoading || isExporting}
-                    style={{
-                      backgroundColor: (isLoading || isExporting) ? STYLES.colors.textMuted : STYLES.colors.accent,
-                      color: '#FFFFFF',
-                      border: 'none',
-                      padding: '10px 20px',
-                      borderRadius: STYLES.radius.sm,
-                      fontSize: '14px',
-                      fontWeight: STYLES.typography.headingWeight,
-                      cursor: (isLoading || isExporting) ? 'not-allowed' : 'pointer',
-                      transition: `all ${STYLES.motion.duration} ${STYLES.motion.easing}`,
-                      display: 'flex',
-                      alignItems: 'center',
-                      gap: '6px',
-                    }}
-                    onMouseEnter={(e) => {
-                      if (!isLoading && !isExporting) {
-                        e.currentTarget.style.backgroundColor = STYLES.colors.accentHover;
-                        e.currentTarget.style.transform = 'translateY(-1px)';
-                      }
-                    }}
-                    onMouseLeave={(e) => {
-                      if (!isLoading && !isExporting) {
-                        e.currentTarget.style.backgroundColor = STYLES.colors.accent;
-                        e.currentTarget.style.transform = 'translateY(0)';
-                      }
-                    }}
-                  >
-                    {isExporting ? (
-                      <>
-                        <span style={{ animation: 'spin 1s linear infinite', display: 'inline-block' }}>⏳</span>
-                        Generating...
-                      </>
-                    ) : copied ? (
-                      <>
-                        <span style={{ color: STYLES.colors.success }}>✓</span>
-                        Spec Copied + ZIP Downloaded
-                      </>
-                    ) : (
-                      <>
-                        📦 Download + Copy Spec
-                      </>
-                    )}
-                  </button>
-                  {/* Secondary: Copy for Cursor (fallback) */}
-                  <button
-                    onClick={handleCopy}
-                    disabled={isLoading}
-                    style={{
-                      backgroundColor: 'transparent',
-                      color: STYLES.colors.textPrimary,
-                      border: `1px solid ${STYLES.colors.border}`,
-                      padding: '10px 20px',
-                      borderRadius: STYLES.radius.sm,
-                      fontSize: '14px',
-                      fontWeight: STYLES.typography.headingWeight,
-                      cursor: isLoading ? 'not-allowed' : 'pointer',
-                      transition: `all ${STYLES.motion.duration} ${STYLES.motion.easing}`,
-                      display: 'flex',
-                      alignItems: 'center',
-                      gap: '6px',
-                    }}
-                    onMouseEnter={(e) => {
-                      if (!isLoading) {
-                        e.currentTarget.style.borderColor = STYLES.colors.textMuted;
-                      }
-                    }}
-                    onMouseLeave={(e) => {
-                      if (!isLoading) {
-                        e.currentTarget.style.borderColor = STYLES.colors.border;
-                      }
-                    }}
-                  >
-                    {copied ? (
-                      <>
-                        <span style={{ color: STYLES.colors.success }}>✓</span>
-                        Copied!
-                      </>
-                    ) : (
-                      <>
-                        📋 Copy URLs
-                      </>
-                    )}
-                  </button>
-                  <button
-                    onClick={reset}
-                    style={{
-                      backgroundColor: 'transparent',
-                      color: STYLES.colors.textSecondary,
-                      border: `1px solid ${STYLES.colors.border}`,
-                      padding: '10px 20px',
-                      borderRadius: STYLES.radius.sm,
-                      fontSize: '14px',
-                      cursor: 'pointer',
-                      transition: `all ${STYLES.motion.duration} ${STYLES.motion.easing}`,
-                    }}
-                    onMouseEnter={(e) => {
-                      e.currentTarget.style.borderColor = STYLES.colors.textMuted;
-                    }}
-                    onMouseLeave={(e) => {
-                      e.currentTarget.style.borderColor = STYLES.colors.border;
-                    }}
-                  >
-                    Clear All
-                  </button>
-                </div>
+                    border: `1px solid ${STYLES.colors.border}`,
+                    padding: '10px 20px',
+                    borderRadius: STYLES.radius.sm,
+                    fontSize: '14px',
+                    cursor: 'pointer',
+                    transition: `all ${STYLES.motion.duration} ${STYLES.motion.easing}`,
+                  }}
+                >
+                  Clear
+                </button>
               </div>
             </div>
 
-            {/* Matches */}
-            <h3 style={{
-              fontSize: '14px',
-              fontWeight: STYLES.typography.headingWeight,
-              color: STYLES.colors.textSecondary,
-              margin: `0 0 ${STYLES.spacing.md} 0`,
-              textTransform: 'uppercase',
-              letterSpacing: '0.5px',
-            }}>
-              {aggregatedResult.matches.length} Relevant References
-              {isLoading && <span style={{ fontWeight: '400', marginLeft: '8px' }}>(analyzing...)</span>}
-            </h3>
-
+            {/* Reference Grid - larger images, simpler cards */}
             <div style={{
               display: 'grid',
-              gridTemplateColumns: 'repeat(auto-fill, minmax(280px, 1fr))',
+              gridTemplateColumns: 'repeat(auto-fill, minmax(320px, 1fr))',
               gap: STYLES.spacing.md,
             }}>
-              {aggregatedResult.matches.map((match, i) => (
-                <a
-                  key={match.block.id}
-                  href={match.block.arena_url}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  style={{
-                    backgroundColor: STYLES.colors.bgSecondary,
-                    borderRadius: STYLES.radius.md,
-                    overflow: 'hidden',
-                    textDecoration: 'none',
-                    color: 'inherit',
-                    boxShadow: STYLES.shadow.subtle,
-                    transition: `all ${STYLES.motion.duration} ${STYLES.motion.easing}`,
-                  }}
-                  onMouseEnter={(e) => {
-                    e.currentTarget.style.boxShadow = STYLES.shadow.lifted;
-                    e.currentTarget.style.transform = 'translateY(-2px)';
-                  }}
-                  onMouseLeave={(e) => {
-                    e.currentTarget.style.boxShadow = STYLES.shadow.subtle;
-                    e.currentTarget.style.transform = 'translateY(0)';
-                  }}
-                >
-                  {/* Image */}
-                  {match.block.image_url && (
-                    <div style={{
-                      aspectRatio: '16/10',
+              {aggregatedResult.matches.map((match) => {
+                const isSelected = selectedRefs.has(match.block.id);
+                const isPrimary = primaryRef === match.block.id;
+                
+                return (
+                  <div
+                    key={match.block.id}
+                    onClick={() => toggleSelection(match.block.id)}
+                    onDoubleClick={() => setAsPrimary(match.block.id)}
+                    style={{
+                      backgroundColor: STYLES.colors.bgSecondary,
+                      borderRadius: STYLES.radius.md,
                       overflow: 'hidden',
-                      backgroundColor: '#F5F5F5',
-                    }}>
-                      <img
-                        src={match.block.image_url}
-                        alt={match.block.title || 'Reference'}
-                        style={{
-                          width: '100%',
-                          height: '100%',
-                          objectFit: 'cover',
-                        }}
-                      />
-                    </div>
-                  )}
-
-                  {/* Content */}
-                  <div style={{ padding: STYLES.spacing.md }}>
-                    {/* Match score */}
-                    <div style={{
-                      display: 'flex',
-                      alignItems: 'center',
-                      gap: '6px',
-                      marginBottom: '8px',
-                    }}>
-                      <span style={{
-                        backgroundColor: STYLES.colors.accent,
-                        color: '#FFFFFF',
-                        padding: '2px 8px',
-                        borderRadius: STYLES.radius.full,
-                        fontSize: '11px',
-                        fontWeight: '600',
+                      cursor: 'pointer',
+                      boxShadow: isSelected ? STYLES.shadow.lifted : STYLES.shadow.subtle,
+                      border: isPrimary 
+                        ? `2px solid ${STYLES.colors.accent}` 
+                        : isSelected 
+                          ? `2px solid ${STYLES.colors.success}` 
+                          : '2px solid transparent',
+                      transition: `all ${STYLES.motion.duration} ${STYLES.motion.easing}`,
+                      opacity: isSelected ? 1 : 0.7,
+                    }}
+                  >
+                    {/* Large Image */}
+                    {match.block.image_url && (
+                      <div style={{
+                        aspectRatio: '16/10',
+                        overflow: 'hidden',
+                        backgroundColor: '#F5F5F5',
+                        position: 'relative',
                       }}>
-                        #{i + 1}
-                      </span>
-                      <span style={{
-                        fontSize: '12px',
-                        color: STYLES.colors.textMuted,
-                      }}>
-                        Match: {Math.round(match.score * 10)}%
-                      </span>
-                    </div>
-
-                    {/* Description (always more useful than filename) */}
-                    <p style={{
-                      fontSize: '13px',
-                      fontWeight: STYLES.typography.bodyWeight,
-                      margin: '0 0 8px 0',
-                      lineHeight: 1.4,
-                      color: STYLES.colors.textPrimary,
-                      display: '-webkit-box',
-                      WebkitLineClamp: 3,
-                      WebkitBoxOrient: 'vertical',
-                      overflow: 'hidden',
-                    }}>
-                      {match.block.one_liner}
-                    </p>
-
-                    {/* Matched tags */}
-                    <div style={{ display: 'flex', flexWrap: 'wrap', gap: '4px' }}>
-                      {[
-                        ...match.matchedTags.component,
-                        ...match.matchedTags.style,
-                      ].slice(0, 4).map(tag => (
-                        <span
-                          key={tag}
+                        <img
+                          src={match.block.image_url}
+                          alt={match.block.title || 'Reference'}
                           style={{
-                            backgroundColor: 'rgba(0,0,0,0.05)',
-                            padding: '2px 6px',
-                            borderRadius: STYLES.radius.full,
-                            fontSize: '10px',
-                            color: STYLES.colors.textSecondary,
+                            width: '100%',
+                            height: '100%',
+                            objectFit: 'cover',
                           }}
+                        />
+                        
+                        {/* Selection indicator */}
+                        <div style={{
+                          position: 'absolute',
+                          top: '12px',
+                          left: '12px',
+                          display: 'flex',
+                          gap: '8px',
+                          alignItems: 'center',
+                        }}>
+                          <div style={{
+                            width: '24px',
+                            height: '24px',
+                            borderRadius: '6px',
+                            backgroundColor: isSelected ? STYLES.colors.success : 'rgba(255,255,255,0.9)',
+                            border: isSelected ? 'none' : `2px solid ${STYLES.colors.border}`,
+                            display: 'flex',
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                            fontSize: '14px',
+                            color: '#fff',
+                            fontWeight: '600',
+                          }}>
+                            {isSelected && '✓'}
+                          </div>
+                          {isPrimary && (
+                            <span style={{
+                              backgroundColor: STYLES.colors.accent,
+                              color: '#fff',
+                              padding: '4px 10px',
+                              borderRadius: STYLES.radius.full,
+                              fontSize: '11px',
+                              fontWeight: '600',
+                              textTransform: 'uppercase',
+                              letterSpacing: '0.5px',
+                            }}>
+                              Primary
+                            </span>
+                          )}
+                        </div>
+
+                        {/* Open in Are.na */}
+                        <a
+                          href={match.block.arena_url}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          onClick={(e) => e.stopPropagation()}
+                          style={{
+                            position: 'absolute',
+                            top: '12px',
+                            right: '12px',
+                            backgroundColor: 'rgba(0,0,0,0.6)',
+                            color: '#fff',
+                            padding: '6px 10px',
+                            borderRadius: STYLES.radius.sm,
+                            fontSize: '11px',
+                            textDecoration: 'none',
+                            opacity: 0.8,
+                            transition: `opacity ${STYLES.motion.duration} ${STYLES.motion.easing}`,
+                          }}
+                          onMouseEnter={(e) => { e.currentTarget.style.opacity = '1'; }}
+                          onMouseLeave={(e) => { e.currentTarget.style.opacity = '0.8'; }}
                         >
-                          {tag}
-                        </span>
-                      ))}
+                          Are.na ↗
+                        </a>
+                      </div>
+                    )}
+
+                    {/* Human-readable explanation */}
+                    <div style={{ padding: STYLES.spacing.md }}>
+                      <p style={{
+                        fontSize: '14px',
+                        fontWeight: STYLES.typography.bodyWeight,
+                        margin: 0,
+                        lineHeight: 1.5,
+                        color: STYLES.colors.textPrimary,
+                      }}>
+                        {match.relevanceNote}
+                      </p>
                     </div>
                   </div>
-                </a>
-              ))}
+                );
+              })}
             </div>
 
             {aggregatedResult.matches.length === 0 && !isLoading && (

@@ -1,0 +1,647 @@
+{
+  "channel_slug": "ui-ux-uqgmlf-rw1i",
+  "channel_title": "UI/UX",
+  "indexed_at": "2025-12-18T04:57:44.110Z",
+  "blocks": [
+    {
+      "id": 36024485,
+      "title": "STUDIO MANNESKJA(@StudioManneskja) / X",
+      "arena_url": "https://www.are.na/block/36024485",
+      "image_url": "https://images.are.na/eyJidWNrZXQiOiJhcmVuYV9pbWFnZXMiLCJrZXkiOiIzNjAyNDQ4NS9vcmlnaW5hbF83M2ExYzJjMTc4MzkxZDRkOGRhNGNmODJjYjExOGNhMi5qcGciLCJlZGl0cyI6eyJyZXNpemUiOnsid2lkdGgiOjEyMDAsImhlaWdodCI6MTIwMCwiZml0IjoiaW5zaWRlIiwid2l0aG91dEVubGFyZ2VtZW50Ijp0cnVlfSwid2VicCI6eyJxdWFsaXR5Ijo3NX0sImpwZWciOnsicXVhbGl0eSI6NzV9LCJyb3RhdGUiOm51bGx9fQ==?bc=0",
+      "tags": {
+        "component": [
+          "pricing",
+          "button",
+          "list"
+        ],
+        "style": [
+          "light-mode",
+          "rounded",
+          "gradient"
+        ],
+        "context": [
+          "mobile-app",
+          "b2c"
+        ],
+        "vibe": [
+          "friendly",
+          "professional",
+          "trustworthy"
+        ]
+      },
+      "one_liner": "A mobile app screen showcasing subscription and one-time payment options for an AI stylist.",
+      "indexed_at": "2025-12-18T04:57:06.241Z"
+    },
+    {
+      "id": 30824434,
+      "title": "68a4120f14c2c5f64ea30a9cc58efcf7.jpg",
+      "arena_url": "https://www.are.na/block/30824434",
+      "image_url": "https://images.are.na/eyJidWNrZXQiOiJhcmVuYV9pbWFnZXMiLCJrZXkiOiIzMDgyNDQzNC9vcmlnaW5hbF9kNzQ3ZjUwMDYyMWNjYzJjMDQ0ZDY1NzA2NGY3NDQ1Yy5qcGciLCJlZGl0cyI6eyJyZXNpemUiOnsid2lkdGgiOjEyMDAsImhlaWdodCI6MTIwMCwiZml0IjoiaW5zaWRlIiwid2l0aG91dEVubGFyZ2VtZW50Ijp0cnVlfSwid2VicCI6eyJxdWFsaXR5Ijo3NX0sImpwZWciOnsicXVhbGl0eSI6NzV9LCJyb3RhdGUiOm51bGx9fQ==?bc=0",
+      "tags": {
+        "component": [
+          "dashboard",
+          "list",
+          "metrics",
+          "button",
+          "navbar"
+        ],
+        "style": [
+          "dark-mode",
+          "minimal",
+          "flat"
+        ],
+        "context": [
+          "mobile-app",
+          "fintech",
+          "b2c"
+        ],
+        "vibe": [
+          "trustworthy",
+          "professional"
+        ]
+      },
+      "one_liner": "A mobile app screen for tracking and managing budgets, showing an overview and individual budget categories.",
+      "indexed_at": "2025-12-18T04:57:07.900Z"
+    },
+    {
+      "id": 36691612,
+      "title": "trips-tab-us.jpg?w=790",
+      "arena_url": "https://www.are.na/block/36691612",
+      "image_url": "https://images.are.na/eyJidWNrZXQiOiJhcmVuYV9pbWFnZXMiLCJrZXkiOiIzNjY5MTYxMi9vcmlnaW5hbF81YmM5NGU2NWJhOGFiYWEwMDE4NDYyYzUwODE1ZDc1MC5qcGciLCJlZGl0cyI6eyJyZXNpemUiOnsid2lkdGgiOjEyMDAsImhlaWdodCI6MTIwMCwiZml0IjoiaW5zaWRlIiwid2l0aG91dEVubGFyZ2VtZW50Ijp0cnVlfSwid2VicCI6eyJxdWFsaXR5Ijo3NX0sImpwZWciOnsicXVhbGl0eSI6NzV9LCJyb3RhdGUiOm51bGx9fQ==?bc=0",
+      "tags": {
+        "component": [
+          "mobile-app",
+          "timeline",
+          "cards",
+          "button",
+          "navbar"
+        ],
+        "style": [
+          "light-mode",
+          "rounded",
+          "flat"
+        ],
+        "context": [
+          "mobile-app",
+          "saas",
+          "travel"
+        ],
+        "vibe": [
+          "friendly",
+          "trustworthy"
+        ]
+      },
+      "one_liner": "This is a mobile app screen for a travel booking platform, showing a timeline of planned activities for a user's trip.",
+      "indexed_at": "2025-12-18T04:57:09.683Z"
+    },
+    {
+      "id": 36514304,
+      "title": "Playground for your ideas, bookmarks and work. • Laravel",
+      "arena_url": "https://www.are.na/block/36514304",
+      "image_url": "https://images.are.na/eyJidWNrZXQiOiJhcmVuYV9pbWFnZXMiLCJrZXkiOiIzNjUxNDMwNC9vcmlnaW5hbF83Y2E2NzUyYzNhYjkwMmE5MjAyNTA1MDctMi0xMHZuMHEucG5nIiwiZWRpdHMiOnsicmVzaXplIjp7IndpZHRoIjoxMjAwLCJoZWlnaHQiOjEyMDAsImZpdCI6Imluc2lkZSIsIndpdGhvdXRFbmxhcmdlbWVudCI6dHJ1ZX0sIndlYnAiOnsicXVhbGl0eSI6NzV9LCJqcGVnIjp7InF1YWxpdHkiOjc1fSwicm90YXRlIjpudWxsfX0=?bc=0",
+      "tags": {
+        "component": [
+          "mobile-app",
+          "navbar",
+          "list",
+          "button"
+        ],
+        "style": [
+          "light-mode",
+          "minimal",
+          "illustrated"
+        ],
+        "context": [
+          "social",
+          "mobile-app"
+        ],
+        "vibe": [
+          "friendly",
+          "calm"
+        ]
+      },
+      "one_liner": "This is a mobile app screen showing a question prompt with an illustrated background.",
+      "indexed_at": "2025-12-18T04:57:11.944Z"
+    },
+    {
+      "id": 24453799,
+      "title": "",
+      "arena_url": "https://www.are.na/block/24453799",
+      "image_url": "https://images.are.na/eyJidWNrZXQiOiJhcmVuYV9pbWFnZXMiLCJrZXkiOiIyNDQ1Mzc5OS9vcmlnaW5hbF9kZWRhNzM5NTVlOGJlYWYxNzRkNjQyNmFiMzc2YjdmMy5wbmciLCJlZGl0cyI6eyJyZXNpemUiOnsid2lkdGgiOjEyMDAsImhlaWdodCI6MTIwMCwiZml0IjoiaW5zaWRlIiwid2l0aG91dEVubGFyZ2VtZW50Ijp0cnVlfSwid2VicCI6eyJxdWFsaXR5Ijo3NX0sImpwZWciOnsicXVhbGl0eSI6NzV9LCJyb3RhdGUiOm51bGx9fQ==?bc=0",
+      "tags": {
+        "component": [
+          "hero",
+          "cta"
+        ],
+        "style": [
+          "flat"
+        ],
+        "context": [
+          "landing-page",
+          "saas",
+          "b2b",
+          "marketing"
+        ],
+        "vibe": [
+          "professional",
+          "friendly"
+        ]
+      },
+      "one_liner": "Guidance for creating a homepage hero section, drawing inspiration from the style of an infomercial to clearly demonstrate features, capabilities and benefits of a product, as exemplified by Loom and Flex Tape.",
+      "indexed_at": "2025-12-18T04:57:13.931Z"
+    },
+    {
+      "id": 23818078,
+      "title": "1695651984398?e=1698278400-v=beta-t=ktuewhrjibob9b26h6zzqwxrllrmajny5pgbxpjqnj8",
+      "arena_url": "https://www.are.na/block/23818078",
+      "image_url": "https://images.are.na/eyJidWNrZXQiOiJhcmVuYV9pbWFnZXMiLCJrZXkiOiIyMzgxODA3OC9vcmlnaW5hbF80NzRkZGViYTI2NjM1YjNlY2VmMzViMDQwNWUzMTI1ZC5qcGciLCJlZGl0cyI6eyJyZXNpemUiOnsid2lkdGgiOjEyMDAsImhlaWdodCI6MTIwMCwiZml0IjoiaW5zaWRlIiwid2l0aG91dEVubGFyZ2VtZW50Ijp0cnVlfSwid2VicCI6eyJxdWFsaXR5Ijo3NX0sImpwZWciOnsicXVhbGl0eSI6NzV9LCJyb3RhdGUiOm51bGx9fQ==?bc=0",
+      "tags": {
+        "component": [
+          "diagram",
+          "flowchart"
+        ],
+        "style": [
+          "flat",
+          "minimal"
+        ],
+        "context": [
+          "saas",
+          "b2b"
+        ],
+        "vibe": [
+          "professional",
+          "serious",
+          "trustworthy"
+        ]
+      },
+      "one_liner": "This is a flowchart diagram outlining the purpose of a homepage.",
+      "indexed_at": "2025-12-18T04:57:15.466Z"
+    },
+    {
+      "id": 34128258,
+      "title": "img_4156.jpeg",
+      "arena_url": "https://www.are.na/block/34128258",
+      "image_url": "https://images.are.na/eyJidWNrZXQiOiJhcmVuYV9pbWFnZXMiLCJrZXkiOiIzNDEyODI1OC9vcmlnaW5hbF82ZTRjZmZhMzU1ZWNiZmMzN2U5MjAzODUyMzkxM2M3Zi5qcGciLCJlZGl0cyI6eyJyZXNpemUiOnsid2lkdGgiOjEyMDAsImhlaWdodCI6MTIwMCwiZml0IjoiaW5zaWRlIiwid2l0aG91dEVubGFyZ2VtZW50Ijp0cnVlfSwid2VicCI6eyJxdWFsaXR5Ijo3NX0sImpwZWciOnsicXVhbGl0eSI6NzV9LCJyb3RhdGUiOm51bGx9fQ==?bc=0",
+      "tags": {
+        "component": [
+          "mobile-app",
+          "cards",
+          "list",
+          "button"
+        ],
+        "style": [
+          "light-mode",
+          "rounded",
+          "minimal",
+          "flat"
+        ],
+        "context": [
+          "mobile-app",
+          "productivity"
+        ],
+        "vibe": [
+          "friendly",
+          "trustworthy",
+          "calm"
+        ]
+      },
+      "one_liner": "A mobile app interface showcasing a dashboard with suggested actions and tasks.",
+      "indexed_at": "2025-12-18T04:57:17.069Z"
+    },
+    {
+      "id": 38004705,
+      "title": "image-from-x-2-.jpeg",
+      "arena_url": "https://www.are.na/block/38004705",
+      "image_url": "https://images.are.na/eyJidWNrZXQiOiJhcmVuYV9pbWFnZXMiLCJrZXkiOiIzODAwNDcwNS9vcmlnaW5hbF8wMjNjNTUwYWRjZmQ5NmIxY2VlMjM4MjhkZGY1MTIyYS5qcGciLCJlZGl0cyI6eyJyZXNpemUiOnsid2lkdGgiOjEyMDAsImhlaWdodCI6MTIwMCwiZml0IjoiaW5zaWRlIiwid2l0aG91dEVubGFyZ2VtZW50Ijp0cnVlfSwid2VicCI6eyJxdWFsaXR5Ijo3NX0sImpwZWciOnsicXVhbGl0eSI6NzV9LCJyb3RhdGUiOm51bGx9fQ==?bc=0",
+      "tags": {
+        "component": [
+          "mobile-app",
+          "cards",
+          "button",
+          "navbar"
+        ],
+        "style": [
+          "light-mode",
+          "flat",
+          "minimal"
+        ],
+        "context": [
+          "health",
+          "b2c"
+        ],
+        "vibe": [
+          "calm",
+          "friendly",
+          "warm"
+        ]
+      },
+      "one_liner": "The home screen of a plant care mobile application asking the user which plants need water.",
+      "indexed_at": "2025-12-18T04:57:18.733Z"
+    },
+    {
+      "id": 37750485,
+      "title": "Home / X",
+      "arena_url": "https://www.are.na/block/37750485",
+      "image_url": "https://images.are.na/eyJidWNrZXQiOiJhcmVuYV9pbWFnZXMiLCJrZXkiOiIzNzc1MDQ4NS9vcmlnaW5hbF82Y2ZlMGQ5YTQ0NDU1Mjc4N2YxNDg3NThmMTIxNzQ2Yi5qcGciLCJlZGl0cyI6eyJyZXNpemUiOnsid2lkdGgiOjEyMDAsImhlaWdodCI6MTIwMCwiZml0IjoiaW5zaWRlIiwid2l0aG91dEVubGFyZ2VtZW50Ijp0cnVlfSwid2VicCI6eyJxdWFsaXR5Ijo3NX0sImpwZWciOnsicXVhbGl0eSI6NzV9LCJyb3RhdGUiOm51bGx9fQ==?bc=0",
+      "tags": {
+        "component": [
+          "onboarding",
+          "button",
+          "empty-state"
+        ],
+        "style": [
+          "light-mode",
+          "minimal",
+          "flat",
+          "photographic"
+        ],
+        "context": [
+          "mobile-app",
+          "fintech",
+          "saas"
+        ],
+        "vibe": [
+          "friendly",
+          "premium",
+          "confident"
+        ]
+      },
+      "one_liner": "Two onboarding screens for a mobile app with a modern, minimal design and a personal touch.",
+      "indexed_at": "2025-12-18T04:57:20.417Z"
+    },
+    {
+      "id": 30326654,
+      "title": "screenshot-2024-08-30-at-15.40.28.png",
+      "arena_url": "https://www.are.na/block/30326654",
+      "image_url": "https://images.are.na/eyJidWNrZXQiOiJhcmVuYV9pbWFnZXMiLCJrZXkiOiIzMDMyNjY1NC9vcmlnaW5hbF81MDY0YjVmZDcxMWNiYTVlMTUzYTZmNjM0MjU2MTJjMi5wbmciLCJlZGl0cyI6eyJyZXNpemUiOnsid2lkdGgiOjEyMDAsImhlaWdodCI6MTIwMCwiZml0IjoiaW5zaWRlIiwid2l0aG91dEVubGFyZ2VtZW50Ijp0cnVlfSwid2VicCI6eyJxdWFsaXR5Ijo3NX0sImpwZWciOnsicXVhbGl0eSI6NzV9LCJyb3RhdGUiOm51bGx9fQ==?bc=0",
+      "tags": {
+        "component": [
+          "dashboard",
+          "metrics",
+          "profile",
+          "calendar"
+        ],
+        "style": [
+          "light-mode",
+          "minimal",
+          "rounded"
+        ],
+        "context": [
+          "mobile-app",
+          "health",
+          "productivity"
+        ],
+        "vibe": [
+          "calm",
+          "trustworthy",
+          "friendly"
+        ]
+      },
+      "one_liner": "A screen from a habit tracking mobile app showing user profile, goal statement, repetitions, completion rate, streak and a monthly habit calendar",
+      "indexed_at": "2025-12-18T04:57:22.941Z"
+    },
+    {
+      "id": 14501339,
+      "title": "",
+      "arena_url": "https://www.are.na/block/14501339",
+      "image_url": "https://images.are.na/eyJidWNrZXQiOiJhcmVuYV9pbWFnZXMiLCJrZXkiOiIxNDUwMTMzOS9vcmlnaW5hbF9lYjRkMmRhM2Y4ODMzOTk4MmY1YTcxOTJkOGE2NTJmYS5wbmciLCJlZGl0cyI6eyJyZXNpemUiOnsid2lkdGgiOjEyMDAsImhlaWdodCI6MTIwMCwiZml0IjoiaW5zaWRlIiwid2l0aG91dEVubGFyZ2VtZW50Ijp0cnVlfSwid2VicCI6eyJxdWFsaXR5Ijo3NX0sImpwZWciOnsicXVhbGl0eSI6NzV9LCJyb3RhdGUiOm51bGx9fQ==?bc=0",
+      "tags": {
+        "component": [
+          "mobile-app",
+          "list",
+          "button"
+        ],
+        "style": [
+          "dark-mode",
+          "flat"
+        ],
+        "context": [
+          "fintech",
+          "mobile-app"
+        ],
+        "vibe": [
+          "professional",
+          "trustworthy"
+        ]
+      },
+      "one_liner": "A mobile app screen showing a cryptocurrency wallet with a list of assets and their values.",
+      "indexed_at": "2025-12-18T04:57:24.875Z"
+    },
+    {
+      "id": 33818568,
+      "title": "telegram-cloud-photo-size-2-5467753836555923040-y.jpg",
+      "arena_url": "https://www.are.na/block/33818568",
+      "image_url": "https://images.are.na/eyJidWNrZXQiOiJhcmVuYV9pbWFnZXMiLCJrZXkiOiIzMzgxODU2OC9vcmlnaW5hbF83NzgyMDRjZDNlMDNmODZlZWVmNTZlYWRmZTBiMGYzYy5qcGciLCJlZGl0cyI6eyJyZXNpemUiOnsid2lkdGgiOjEyMDAsImhlaWdodCI6MTIwMCwiZml0IjoiaW5zaWRlIiwid2l0aG91dEVubGFyZ2VtZW50Ijp0cnVlfSwid2VicCI6eyJxdWFsaXR5Ijo3NX0sImpwZWciOnsicXVhbGl0eSI6NzV9LCJyb3RhdGUiOm51bGx9fQ==?bc=0",
+      "tags": {
+        "component": [
+          "map",
+          "button",
+          "list",
+          "cta"
+        ],
+        "style": [
+          "flat",
+          "rounded",
+          "3d",
+          "illustrated"
+        ],
+        "context": [
+          "mobile-app",
+          "social"
+        ],
+        "vibe": [
+          "playful",
+          "energetic",
+          "friendly"
+        ]
+      },
+      "one_liner": "This is a mobile app screen for navigation, likely within a social context, featuring playful 3D illustrations and flat UI elements.",
+      "indexed_at": "2025-12-18T04:57:26.752Z"
+    },
+    {
+      "id": 25241803,
+      "title": "mykinsta-dashboard-homepage-min.png",
+      "arena_url": "https://www.are.na/block/25241803",
+      "image_url": "https://images.are.na/eyJidWNrZXQiOiJhcmVuYV9pbWFnZXMiLCJrZXkiOiIyNTI0MTgwMy9vcmlnaW5hbF9jZmZhZjQ0OTQwN2IzMDEwMmEzOWQxODYwY2UwMThlZS5wbmciLCJlZGl0cyI6eyJyZXNpemUiOnsid2lkdGgiOjEyMDAsImhlaWdodCI6MTIwMCwiZml0IjoiaW5zaWRlIiwid2l0aG91dEVubGFyZ2VtZW50Ijp0cnVlfSwid2VicCI6eyJxdWFsaXR5Ijo3NX0sImpwZWciOnsicXVhbGl0eSI6NzV9LCJyb3RhdGUiOm51bGx9fQ==?bc=0",
+      "tags": {
+        "component": [
+          "dashboard",
+          "navbar",
+          "sidebar",
+          "metrics",
+          "charts",
+          "cards"
+        ],
+        "style": [
+          "light-mode",
+          "minimal",
+          "rounded",
+          "flat"
+        ],
+        "context": [
+          "saas",
+          "b2b",
+          "developer-tools"
+        ],
+        "vibe": [
+          "professional",
+          "trustworthy",
+          "calm",
+          "confident"
+        ]
+      },
+      "one_liner": "This is a clean and professional dashboard interface for a web hosting or website management platform.",
+      "indexed_at": "2025-12-18T04:57:28.514Z"
+    },
+    {
+      "id": 41509567,
+      "title": "Agrotech Dashboard by Product SAAS for Cansaas on Dribbble",
+      "arena_url": "https://www.are.na/block/41509567",
+      "image_url": "https://images.are.na/eyJidWNrZXQiOiJhcmVuYV9pbWFnZXMiLCJrZXkiOiI0MTUwOTU2Ny9vcmlnaW5hbF9kODA1NDc4YjZiYzE3ZWQwOTEwOGVhMmRlOTEwMDQxNi5wbmciLCJlZGl0cyI6eyJyZXNpemUiOnsid2lkdGgiOjEyMDAsImhlaWdodCI6MTIwMCwiZml0IjoiaW5zaWRlIiwid2l0aG91dEVubGFyZ2VtZW50Ijp0cnVlfSwid2VicCI6eyJxdWFsaXR5Ijo3NX0sImpwZWciOnsicXVhbGl0eSI6NzV9LCJyb3RhdGUiOm51bGx9fQ==?bc=0",
+      "tags": {
+        "component": [
+          "dashboard",
+          "metrics",
+          "charts",
+          "timeline"
+        ],
+        "style": [
+          "light-mode",
+          "flat",
+          "minimal",
+          "muted",
+          "rounded"
+        ],
+        "context": [
+          "saas",
+          "b2b",
+          "desktop-app",
+          "productivity"
+        ],
+        "vibe": [
+          "professional",
+          "trustworthy",
+          "calm",
+          "subtle"
+        ]
+      },
+      "one_liner": "A before and after comparison of a data-driven dashboard showing agricultural data, focusing on improvements in soil conditions and yield prediction.",
+      "indexed_at": "2025-12-18T04:57:30.489Z"
+    },
+    {
+      "id": 18479306,
+      "title": "weekly graphs mobile app screen charts",
+      "arena_url": "https://www.are.na/block/18479306",
+      "image_url": "https://images.are.na/eyJidWNrZXQiOiJhcmVuYV9pbWFnZXMiLCJrZXkiOiIxODQ3OTMwNi9vcmlnaW5hbF9hZTdmZWI0YTA1NmIyYmJlYjQxOWY5YThhMTNiMDNiMC5qcGciLCJlZGl0cyI6eyJyZXNpemUiOnsid2lkdGgiOjEyMDAsImhlaWdodCI6MTIwMCwiZml0IjoiaW5zaWRlIiwid2l0aG91dEVubGFyZ2VtZW50Ijp0cnVlfSwid2VicCI6eyJxdWFsaXR5Ijo3NX0sImpwZWciOnsicXVhbGl0eSI6NzV9LCJyb3RhdGUiOm51bGx9fQ==?bc=0",
+      "tags": {
+        "component": [
+          "dashboard",
+          "charts",
+          "metrics"
+        ],
+        "style": [
+          "flat",
+          "light-mode",
+          "rounded"
+        ],
+        "context": [
+          "saas",
+          "b2b"
+        ],
+        "vibe": [
+          "professional",
+          "trustworthy",
+          "confident"
+        ]
+      },
+      "one_liner": "These are dashboard cards displaying key metrics related to energy production and installation.",
+      "indexed_at": "2025-12-18T04:57:32.257Z"
+    },
+    {
+      "id": 1034247,
+      "title": "mattern-6-dashboard-1020x896.jpg",
+      "arena_url": "https://www.are.na/block/1034247",
+      "image_url": "https://images.are.na/eyJidWNrZXQiOiJhcmVuYV9pbWFnZXMiLCJrZXkiOiIxMDM0MjQ3L29yaWdpbmFsX2ZkZGE4YWU1YTc1OWE5YjM4YTM0ZjJmNDEwNTIxZGY1LmpwZyIsImVkaXRzIjp7InJlc2l6ZSI6eyJ3aWR0aCI6MTIwMCwiaGVpZ2h0IjoxMjAwLCJmaXQiOiJpbnNpZGUiLCJ3aXRob3V0RW5sYXJnZW1lbnQiOnRydWV9LCJ3ZWJwIjp7InF1YWxpdHkiOjc1fSwianBlZyI6eyJxdWFsaXR5Ijo3NX0sInJvdGF0ZSI6bnVsbH19?bc=1",
+      "tags": {
+        "component": [
+          "dashboard",
+          "metrics",
+          "charts",
+          "list",
+          "map"
+        ],
+        "style": [
+          "flat",
+          "muted"
+        ],
+        "context": [
+          "saas",
+          "desktop-app",
+          "b2c",
+          "developer-tools"
+        ],
+        "vibe": [
+          "serious",
+          "professional",
+          "trustworthy"
+        ]
+      },
+      "one_liner": "A dashboard displaying various real-time data points related to London, including weather, transportation, air quality, and social trends.",
+      "indexed_at": "2025-12-18T04:57:34.315Z"
+    },
+    {
+      "id": 16808042,
+      "title": "14900a13da086aea1962c7.png",
+      "arena_url": "https://www.are.na/block/16808042",
+      "image_url": "https://images.are.na/eyJidWNrZXQiOiJhcmVuYV9pbWFnZXMiLCJrZXkiOiIxNjgwODA0Mi9vcmlnaW5hbF8xZjViYTM3NzEwZDFlZDIzYjlmODE3Zjk1ZTU1MzM4ZS5wbmciLCJlZGl0cyI6eyJyZXNpemUiOnsid2lkdGgiOjEyMDAsImhlaWdodCI6MTIwMCwiZml0IjoiaW5zaWRlIiwid2l0aG91dEVubGFyZ2VtZW50Ijp0cnVlfSwid2VicCI6eyJxdWFsaXR5Ijo3NX0sImpwZWciOnsicXVhbGl0eSI6NzV9LCJyb3RhdGUiOm51bGx9fQ==?bc=0",
+      "tags": {
+        "component": [
+          "dashboard",
+          "charts",
+          "metrics",
+          "list",
+          "search"
+        ],
+        "style": [
+          "dark-mode",
+          "flat",
+          "minimal"
+        ],
+        "context": [
+          "saas",
+          "b2b",
+          "desktop-app"
+        ],
+        "vibe": [
+          "professional",
+          "serious",
+          "trustworthy"
+        ]
+      },
+      "one_liner": "A dark-themed dashboard interface showing various business metrics and data visualizations.",
+      "indexed_at": "2025-12-18T04:57:36.130Z"
+    },
+    {
+      "id": 21339991,
+      "title": "coheremaincase-website-181.png?rect=0-0-5760-3600-w=1500-crop=1-q=70-fm=jpg-auto=format-fit=crop-h=938-dpr=2",
+      "arena_url": "https://www.are.na/block/21339991",
+      "image_url": "https://images.are.na/eyJidWNrZXQiOiJhcmVuYV9pbWFnZXMiLCJrZXkiOiIyMTMzOTk5MS9vcmlnaW5hbF84MTVlYzQxODNjMWU3ZmRmMGI1ZGE0NDMwZTRjOGNkYy5qcGciLCJlZGl0cyI6eyJyZXNpemUiOnsid2lkdGgiOjEyMDAsImhlaWdodCI6MTIwMCwiZml0IjoiaW5zaWRlIiwid2l0aG91dEVubGFyZ2VtZW50Ijp0cnVlfSwid2VicCI6eyJxdWFsaXR5Ijo3NX0sImpwZWciOnsicXVhbGl0eSI6NzV9LCJyb3RhdGUiOm51bGx9fQ==?bc=0",
+      "tags": {
+        "component": [
+          "cards",
+          "tabs",
+          "button",
+          "form",
+          "table",
+          "charts"
+        ],
+        "style": [
+          "light-mode",
+          "minimal",
+          "rounded",
+          "flat"
+        ],
+        "context": [
+          "saas",
+          "developer-tools",
+          "b2b"
+        ],
+        "vibe": [
+          "professional",
+          "trustworthy",
+          "friendly"
+        ]
+      },
+      "one_liner": "A clean and minimal UI showcasing various components likely for a SaaS or developer tool, including code examples, pricing, and user reviews.",
+      "indexed_at": "2025-12-18T04:57:38.587Z"
+    },
+    {
+      "id": 1741087,
+      "title": "Transit Alliance Miami Metrorail Audit",
+      "arena_url": "https://www.are.na/block/1741087",
+      "image_url": "https://images.are.na/eyJidWNrZXQiOiJhcmVuYV9pbWFnZXMiLCJrZXkiOiIxNzQxMDg3L29yaWdpbmFsXzBiOGJhODRmZmI2YTg5YzQ1MjhiODg1YmM4ZWVjMzU2LnBuZyIsImVkaXRzIjp7InJlc2l6ZSI6eyJ3aWR0aCI6MTIwMCwiaGVpZ2h0IjoxMjAwLCJmaXQiOiJpbnNpZGUiLCJ3aXRob3V0RW5sYXJnZW1lbnQiOnRydWV9LCJ3ZWJwIjp7InF1YWxpdHkiOjc1fSwianBlZyI6eyJxdWFsaXR5Ijo3NX0sInJvdGF0ZSI6bnVsbH19?bc=1",
+      "tags": {
+        "component": [
+          "timeline",
+          "metrics",
+          "list"
+        ],
+        "style": [
+          "flat",
+          "minimal"
+        ],
+        "context": [
+          "saas",
+          "mobile-app"
+        ],
+        "vibe": [
+          "trustworthy",
+          "calm",
+          "serious"
+        ]
+      },
+      "one_liner": "A timeline visualization showing train occupancy levels over time.",
+      "indexed_at": "2025-12-18T04:57:40.087Z"
+    },
+    {
+      "id": 23645590,
+      "title": "f568rj4xuaa0aim?format=jpg-name=medium",
+      "arena_url": "https://www.are.na/block/23645590",
+      "image_url": "https://images.are.na/eyJidWNrZXQiOiJhcmVuYV9pbWFnZXMiLCJrZXkiOiIyMzY0NTU5MC9vcmlnaW5hbF9iMTE3MTE4ZGRiMmMyOTdjN2E2ZDQ1Y2QyZjcxNmU0Mi5qcGciLCJlZGl0cyI6eyJyZXNpemUiOnsid2lkdGgiOjEyMDAsImhlaWdodCI6MTIwMCwiZml0IjoiaW5zaWRlIiwid2l0aG91dEVubGFyZ2VtZW50Ijp0cnVlfSwid2VicCI6eyJxdWFsaXR5Ijo3NX0sImpwZWciOnsicXVhbGl0eSI6NzV9LCJyb3RhdGUiOm51bGx9fQ==?bc=0",
+      "tags": {
+        "component": [
+          "cards",
+          "toast"
+        ],
+        "style": [
+          "light-mode",
+          "rounded",
+          "flat"
+        ],
+        "context": [
+          "saas",
+          "mobile-app",
+          "desktop-app",
+          "productivity"
+        ],
+        "vibe": [
+          "friendly",
+          "calm",
+          "humble"
+        ]
+      },
+      "one_liner": "These are status cards with pixelated icons used for progress tracking with color-coded backgrounds.",
+      "indexed_at": "2025-12-18T04:57:41.842Z"
+    },
+    {
+      "id": 19228574,
+      "title": "image.png",
+      "arena_url": "https://www.are.na/block/19228574",
+      "image_url": "https://images.are.na/eyJidWNrZXQiOiJhcmVuYV9pbWFnZXMiLCJrZXkiOiIxOTIyODU3NC9vcmlnaW5hbF8zYzZkMmJkYTllYmUxNjlkOTNhNWNiYTg1MTBhYWRiMS5wbmciLCJlZGl0cyI6eyJyZXNpemUiOnsid2lkdGgiOjEyMDAsImhlaWdodCI6MTIwMCwiZml0IjoiaW5zaWRlIiwid2l0aG91dEVubGFyZ2VtZW50Ijp0cnVlfSwid2VicCI6eyJxdWFsaXR5Ijo3NX0sImpwZWciOnsicXVhbGl0eSI6NzV9LCJyb3RhdGUiOm51bGx9fQ==?bc=0",
+      "tags": {
+        "component": [
+          "dashboard",
+          "metrics",
+          "button"
+        ],
+        "style": [
+          "light-mode",
+          "rounded",
+          "flat"
+        ],
+        "context": [
+          "mobile-app",
+          "saas",
+          "fintech"
+        ],
+        "vibe": [
+          "professional",
+          "confident",
+          "friendly"
+        ]
+      },
+      "one_liner": "A mobile app dashboard showcasing key metrics like total revenue, all-time sessions, customer orders, new iOS users, and daily spendings.",
+      "indexed_at": "2025-12-18T04:57:43.909Z"
+    }
+  ]
+}
