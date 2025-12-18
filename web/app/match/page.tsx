@@ -271,43 +271,27 @@ export default function MatchPage() {
       ...aggregatedResult.extractedTags.vibe,
     ].map(t => `\`${t}\``).join(', ');
 
-    let md = `## UI References for Your WIP\n\n`;
-    md += `**Screenshots analyzed:** ${aggregatedResult.imageCount}\n`;
-    md += `**Combined tags:** ${tagsList}\n\n`;
-    md += `---\n\n`;
+    let md = `## UI References from My Are.na\n\n`;
+    md += `**What I'm building:** ${tagsList}\n\n`;
 
     aggregatedResult.matches.forEach((match, i) => {
-      const allMatchedTags = [
+      const matchedTags = [
         ...match.matchedTags.component,
         ...match.matchedTags.style,
-        ...match.matchedTags.context,
-        ...match.matchedTags.vibe,
-      ];
+      ].slice(0, 4).join(', ');
 
-      md += `### ${i + 1}. ${match.block.title || match.block.one_liner.slice(0, 50)}\n`;
-      md += `![reference](${match.block.image_url})\n`;
-      md += `- **Match:** ${Math.round(match.score * 10)}% (${allMatchedTags.join(', ')})\n`;
-      md += `- **Description:** ${match.block.one_liner}\n`;
-      md += `- [View on Are.na](${match.block.arena_url})\n\n`;
+      // Use one_liner as the title (it's always more descriptive than filename)
+      md += `### ${i + 1}. ${match.block.one_liner}\n`;
+      md += `![](${match.block.image_url})\n`;
+      md += `**Why:** ${matchedTags} · [Are.na](${match.block.arena_url})\n\n`;
     });
 
+    // Add guidance section
     md += `---\n\n`;
-    md += `**Common patterns in these references:**\n`;
-    
-    // Aggregate common tags across matches
-    const allComponents = new Set<string>();
-    const allStyles = new Set<string>();
-    aggregatedResult.matches.forEach(m => {
-      m.matchedTags.component.forEach(t => allComponents.add(t));
-      m.matchedTags.style.forEach(t => allStyles.add(t));
-    });
-
-    if (allComponents.size > 0) {
-      md += `- Components: ${Array.from(allComponents).join(', ')}\n`;
-    }
-    if (allStyles.size > 0) {
-      md += `- Style: ${Array.from(allStyles).join(', ')}\n`;
-    }
+    md += `**Use these references to:**\n`;
+    md += `- Match the visual density and spacing\n`;
+    md += `- Borrow color relationships and contrast levels\n`;
+    md += `- Reference component patterns (how they handle similar UI elements)\n`;
 
     return md;
   }, [aggregatedResult]);
@@ -783,28 +767,19 @@ export default function MatchPage() {
                       </span>
                     </div>
 
-                    {/* Title */}
-                    <h4 style={{
-                      fontSize: '14px',
-                      fontWeight: STYLES.typography.headingWeight,
-                      margin: '0 0 6px 0',
-                      lineHeight: 1.3,
+                    {/* Description (always more useful than filename) */}
+                    <p style={{
+                      fontSize: '13px',
+                      fontWeight: STYLES.typography.bodyWeight,
+                      margin: '0 0 8px 0',
+                      lineHeight: 1.4,
+                      color: STYLES.colors.textPrimary,
                       display: '-webkit-box',
-                      WebkitLineClamp: 2,
+                      WebkitLineClamp: 3,
                       WebkitBoxOrient: 'vertical',
                       overflow: 'hidden',
                     }}>
-                      {match.block.title || match.block.one_liner.slice(0, 60)}
-                    </h4>
-
-                    {/* Relevance note */}
-                    <p style={{
-                      fontSize: '12px',
-                      color: STYLES.colors.textSecondary,
-                      margin: '0 0 8px 0',
-                      lineHeight: 1.4,
-                    }}>
-                      {match.relevanceNote}
+                      {match.block.one_liner}
                     </p>
 
                     {/* Matched tags */}
