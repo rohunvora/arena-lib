@@ -156,11 +156,11 @@ export async function POST(request: NextRequest) {
     const model = genAI.getGenerativeModel({ model: 'gemini-2.0-flash' });
 
     // Extract base64 data and mime type
-    const matches = image.match(/^data:(.+);base64,(.+)$/);
-    if (!matches) {
+    const dataUrlParts = image.match(/^data:(.+);base64,(.+)$/);
+    if (!dataUrlParts) {
       return NextResponse.json({ error: 'Invalid image format' }, { status: 400 });
     }
-    const [, mimeType, base64Data] = matches;
+    const [, mimeType, base64Data] = dataUrlParts;
 
     // Call Gemini to extract tags
     const result = await model.generateContent([
