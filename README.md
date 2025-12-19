@@ -39,10 +39,10 @@ arena-refs/
 │
 ├── scripts/                       # Utility scripts
 │   ├── archive.js
-│   └── cleanup.js
+│   ├── cleanup.js
+│   └── nuke.js
 │
-└── data/                          # Generated indexes (gitignored)
-    └── taste-profiles/
+└── taste-profiles/                # Generated indexes (gitignored)
 ```
 
 ## Composable Core
