@@ -1,17 +1,9 @@
 /**
  * Arena Refs - Design Tokens
  * 
- * Unified design system derived from taste-profiles/ui-ux-*/style-guide.json
+ * Unified design system derived from taste-profiles analysis.
  * Source: 21 images analyzed, high confidence
  * Context: developer-tools/saas
- * 
- * Key findings from extraction:
- * - radius_px: 11 (rounded) → using 12px for cleaner numbers
- * - density: balanced → medium padding
- * - shadow_presence: subtle for saas/developer-tools context
- * - typography.family_vibe: neo-grotesque → system-ui
- * - motion: 200ms ease-out, hover_effect: lift
- * - colors.background_primary: #F2F0EC (warm off-white)
  */
 
 /* ============================================================================
