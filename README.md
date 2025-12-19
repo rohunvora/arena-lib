@@ -4,17 +4,28 @@
 
 You collect references in Are.na. This system converts them into structured guidance that makes AI coding assistants (Cursor, Claude, etc.) build interfaces that match your aesthetic.
 
-## 🚀 NEW: Personal Component Library
+## 🚀 Live Component Gallery
 
-**Live**: [site-m22udin8q-rohun-voras-projects.vercel.app](https://site-m22udin8q-rohun-voras-projects.vercel.app)
+**Live**: [site-qhre0qj0j-rohun-voras-projects.vercel.app](https://site-qhre0qj0j-rohun-voras-projects.vercel.app)
 
-Your Are.na saves → structured, replicable components → auto-organized design system website.
+Your Are.na saves → structured, replicable components → **live-rendered design system**.
+
+### What's New: Live Rendering
+
+Components are no longer just screenshots with metadata. They're **rendered live** using extracted design tokens:
+
+- **Live Hero Compositions** — see each component rendered with its actual colors, typography, shadows, and spacing
+- **Interactive Atom Previews** — buttons you can hover, surfaces with real gradients, typography at true scale
+- **No Screenshots First** — the reference image is tucked away; you see the *implementation* first
+
+### Features
 
 - **26 components** extracted with AI from UI/UX channel
-- **104 atoms** (buttons, surfaces, cards, typography) ready to mix and match
+- **104 atoms** (buttons, surfaces, cards, typography) live-rendered and copyable
 - **8 aesthetic families** (Flat Minimal, Soft Gradient, Dark Premium, etc.)
 - **Copy-paste CSS** for every component and atom
 - **Export** to `.cursorrules`, CSS variables, or Tailwind config
+- **Dark mode** with refined typography (IBM Plex Sans/Mono)
 
 ### Quick Start: Extract Your Own Components
 
