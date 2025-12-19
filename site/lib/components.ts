@@ -1,47 +1,24 @@
 /**
- * Data loading utilities for component library
+ * Data loading utilities for component library (v2)
+ * 
+ * This version uses the simplified schema with direct HTML/CSS rendering.
  */
 
 import fs from 'fs';
 import path from 'path';
 
-// Types matching our extraction schema
-export interface DesignTokens {
-  colors: {
-    background: string;
-    surface: string;
-    text_primary: string;
-    text_secondary: string;
-    accent: string;
-  };
-  radius: {
-    containers: string;
-    buttons: string;
-  };
-  shadows: {
-    default: string;
-  };
-  spacing: {
-    base_unit: string;
-    container_padding: string;
-    element_gap: string;
-  };
-  typography: {
-    heading_weight: string;
-    body_weight: string;
-    heading_size: string;
-    body_size: string;
-    line_height: string;
-    font_style: string;
-  };
+// V2 Types - simplified schema with render field
+export interface RenderableCode {
+  html: string;
+  css: string;
+  notes?: string;
 }
 
-export interface ExtractedAtom {
-  type: string;
-  name: string;
-  description: string;
-  css: string;
-  tailwind?: string;
+export interface SourceInfo {
+  arena_id: number;
+  arena_url: string;
+  image_url: string;
+  title: string | null;
 }
 
 export interface ExtractedComponent {
@@ -52,22 +29,8 @@ export interface ExtractedComponent {
   component_types: string[];
   aesthetic_family: string;
   tags: string[];
-  tokens: DesignTokens;
-  atoms: ExtractedAtom[];
-  code: {
-    css: string;
-    tailwind?: string;
-  };
-  usage: {
-    best_for: string[];
-    avoid_for: string[];
-  };
-  source: {
-    arena_id: number;
-    arena_url: string;
-    image_url: string;
-    title: string | null;
-  };
+  render: RenderableCode;
+  source: SourceInfo;
   extracted_at: string;
   extraction_version: string;
 }
@@ -164,39 +127,10 @@ export function getComponentsByScreen(screen: string): ExtractedComponent[] {
 }
 
 /**
- * Get all atoms across all components
- */
-export function getAllAtoms(): Array<ExtractedAtom & { componentId: string; componentName: string }> {
-  const components = getAllComponents();
-  const atoms: Array<ExtractedAtom & { componentId: string; componentName: string }> = [];
-  
-  for (const component of components) {
-    for (const atom of component.atoms) {
-      atoms.push({
-        ...atom,
-        componentId: component.id,
-        componentName: component.name,
-      });
-    }
-  }
-  
-  return atoms;
-}
-
-/**
- * Get atoms by type
- */
-export function getAtomsByType(type: string): Array<ExtractedAtom & { componentId: string; componentName: string }> {
-  return getAllAtoms().filter(atom => atom.type === type);
-}
-
-/**
  * Get statistics for the library
  */
 export function getStats() {
   const index = getComponentIndex();
-  const components = getAllComponents();
-  const atoms = getAllAtoms();
   
   // Count aesthetics
   const aestheticCounts = Object.entries(index.by_aesthetic)
@@ -208,22 +142,10 @@ export function getStats() {
     .map(([name, ids]) => ({ name, count: ids.length }))
     .sort((a, b) => b.count - a.count);
   
-  // Count atom types
-  const atomTypeCounts: Record<string, number> = {};
-  for (const atom of atoms) {
-    atomTypeCounts[atom.type] = (atomTypeCounts[atom.type] || 0) + 1;
-  }
-  
-  const atomTypes = Object.entries(atomTypeCounts)
-    .map(([name, count]) => ({ name, count }))
-    .sort((a, b) => b.count - a.count);
-  
   return {
     totalComponents: index.total_components,
-    totalAtoms: atoms.length,
     aesthetics: aestheticCounts,
     types: typeCounts,
-    atomTypes,
     generatedAt: index.generated_at,
   };
 }
@@ -243,12 +165,3 @@ export function getComponentTypes(): string[] {
   const index = getComponentIndex();
   return Object.keys(index.by_type).sort();
 }
-
-/**
- * Get unique atom types
- */
-export function getAtomTypes(): string[] {
-  const atoms = getAllAtoms();
-  return [...new Set(atoms.map(a => a.type))].sort();
-}
-

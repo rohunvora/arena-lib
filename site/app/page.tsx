@@ -1,25 +1,15 @@
 import Link from "next/link";
-import { getAllComponents, getStats, getAllAtoms } from "@/lib/components";
-import { 
-  ComponentCompositionMini,
-  SurfacePreview,
-  ButtonPreview,
-  CardPreview,
-  ColorStrip,
-} from "@/components/previews";
+import { getAllComponents, getStats } from "@/lib/components";
+import { HTMLPreview } from "@/components/previews";
 
 export default function HomePage() {
   const components = getAllComponents();
   const stats = getStats();
-  const allAtoms = getAllAtoms();
   
-  // Group atoms by type
-  const surfaceAtoms = allAtoms.filter(a => a.type === 'surface').slice(0, 6);
-  const buttonAtoms = allAtoms.filter(a => a.type === 'button').slice(0, 6);
-  const cardAtoms = allAtoms.filter(a => a.type === 'card').slice(0, 4);
-  
-  // Get recent components for live preview
-  const recentComponents = components.slice(0, 6);
+  // Get recent components with valid render data
+  const recentComponents = components
+    .filter(c => c.render?.html && c.render?.css)
+    .slice(0, 9);
   
   return (
     <div className="min-h-screen">
@@ -39,25 +29,25 @@ export default function HomePage() {
             className="text-xl max-w-2xl mx-auto mb-8"
             style={{ color: 'var(--text-secondary)' }}
           >
-            {stats.totalComponents} patterns extracted from your taste.
-            Browse live components, not screenshots.
+            {stats.totalComponents} UI patterns extracted from your taste.
+            Live HTML/CSS, not screenshots.
           </p>
           
           {/* Quick stats */}
           <div className="flex justify-center gap-12 mb-12">
             <Stat value={stats.totalComponents} label="Components" />
-            <Stat value={stats.totalAtoms} label="Atoms" />
             <Stat value={stats.aesthetics.length} label="Aesthetics" />
+            <Stat value={stats.types.length} label="Types" />
           </div>
           
           {/* CTA */}
           <div className="flex gap-4 justify-center">
             <Link
-              href="/atoms"
+              href="/components"
               className="px-6 py-3 rounded-lg font-medium text-white transition-opacity hover:opacity-90"
               style={{ background: 'var(--accent)' }}
             >
-              Browse Atoms
+              Browse Components
             </Link>
             <Link
               href="/export"
@@ -74,196 +64,150 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* Live Surfaces */}
+      {/* Component Grid */}
       <section className="py-16 px-4 max-w-7xl mx-auto">
         <SectionHeader 
-          title="Surfaces" 
-          subtitle="Background treatments extracted from your references"
-          href="/atoms/surface"
+          title="Live Components" 
+          subtitle="Hover to see component name. Click for details + code."
+          href="/components"
         />
         
-        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
-          {surfaceAtoms.map((atom, i) => (
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+          {recentComponents.map(component => (
             <Link 
-              key={i} 
-              href={`/components/${atom.componentId}`}
+              key={component.id} 
+              href={`/components/${component.id}`}
               className="group"
             >
-              <SurfacePreview 
-                css={atom.css} 
-                name={atom.name}
-                size="sm"
-                className="w-full"
-              />
-            </Link>
-          ))}
-        </div>
-      </section>
-
-      {/* Live Buttons */}
-      <section 
-        className="py-16 px-4"
-        style={{ background: 'var(--bg-inset)' }}
-      >
-        <div className="max-w-7xl mx-auto">
-          <SectionHeader 
-            title="Buttons" 
-            subtitle="Interactive button styles ready to use"
-            href="/atoms/button"
-          />
-          
-          <div className="flex flex-wrap gap-6 items-end">
-            {buttonAtoms.map((atom, i) => (
-              <Link 
-                key={i} 
-                href={`/components/${atom.componentId}`}
-                className="group"
-              >
-                <ButtonPreview 
-                  css={atom.css} 
-                  name={atom.name}
-                  label="Action"
-                  size="md"
-                />
-              </Link>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* Live Cards */}
-      <section className="py-16 px-4 max-w-7xl mx-auto">
-        <SectionHeader 
-          title="Cards" 
-          subtitle="Container patterns with shadows and borders"
-          href="/atoms/card"
-        />
-        
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-          {cardAtoms.map((atom, i) => (
-            <Link 
-              key={i} 
-              href={`/components/${atom.componentId}`}
-              className="group"
-            >
-              <CardPreview 
-                css={atom.css} 
-                name={atom.name}
-                size="lg"
-                className="w-full"
-              />
-            </Link>
-          ))}
-        </div>
-      </section>
-
-      {/* Component Compositions */}
-      <section 
-        className="py-16 px-4"
-        style={{ background: 'var(--bg-inset)' }}
-      >
-        <div className="max-w-7xl mx-auto">
-          <SectionHeader 
-            title="Full Compositions" 
-            subtitle="Complete component patterns rendered live"
-            href="/components"
-          />
-          
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {recentComponents.map(component => (
-              <Link 
-                key={component.id} 
-                href={`/components/${component.id}`}
-                className="group"
-              >
-                <div className="card overflow-hidden">
-                  <ComponentCompositionMini 
-                    component={component}
-                  />
-                  <div className="p-4">
-                    <div className="flex items-center gap-2 mb-1">
-                      <ColorStrip 
-                        tokens={component.tokens} 
-                        className="w-12 h-2"
+              <div className="card overflow-hidden transition-shadow hover:shadow-lg">
+                {/* Live Preview */}
+                <div 
+                  className="aspect-[4/3] overflow-hidden"
+                  style={{ background: 'var(--bg-inset)' }}
+                >
+                  <div className="p-4 h-full flex items-center justify-center">
+                    <div className="transform scale-75 origin-center w-full">
+                      <HTMLPreview 
+                        html={component.render.html} 
+                        css={component.render.css} 
                       />
-                      <span 
-                        className="text-xs"
-                        style={{ color: 'var(--text-muted)' }}
-                      >
-                        {formatAesthetic(component.aesthetic_family)}
-                      </span>
                     </div>
-                    <h3 
-                      className="font-medium text-sm"
-                      style={{ color: 'var(--text-primary)' }}
-                    >
-                      {component.name}
-                    </h3>
                   </div>
                 </div>
-              </Link>
-            ))}
-          </div>
+                
+                {/* Info */}
+                <div className="p-4 border-t" style={{ borderColor: 'var(--border)' }}>
+                  <div className="flex items-center gap-2 mb-1">
+                    <span 
+                      className="text-xs px-2 py-0.5 rounded capitalize"
+                      style={{ background: 'var(--bg-inset)', color: 'var(--text-muted)' }}
+                    >
+                      {formatAesthetic(component.aesthetic_family)}
+                    </span>
+                  </div>
+                  <h3 
+                    className="font-medium"
+                    style={{ color: 'var(--text-primary)' }}
+                  >
+                    {component.name}
+                  </h3>
+                  <p 
+                    className="text-sm line-clamp-2 mt-1"
+                    style={{ color: 'var(--text-muted)' }}
+                  >
+                    {component.description}
+                  </p>
+                </div>
+              </div>
+            </Link>
+          ))}
         </div>
+        
+        {recentComponents.length === 0 && (
+          <div 
+            className="text-center py-16"
+            style={{ color: 'var(--text-muted)' }}
+          >
+            <p className="text-lg mb-4">No components extracted yet.</p>
+            <p className="text-sm">
+              Run the extraction CLI to populate your component library.
+            </p>
+          </div>
+        )}
       </section>
 
       {/* Aesthetics overview */}
-      <section className="py-16 px-4 max-w-7xl mx-auto">
-        <SectionHeader 
-          title="By Aesthetic" 
-          subtitle="Browse by visual style"
-          href="/aesthetics"
-        />
-        
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-          {stats.aesthetics.slice(0, 8).map(({ name, count }) => {
-            // Get a sample component for this aesthetic
-            const sampleComponent = components.find(c => c.aesthetic_family === name);
+      {stats.aesthetics.length > 0 && (
+        <section 
+          className="py-16 px-4"
+          style={{ background: 'var(--bg-inset)' }}
+        >
+          <div className="max-w-7xl mx-auto">
+            <SectionHeader 
+              title="By Aesthetic" 
+              subtitle="Browse by visual style"
+              href="/aesthetics"
+            />
             
-            return (
-              <Link 
-                key={name} 
-                href={`/aesthetics/${name}`}
-                className="group"
-              >
-                <div className="card overflow-hidden">
-                  {sampleComponent ? (
-                    <ComponentCompositionMini 
-                      component={sampleComponent}
-                      className="aspect-[3/2]"
-                    />
-                  ) : (
-                    <div 
-                      className="aspect-[3/2]"
-                      style={{ background: 'var(--bg-inset)' }}
-                    />
-                  )}
-                  <div className="p-3">
-                    <div 
-                      className="font-medium text-sm"
-                      style={{ color: 'var(--text-primary)' }}
-                    >
-                      {formatAesthetic(name)}
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+              {stats.aesthetics.slice(0, 8).map(({ name, count }) => {
+                // Get a sample component for this aesthetic
+                const sampleComponent = components.find(
+                  c => c.aesthetic_family === name && c.render?.html
+                );
+                
+                return (
+                  <Link 
+                    key={name} 
+                    href={`/aesthetics/${name}`}
+                    className="group"
+                  >
+                    <div className="card overflow-hidden">
+                      {sampleComponent?.render ? (
+                        <div 
+                          className="aspect-[3/2] overflow-hidden"
+                          style={{ background: 'var(--bg-inset)' }}
+                        >
+                          <div className="p-2 h-full flex items-center justify-center">
+                            <div className="transform scale-50 origin-center">
+                              <HTMLPreview 
+                                html={sampleComponent.render.html} 
+                                css={sampleComponent.render.css} 
+                              />
+                            </div>
+                          </div>
+                        </div>
+                      ) : (
+                        <div 
+                          className="aspect-[3/2]"
+                          style={{ background: 'var(--bg-inset)' }}
+                        />
+                      )}
+                      <div className="p-3">
+                        <div 
+                          className="font-medium text-sm"
+                          style={{ color: 'var(--text-primary)' }}
+                        >
+                          {formatAesthetic(name)}
+                        </div>
+                        <div 
+                          className="text-xs"
+                          style={{ color: 'var(--text-muted)' }}
+                        >
+                          {count} pattern{count !== 1 ? 's' : ''}
+                        </div>
+                      </div>
                     </div>
-                    <div 
-                      className="text-xs"
-                      style={{ color: 'var(--text-muted)' }}
-                    >
-                      {count} pattern{count !== 1 ? 's' : ''}
-                    </div>
-                  </div>
-                </div>
-              </Link>
-            );
-          })}
-        </div>
-      </section>
+                  </Link>
+                );
+              })}
+            </div>
+          </div>
+        </section>
+      )}
 
       {/* Export CTA */}
-      <section 
-        className="py-20 px-4"
-        style={{ background: 'var(--bg-inset)' }}
-      >
+      <section className="py-20 px-4">
         <div className="max-w-2xl mx-auto text-center">
           <h2 
             className="text-2xl font-semibold mb-3"

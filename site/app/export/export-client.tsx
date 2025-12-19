@@ -6,7 +6,8 @@ import { CopyButton } from "@/components/copy-button";
 interface ExportClientProps {
   stats: {
     totalComponents: number;
-    totalAtoms: number;
+    aesthetics: { name: string; count: number }[];
+    types: { name: string; count: number }[];
   };
   cursorrules: string;
   cssVariables: string;
@@ -43,7 +44,7 @@ export function ExportClient({
           Export Design System
         </h1>
         <p style={{ color: 'var(--text-secondary)' }}>
-          Generate code from your {stats.totalComponents} components and {stats.totalAtoms} atoms
+          Generate code from your {stats.totalComponents} components
         </p>
       </div>
 
@@ -81,18 +82,18 @@ export function ExportClient({
         )}
         {activeTab === 'css' && (
           <p className="text-sm" style={{ color: 'var(--text-secondary)' }}>
-            CSS custom properties aggregated from your most common design tokens. 
+            CSS custom properties for your design system. 
             Add to your <code className="font-mono px-1 py-0.5 rounded" style={{ background: 'var(--bg-elevated)' }}>globals.css</code>.
           </p>
         )}
         {activeTab === 'tailwind' && (
           <p className="text-sm" style={{ color: 'var(--text-secondary)' }}>
-            Extend your Tailwind config with colors and spacing from your collection.
+            Extend your Tailwind config with values from your collection.
           </p>
         )}
         {activeTab === 'json' && (
           <p className="text-sm" style={{ color: 'var(--text-secondary)' }}>
-            Raw JSON export of all components for custom integrations.
+            Raw JSON export of all components with their HTML/CSS for custom integrations.
           </p>
         )}
       </div>
@@ -114,4 +115,3 @@ export function ExportClient({
     </div>
   );
 }
-

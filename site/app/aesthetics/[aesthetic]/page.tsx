@@ -65,8 +65,8 @@ export default async function AestheticDetailPage({ params }: PageProps) {
         </p>
       </div>
 
-      {/* Design characteristics */}
-      <AestheticCharacteristics aesthetic={aesthetic} components={components} />
+      {/* Component Types Summary */}
+      <AestheticSummary aesthetic={aesthetic} components={components} />
 
       {/* Grid */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -78,29 +78,20 @@ export default async function AestheticDetailPage({ params }: PageProps) {
   );
 }
 
-function AestheticCharacteristics({ aesthetic, components }: { aesthetic: string; components: any[] }) {
-  // Aggregate common tokens from this aesthetic
-  const radiusValues: Record<string, number> = {};
-  const colorPatterns: string[] = [];
-  
+function AestheticSummary({ aesthetic, components }: { aesthetic: string; components: any[] }) {
+  // Aggregate component types
+  const typeCounts: Record<string, number> = {};
   for (const comp of components) {
-    const radius = comp.tokens?.radius?.containers;
-    if (radius) {
-      radiusValues[radius] = (radiusValues[radius] || 0) + 1;
-    }
-    
-    const bg = comp.tokens?.colors?.background;
-    if (bg && bg.includes('gradient')) {
-      colorPatterns.push('Gradients');
-    } else if (bg) {
-      colorPatterns.push('Solid backgrounds');
+    for (const type of comp.component_types || []) {
+      typeCounts[type] = (typeCounts[type] || 0) + 1;
     }
   }
   
-  const mostCommonRadius = Object.entries(radiusValues)
-    .sort((a, b) => b[1] - a[1])[0]?.[0];
+  const topTypes = Object.entries(typeCounts)
+    .sort((a, b) => b[1] - a[1])
+    .slice(0, 6);
   
-  const usesGradients = colorPatterns.filter(p => p === 'Gradients').length > components.length / 2;
+  if (topTypes.length === 0) return null;
   
   return (
     <div 
@@ -111,23 +102,15 @@ function AestheticCharacteristics({ aesthetic, components }: { aesthetic: string
         className="font-semibold mb-4"
         style={{ color: 'var(--text-primary)' }}
       >
-        Common Characteristics
+        Common Component Types
       </h3>
       
       <div className="flex flex-wrap gap-3">
-        {mostCommonRadius && (
-          <span className="pill">
-            Border radius: {mostCommonRadius}
+        {topTypes.map(([type, count]) => (
+          <span key={type} className="pill">
+            {type} ({count})
           </span>
-        )}
-        {usesGradients && (
-          <span className="pill">
-            Uses gradients
-          </span>
-        )}
-        <span className="pill">
-          {components.length} examples
-        </span>
+        ))}
       </div>
     </div>
   );
@@ -145,4 +128,3 @@ function formatName(name: string): string {
     .map(word => word.charAt(0).toUpperCase() + word.slice(1))
     .join(' ');
 }
-

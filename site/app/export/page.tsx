@@ -34,24 +34,6 @@ function generateCursorrules(components: ReturnType<typeof getAllComponents>): s
     .slice(0, 3)
     .map(([name]) => name);
 
-  // Get most common radii
-  const radiusCounts: Record<string, number> = {};
-  for (const c of components) {
-    const r = c.tokens.radius.containers;
-    radiusCounts[r] = (radiusCounts[r] || 0) + 1;
-  }
-  const topRadius = Object.entries(radiusCounts)
-    .sort((a, b) => b[1] - a[1])[0]?.[0] || '12px';
-
-  // Get button radius
-  const buttonRadiusCounts: Record<string, number> = {};
-  for (const c of components) {
-    const r = c.tokens.radius.buttons;
-    buttonRadiusCounts[r] = (buttonRadiusCounts[r] || 0) + 1;
-  }
-  const topButtonRadius = Object.entries(buttonRadiusCounts)
-    .sort((a, b) => b[1] - a[1])[0]?.[0] || '8px';
-
   return `# Design System Preferences
 
 Based on ${components.length} curated UI components, follow these design guidelines:
@@ -59,12 +41,7 @@ Based on ${components.length} curated UI components, follow these design guideli
 ## Aesthetic Direction
 Primary styles: ${topAesthetics.map(a => formatName(a)).join(', ')}
 
-## Visual Tokens
-
-### Border Radius
-- Containers/cards: ${topRadius}
-- Buttons: ${topButtonRadius}
-- Inputs: 8px
+## Visual Principles
 
 ### Typography
 - Use geometric or humanist sans-serif fonts
@@ -72,25 +49,25 @@ Primary styles: ${topAesthetics.map(a => formatName(a)).join(', ')}
 - Body weight: 400
 - Line height: 1.5-1.6
 
-### Shadows
-Prefer subtle shadows:
-- Cards: 0 4px 16px rgba(0,0,0,0.04)
-- Elevated: 0 8px 32px rgba(0,0,0,0.08)
-
 ### Spacing
 - Base unit: 8px
 - Container padding: 16-24px
 - Element gap: 12-16px
+
+### Shadows
+Prefer subtle shadows:
+- Cards: 0 4px 16px rgba(0,0,0,0.04)
+- Elevated: 0 8px 32px rgba(0,0,0,0.08)
 
 ## Component Patterns
 
 ### Cards
 - Use generous padding (24px)
 - Subtle shadows over borders
-- ${topRadius} border radius
+- Rounded corners (12-16px)
 
 ### Buttons
-- Primary: solid background, ${topButtonRadius} radius
+- Primary: solid background with pill or rounded corners
 - Full-width for mobile CTAs
 - Clear hover states
 
@@ -113,14 +90,6 @@ ${components.slice(0, 5).map(c => `- ${c.name} (${c.aesthetic_family})`).join('\
 
 // Generate CSS variables
 function generateCSSVariables(components: ReturnType<typeof getAllComponents>): string {
-  // Get most common radius
-  const radiusCounts: Record<string, number> = {};
-  for (const c of components) {
-    radiusCounts[c.tokens.radius.containers] = (radiusCounts[c.tokens.radius.containers] || 0) + 1;
-  }
-  const commonRadius = Object.entries(radiusCounts)
-    .sort((a, b) => b[1] - a[1])[0]?.[0] || '12px';
-
   return `:root {
   /* From your component library */
   
@@ -136,7 +105,8 @@ function generateCSSVariables(components: ReturnType<typeof getAllComponents>): 
   /* Border Radius */
   --radius-sm: 6px;
   --radius-md: 8px;
-  --radius-lg: ${commonRadius};
+  --radius-lg: 12px;
+  --radius-xl: 16px;
   --radius-full: 9999px;
   
   /* Shadows */
@@ -186,14 +156,6 @@ function generateCSSVariables(components: ReturnType<typeof getAllComponents>): 
 
 // Generate Tailwind config
 function generateTailwindConfig(components: ReturnType<typeof getAllComponents>): string {
-  // Get most common radius
-  const radiusCounts: Record<string, number> = {};
-  for (const c of components) {
-    radiusCounts[c.tokens.radius.containers] = (radiusCounts[c.tokens.radius.containers] || 0) + 1;
-  }
-  const commonRadius = Object.entries(radiusCounts)
-    .sort((a, b) => b[1] - a[1])[0]?.[0] || '12px';
-
   return `// tailwind.config.ts
 import type { Config } from 'tailwindcss'
 
@@ -202,7 +164,7 @@ const config: Config = {
     extend: {
       // Border radius from your components
       borderRadius: {
-        'card': '${commonRadius}',
+        'card': '12px',
         'button': '9999px', // pill buttons
       },
       
@@ -244,15 +206,17 @@ function generateJSONExport(components: ReturnType<typeof getAllComponents>): st
     meta: {
       exported_at: new Date().toISOString(),
       total_components: components.length,
+      version: '2.0.0',
     },
     components: components.map(c => ({
       id: c.id,
       name: c.name,
+      description: c.description,
       aesthetic: c.aesthetic_family,
+      screen_type: c.screen_type,
       types: c.component_types,
-      tokens: c.tokens,
-      atoms: c.atoms,
-      usage: c.usage,
+      tags: c.tags,
+      render: c.render,
     })),
   };
   

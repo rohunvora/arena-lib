@@ -9,7 +9,6 @@ import {
   SCHEMA_VERSION,
   isValidComponent 
 } from '../schema/component.js';
-import { SCREEN_TYPES, COMPONENT_TYPES, AESTHETIC_FAMILIES } from '../schema/taxonomy.js';
 
 // ============================================================================
 // CONFIGURATION
@@ -20,115 +19,31 @@ const ARENA_USER_SLUG = process.env.ARENA_USER_SLUG;
 const GEMINI_API_KEY = process.env.GEMINI_API_KEY;
 
 const COMPONENTS_DIR = 'components';
+const PROMPT_PATH = 'prompts/screenshot-to-code.md';
 
 // ============================================================================
-// EXTRACTION PROMPT
+// PROMPT LOADING
 // ============================================================================
 
-const EXTRACTION_PROMPT = `You are a design system architect extracting components from UI screenshots.
-
-Your job is to analyze a UI screenshot and output structured JSON that enables someone to:
-1. Replicate this design without seeing the original
-2. Understand when to use (and not use) this pattern
-3. Extract composable atoms that can mix with other patterns
-
-=== OUTPUT JSON SCHEMA ===
-
-{
-  "name": "string - Memorable 2-4 word name (e.g., 'Ethereal Pricing Card', 'Dark Budget Dashboard')",
-  "description": "string - One sentence describing what this is and why it works",
-  
-  "screen_type": "one of: ${SCREEN_TYPES.join(' | ')}",
-  
-  "component_types": ["array of featured components: ${COMPONENT_TYPES.join(' | ')}"],
-  
-  "aesthetic_family": "one of: ${Object.keys(AESTHETIC_FAMILIES).join(' | ')}",
-  
-  "tags": ["array of additional searchable tags like: light-mode, dark-mode, mobile, desktop, b2c, b2b, fintech, health, etc."],
-  
-  "tokens": {
-    "colors": {
-      "background": "CSS value - can be gradient like 'linear-gradient(to bottom, #E6F0FF, #FFF0F5)' or solid like '#FFFFFF'",
-      "surface": "hex color for card/container backgrounds",
-      "text_primary": "hex color for main text",
-      "text_secondary": "hex color for secondary/muted text",
-      "accent": "hex color for primary accent/action color"
-    },
-    "radius": {
-      "containers": "e.g., '24px', '12px', '8px', '0px'",
-      "buttons": "e.g., '9999px' for pills, '8px' for rounded"
-    },
-    "shadows": {
-      "default": "CSS box-shadow value like '0 4px 16px rgba(0,0,0,0.04)'"
-    },
-    "spacing": {
-      "base_unit": "grid unit like '8px' or '4px'",
-      "container_padding": "internal padding like '24px', '16px'",
-      "element_gap": "gap between elements like '16px', '12px'"
-    },
-    "typography": {
-      "heading_weight": "e.g., '700', '600', '500'",
-      "body_weight": "e.g., '400', '500'",
-      "heading_size": "largest heading size like '32px', '24px'",
-      "body_size": "body text size like '16px', '14px'",
-      "line_height": "e.g., '1.5', '1.6'",
-      "font_style": "one of: geometric-sans | humanist-sans | neo-grotesque | serif | mono | rounded-sans"
+function loadPrompt(): string {
+  try {
+    const content = fs.readFileSync(PROMPT_PATH, 'utf-8');
+    // Extract the prompt from markdown (between the ``` markers after ---)
+    const parts = content.split('---');
+    if (parts.length > 1) {
+      const promptSection = parts.slice(1).join('---');
+      const match = promptSection.match(/```\n([\s\S]*?)```/);
+      if (match) {
+        return match[1].trim();
+      }
     }
-  },
-  
-  "atoms": [
-    {
-      "type": "one of: surface | button | card | typography | navigation | input | icon | spacing | color | shadow",
-      "name": "Memorable name for this atom",
-      "description": "What makes this atom distinctive",
-      "css": "CSS rules to replicate this atom"
-    }
-  ],
-  
-  "code": {
-    "css": "Full CSS to replicate the main visual patterns (container, key components)",
-    "tailwind": "Tailwind classes that approximate the design"
-  },
-  
-  "usage": {
-    "best_for": ["array of 3-5 specific situations where this excels"],
-    "avoid_for": ["array of 3-5 situations where this would fail"]
+    throw new Error('Could not parse prompt from file');
+  } catch (error) {
+    console.error('❌ Failed to load prompt from', PROMPT_PATH);
+    console.error(error);
+    process.exit(1);
   }
 }
-
-=== EXTRACTION RULES ===
-
-1. **APPROXIMATE COLORS FROM VISUALS**
-   Analyze the screenshot and extract approximate hex colors. Be precise within reason.
-
-2. **PROVIDE REAL CSS VALUES**
-   Don't say "rounded" - say "border-radius: 16px"
-   Extract values that would actually replicate the visual.
-
-3. **IDENTIFY 2-4 COMPOSABLE ATOMS**
-   Each screenshot should yield 2-4 distinct atoms that could be mixed with other patterns.
-
-4. **CLASSIFY ACCURATELY**
-   Pick the closest match for screen_type, component_types, and aesthetic_family.
-
-5. **USAGE GUIDANCE IS CRITICAL**
-   Be specific about when to use and when to avoid.
-
-6. **OUTPUT VALID JSON ONLY**
-   Your entire response must be a single valid JSON object. No markdown, no explanation, just the JSON.
-
-=== AESTHETIC FAMILY GUIDE ===
-
-- **soft-gradient**: Light backgrounds with subtle color gradients, very rounded corners (16px+)
-- **dark-premium**: Dark/black backgrounds, high contrast text, sleek minimal styling
-- **flat-minimal**: White/light backgrounds, minimal shadows, clean lines
-- **neo-skeuomorphic**: Layered shadows creating depth, tactile buttons
-- **playful-colorful**: Bold saturated colors, illustrations, energetic
-- **editorial**: Typography-driven, magazine-like layouts
-- **technical-dense**: Compact spacing, data-heavy, functional
-- **glass-morphism**: Frosted glass effects, blur, translucent overlays
-- **warm-organic**: Earth tones, natural textures
-- **brutalist**: Raw, stark, unconventional`;
 
 // ============================================================================
 // HELPERS
@@ -198,7 +113,13 @@ function parseExtraction(response: string, blockId: number, imageUrl: string, ti
     
     const parsed = JSON.parse(jsonStr);
     
-    // Construct full component with source info
+    // Validate render field exists
+    if (!parsed.render || !parsed.render.html || !parsed.render.css) {
+      console.error('      ❌ Missing render.html or render.css in response');
+      return null;
+    }
+    
+    // Construct v2 component
     const component: ExtractedComponent = {
       id: String(blockId),
       name: parsed.name || 'Untitled',
@@ -207,16 +128,11 @@ function parseExtraction(response: string, blockId: number, imageUrl: string, ti
       component_types: parsed.component_types || [],
       aesthetic_family: parsed.aesthetic_family || 'flat-minimal',
       tags: parsed.tags || [],
-      tokens: parsed.tokens || {
-        colors: { background: '#FFFFFF', surface: '#FFFFFF', text_primary: '#000000', text_secondary: '#666666', accent: '#000000' },
-        radius: { containers: '8px', buttons: '8px' },
-        shadows: { default: 'none' },
-        spacing: { base_unit: '8px', container_padding: '16px', element_gap: '16px' },
-        typography: { heading_weight: '700', body_weight: '400', heading_size: '24px', body_size: '16px', line_height: '1.5', font_style: 'geometric-sans' }
+      render: {
+        html: parsed.render.html,
+        css: parsed.render.css,
+        notes: parsed.render.notes,
       },
-      atoms: parsed.atoms || [],
-      code: parsed.code || { css: '', tailwind: '' },
-      usage: parsed.usage || { best_for: [], avoid_for: [] },
       source: {
         arena_id: blockId,
         arena_url: `https://www.are.na/block/${blockId}`,
@@ -239,9 +155,9 @@ function buildIndex(components: ExtractedComponent[]): ComponentIndex {
     version: SCHEMA_VERSION,
     generated_at: new Date().toISOString(),
     total_components: components.length,
-    by_aesthetic: {} as Record<string, string[]>,
-    by_type: {} as Record<string, string[]>,
-    by_screen: {} as Record<string, string[]>,
+    by_aesthetic: {},
+    by_type: {},
+    by_screen: {},
     components: [],
   };
   
@@ -285,6 +201,7 @@ function saveIndex(index: ComponentIndex): void {
 
 async function extractComponent(
   model: any,
+  prompt: string,
   blockId: number,
   imageUrl: string,
   title: string | null
@@ -296,7 +213,7 @@ async function extractComponent(
 
   try {
     const result = await model.generateContent([
-      { text: EXTRACTION_PROMPT },
+      { text: prompt },
       {
         inlineData: {
           mimeType: imageData.mimeType,
@@ -319,7 +236,7 @@ async function extractComponent(
 
 async function extractSingle(blockId: number, channelSlug: string) {
   console.log('═══════════════════════════════════════════════════════════════');
-  console.log('          COMPONENT EXTRACTION (Single)                         ');
+  console.log('     SCREENSHOT TO CODE EXTRACTION v2 (Single)                  ');
   console.log('═══════════════════════════════════════════════════════════════\n');
 
   if (!ARENA_TOKEN || !ARENA_USER_SLUG || !GEMINI_API_KEY) {
@@ -327,17 +244,23 @@ async function extractSingle(blockId: number, channelSlug: string) {
     process.exit(1);
   }
 
+  const prompt = loadPrompt();
+  console.log('✅ Loaded prompt from', PROMPT_PATH);
+
   const client = new ArenaClient(ARENA_TOKEN, ARENA_USER_SLUG);
   const genAI = new GoogleGenerativeAI(GEMINI_API_KEY);
+  
+  // Use Gemini 3 Pro with thinking for best quality
   const model = genAI.getGenerativeModel({ 
-    model: 'gemini-2.0-flash',
+    model: 'gemini-3-pro-preview',
     generationConfig: {
-      temperature: 0.3,  // Lower temp for more consistent JSON
-      maxOutputTokens: 4096,
+      temperature: 0.2,
+      maxOutputTokens: 65536,  // Gemini 3 Pro supports up to 65K output
     }
   });
+  console.log('🤖 Using Gemini 3 Pro');
 
-  console.log(`📦 Fetching block ${blockId}...`);
+  console.log(`\n📦 Fetching block ${blockId}...`);
   
   const blocks = await client.getChannelBlocks(channelSlug);
   const block = blocks.find(b => b.id === blockId);
@@ -354,9 +277,9 @@ async function extractSingle(blockId: number, channelSlug: string) {
   }
 
   console.log(`   Title: ${block.title || '(untitled)'}`);
-  console.log('\n🤖 Extracting component...');
+  console.log('\n🎨 Generating HTML/CSS...');
 
-  const component = await extractComponent(model, blockId, imageUrl, block.title);
+  const component = await extractComponent(model, prompt, blockId, imageUrl, block.title);
   
   if (!component) {
     console.error('❌ Failed to extract');
@@ -369,12 +292,16 @@ async function extractSingle(blockId: number, channelSlug: string) {
   console.log(`   Name: ${component.name}`);
   console.log(`   Aesthetic: ${component.aesthetic_family}`);
   console.log(`   Types: ${component.component_types.join(', ')}`);
-  console.log(`   Atoms: ${component.atoms.length}`);
+  console.log(`   HTML: ${component.render.html.length} chars`);
+  console.log(`   CSS: ${component.render.css.length} chars`);
+  if (component.render.notes) {
+    console.log(`   Notes: ${component.render.notes}`);
+  }
 }
 
 async function extractChannel(channelSlug: string, options: { force?: boolean; limit?: number } = {}) {
   console.log('═══════════════════════════════════════════════════════════════');
-  console.log('          COMPONENT EXTRACTION (Channel)                        ');
+  console.log('     SCREENSHOT TO CODE EXTRACTION v2 (Channel)                 ');
   console.log('═══════════════════════════════════════════════════════════════\n');
 
   if (!ARENA_TOKEN || !ARENA_USER_SLUG || !GEMINI_API_KEY) {
@@ -382,17 +309,23 @@ async function extractChannel(channelSlug: string, options: { force?: boolean; l
     process.exit(1);
   }
 
+  const prompt = loadPrompt();
+  console.log('✅ Loaded prompt from', PROMPT_PATH);
+
   const client = new ArenaClient(ARENA_TOKEN, ARENA_USER_SLUG);
   const genAI = new GoogleGenerativeAI(GEMINI_API_KEY);
+  
+  // Use Gemini 3 Pro with thinking for best quality
   const model = genAI.getGenerativeModel({ 
-    model: 'gemini-2.0-flash',
+    model: 'gemini-3-pro-preview',
     generationConfig: {
-      temperature: 0.3,
-      maxOutputTokens: 4096,
+      temperature: 0.2,
+      maxOutputTokens: 65536,  // Gemini 3 Pro supports up to 65K output
     }
   });
+  console.log('🤖 Using Gemini 3 Pro');
 
-  console.log(`📂 Channel: ${channelSlug}`);
+  console.log(`\n📂 Channel: ${channelSlug}`);
   if (options.force) console.log('⚠️  Force mode: re-extracting all');
   if (options.limit) console.log(`📊 Limit: ${options.limit}`);
 
@@ -439,24 +372,25 @@ async function extractChannel(channelSlug: string, options: { force?: boolean; l
       continue;
     }
 
-    console.log('   Downloading...');
-    console.log('   Extracting...');
+    console.log('   📥 Downloading image...');
+    console.log('   🎨 Generating HTML/CSS...');
 
-    const component = await extractComponent(model, block.id, imageUrl, block.title);
+    const component = await extractComponent(model, prompt, block.id, imageUrl, block.title);
     
     if (component) {
       saveComponent(component);
       extracted.push(component);
-      console.log(`   ✅ ${component.name} (${component.aesthetic_family})`);
+      console.log(`   ✅ ${component.name}`);
+      console.log(`      HTML: ${component.render.html.length} chars, CSS: ${component.render.css.length} chars`);
       success++;
     } else {
       console.log('   ❌ Failed');
       failed++;
     }
 
-    // Rate limit
+    // Rate limit - be more conservative with the larger model
     if (i < toProcess.length - 1) {
-      await new Promise(r => setTimeout(r, 1500));
+      await new Promise(r => setTimeout(r, 2000));
     }
   }
 
@@ -489,6 +423,8 @@ async function extractChannel(channelSlug: string, options: { force?: boolean; l
 
 function printUsage() {
   console.log(`
+Screenshot to Code Extraction v2
+
 Usage:
   npx tsx cli/extract-component.ts --channel=<slug>              Extract all blocks
   npx tsx cli/extract-component.ts --channel=<slug> --block=<id> Extract single block
@@ -497,7 +433,8 @@ Usage:
 
 Examples:
   npx tsx cli/extract-component.ts --channel=ui-ux-uqgmlf-rw1i
-  npx tsx cli/extract-component.ts --channel=ui-ux-uqgmlf-rw1i --limit=5
+  npx tsx cli/extract-component.ts --channel=ui-ux-uqgmlf-rw1i --block=23645590
+  npx tsx cli/extract-component.ts --channel=ui-ux-uqgmlf-rw1i --limit=5 --force
 `);
 }
 
@@ -532,4 +469,3 @@ async function main() {
 }
 
 main().catch(console.error);
-
