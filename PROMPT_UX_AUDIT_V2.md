@@ -8,24 +8,119 @@ This prompt produces interfaces that are both technically correct AND compositio
 
 ```
 I need you to audit and fix this interface. This is a TWO-PHASE audit:
-- Phase 1: Technical foundations (contrast, sizing, spacing, touch targets)
-- Phase 2: Compositional review (hierarchy, rhythm, visual weight)
+- Phase 1: Compositional review (hierarchy, rhythm, visual weight, spacing relationships)
+- Phase 2: Technical foundations (contrast, sizing, spacing values, touch targets)
 
-Both phases are equally important. A page can pass all technical checks and still feel wrong.
+**IMPORTANT: Do Phase 1 FIRST.** Technical fixes can make compositional problems worse (e.g., "make everything 16px" creates sameness). Fix the composition, then ensure technical compliance.
 
 ---
 
-## PHASE 1: TECHNICAL FOUNDATIONS
+## PHASE 1: COMPOSITIONAL REVIEW (Do This First)
 
-### 1.1 Contrast & Legibility
+This is where most AI-generated UIs fail. Technical compliance ≠ good design.
+
+### 1.1 Visual Hierarchy - The #1 Issue
+
+**The goal:** A user should be able to scan the page and instantly understand what's most important.
+
+**Audit for "sameness":**
+- Do all sections look the same? (BAD)
+- Do all cards look the same? (BAD)
+- Is there a clear visual "star" on each screen/section? (GOOD)
+
+**The hierarchy must be DRAMATIC, not subtle:**
+- Headlines should be 2-3x larger than body text (not 1.2x)
+- Primary actions should be visually dominant (color, size, position)
+
+**Fix "sameness" by:**
+1. Making headlines significantly larger (not just one step up the scale)
+2. Adding contrast in spacing (hero gets 2x the padding of subsections)
+3. Varying visual treatments (not every section in an identical card)
+4. Using size, color, weight, and space to create clear levels
+
+### 1.2 Hero Section Treatment
+
+**The headline should DOMINATE:**
+- Size: 48-72px on desktop, 32-48px on mobile
+- Weight: 600-700 (bold/semibold)
+- It should be impossible to miss
+
+**Supporting elements should recede:**
+- Subheadline: noticeably smaller AND lighter (color or weight)
+- Badge/label above headline: small, subtle, doesn't compete
+- Hierarchy: Headline > Subhead > Body > Meta
+
+**Breathing room:**
+- Hero section: 80-120px vertical padding
+- Don't crowd the headline - let it breathe
+
+**On colored/gradient backgrounds:**
+- Text should be neutral (white or near-black) for maximum contrast
+- Colored text on colored backgrounds is HIGH RISK (even if it "passes" contrast)
+- Warm-on-warm especially fails perceptually
+
+### 1.3 Section Rhythm & Spacing Relationships
+
+**The Law of Proximity (Critical):**
+Space WITHIN a group must be SMALLER than space BETWEEN groups.
+
+```
+Internal padding < Gap between items < Gap between sections
+```
+
+| Spacing Type | Ratio | Example |
+|--------------|-------|---------|
+| Card padding | 1x | 16-20px |
+| Gap between cards | 1.5x | 24px |
+| Gap between sections | 2-3x | 48-64px |
+
+**Section padding should VARY:**
+- Hero: 80-120px vertical padding
+- Major sections: 64-80px vertical padding  
+- Subsections: 32-48px vertical padding
+- Within sections: 16-24px gaps
+
+**Diagnose spacing problems:**
+- Feels **disconnected/floating** → REDUCE gaps (they're too big for the content)
+- Feels **cramped/cluttered** → INCREASE gaps
+- Card padding ≈ gap between cards → Cards don't feel grouped (gap should be larger)
+
+**Content density matters:**
+- Sparse content (icon + few words) → tighter spacing
+- Dense content (paragraphs, data) → more generous spacing
+
+### 1.4 Button/CTA Hierarchy
+
+**Every screen needs ONE clear primary action:**
+- Primary: Filled with accent color, largest, most prominent
+- Secondary: Outlined or ghost, clearly subordinate
+
+**If two buttons side by side look equal = FAIL**
+One must be obviously primary.
+
+### 1.5 The Squint Test
+
+**Step back and squint at the page:**
+- Can you tell what's most important?
+- Does your eye have a clear path?
+- Is there visual variety or does it all blur together?
+
+If everything blurs into sameness, the hierarchy isn't strong enough.
+
+---
+
+## PHASE 2: TECHNICAL FOUNDATIONS
+
+### 2.1 Contrast & Legibility
 
 Scan ALL text colors. For each, verify:
 
 **On light backgrounds (#FFFFFF, #F9FAFB, cream, off-white):**
 - Primary text: Must be #111827 (gray-900) or darker
 - Secondary text: Must be #374151 (gray-700) or darker  
-- Tertiary/muted: Must be #4B5563 (gray-600) MINIMUM - never lighter
-- REJECT: gray-400 (#9CA3AF), gray-500 (#6B7280 is borderline)
+- Tertiary text: #4B5563 (gray-600) is the safe minimum for body text
+- Borderline: #6B7280 (gray-500) only for non-essential metadata, not body text
+- REJECT: #9CA3AF (gray-400) and lighter - fails WCAG AA
 
 **On dark backgrounds (#111827, #1F2937, #000000):**
 - Primary: Must be #F9FAFB (gray-50) or lighter
@@ -48,7 +143,7 @@ When in doubt, use neutral text colors. Colored text is decorative; readability 
 - Body text under 24px: minimum font-weight 400 (never 300/light)
 - Display text 24px+: can use 300 if contrast is very high
 
-### 1.2 Typography Scale
+### 2.2 Typography Scale
 
 Use a consistent scale. All sizes must come from this set (or your design system's equivalent):
 
@@ -65,7 +160,7 @@ Use a consistent scale. All sizes must come from this set (or your design system
 ```
 
 **Critical rule: Body text must be 16px minimum.** 
-But this doesn't mean make everything 16px. See Phase 2.
+But this doesn't mean make everything 16px. Headlines need to be 2-3x larger (see Phase 1).
 
 **Line heights:**
 - Body text: 1.5 to 1.6 (never below 1.5)
@@ -76,7 +171,7 @@ But this doesn't mean make everything 16px. See Phase 2.
 - Readable content: max-width 65ch (~600-700px)
 - Never let paragraphs span full viewport on desktop
 
-### 1.3 Spacing (4px Grid)
+### 2.3 Spacing (4px Grid)
 
 All spacing values must be multiples of 4px:
 ✓ 4, 8, 12, 16, 20, 24, 32, 40, 48, 64, 80, 96, 128
@@ -84,11 +179,15 @@ All spacing values must be multiples of 4px:
 
 **Minimums:**
 - Card/container padding: 16px minimum (20-24px preferred)
-- Button padding: 12px 20px minimum (not 8px 16px - that's too tight)
-- Section vertical padding: 64px minimum for major sections, 32-48px for subsections
-- Gap between cards: 16-24px
+- Button padding: 12px 20px minimum
+- Hero section: 80-120px vertical padding
+- Major sections: 64-80px vertical padding
+- Subsections: 32-48px vertical padding
+- Gap between cards: should be ≥ card padding (typically 24px)
 
-### 1.4 Touch Targets
+Note: See Phase 1.3 for spacing RELATIONSHIPS (internal vs external).
+
+### 2.4 Touch Targets
 
 **Non-negotiable minimums:**
 - All buttons: 44px height minimum (not 40px - Apple HIG is 44pt)
@@ -102,130 +201,11 @@ All spacing values must be multiples of 4px:
 
 ---
 
-## PHASE 2: COMPOSITIONAL REVIEW
-
-This is where the first audit failed. Technical compliance ≠ good design.
-
-### 2.1 Visual Hierarchy - The #1 Issue
-
-**The goal:** A user should be able to scan the page and instantly understand what's most important, second most important, etc.
-
-**Audit for "sameness":**
-Look at the page as a whole. Ask:
-- Do all sections look the same? (BAD)
-- Do all cards look the same? (BAD)
-- Is there a clear visual "star" on each screen/section? (GOOD)
-- Can you tell what's primary vs secondary vs tertiary? (GOOD)
-
-**The hierarchy must be DRAMATIC, not subtle:**
-- Headlines should be 2-3x larger than body text (not 1.2x)
-- Primary actions should be visually dominant (color, size, position)
-- Important sections should have more visual weight than supporting sections
-
-**Fix "sameness" by:**
-1. Making headlines significantly larger (not just one step up)
-2. Adding more contrast in spacing (hero gets 2x the padding of subsections)
-3. Varying visual treatments (not every section in an identical card)
-4. Using size, color, weight, and space to create clear levels
-
-### 2.2 Hero Section Treatment
-
-The hero/above-the-fold area needs special attention:
-
-**The headline should DOMINATE:**
-- Size: 48-72px on desktop, 32-48px on mobile
-- Weight: 600-700 (bold/semibold)
-- It should be impossible to miss
-
-**Supporting elements should recede:**
-- Subheadline/description: noticeably smaller and lighter than headline
-- Badge/label above headline: small, subtle, doesn't compete
-- There should be clear visual hierarchy: Headline > Subhead > Body > Meta
-
-**Breathing room:**
-- Hero section needs generous vertical padding (80-120px)
-- Don't crowd the headline - let it breathe
-
-**Colored/gradient backgrounds:**
-If using a gradient or colored background in the hero:
-- Text should be neutral (white or dark) for maximum contrast
-- If using colored text, it must be VERY high contrast
-- Consider: would this be instantly readable at a glance? On a phone in sunlight?
-
-### 2.3 Section Rhythm
-
-**Not all sections are equal:**
-- Major sections: 80-120px vertical padding
-- Subsections: 48-64px vertical padding
-- Within-section spacing: 24-32px
-
-**Create intentional "beats":**
-The page should have a rhythm: BIG pause, content, medium pause, content, BIG pause, content.
-Not: same pause, content, same pause, content (monotonous).
-
-**Visual section breaks:**
-Consider how sections are differentiated:
-- Background color changes
-- Full-width dividers
-- Significant spacing changes
-- Visual elements (shapes, illustrations)
-
-Not every section should be "content in a card on the same background."
-
-### 2.4 Button/CTA Hierarchy
-
-**Every screen needs a clear primary action:**
-- ONE button should be obviously primary (filled, colored, larger)
-- Secondary actions should be visually subordinate (outlined, ghost, smaller)
-
-**If you have two buttons side by side:**
-- Primary: Filled with accent color, prominent
-- Secondary: Outlined or ghost, doesn't compete
-
-**Audit for:**
-- Are there two buttons that look equal? (FIX: differentiate them)
-- Is it clear what the user should do? (The primary CTA should be obvious)
-- On mobile, is the primary CTA easily tappable? (Consider full-width)
-
-### 2.5 Card Differentiation
-
-**Not all cards should look identical:**
-If you have multiple card types (feature cards, testimonial cards, pricing cards, etc.), they should have subtle visual differences:
-- Different padding
-- Different border treatment
-- Different background tint
-- Different content layout
-
-**Within a card grid:**
-Cards of the same TYPE should be consistent.
-But different TYPES of content should have different card styles.
-
-### 2.6 The "Squint Test"
-
-**Final check - step back and squint at the page:**
-- Can you tell what's most important?
-- Does your eye have a clear path?
-- Is there visual variety or does it all blur together?
-- Are there "moments" that catch attention?
-
-If everything blurs into sameness, the hierarchy isn't strong enough.
-
----
-
 ## OUTPUT FORMAT
 
 For each issue found:
 
-### PHASE 1 (Technical)
-```
-FILE: [filename]
-LINE: [line number]
-ISSUE: [specific violation]
-CURRENT: [current value]
-FIX: [exact fix]
-```
-
-### PHASE 2 (Compositional)
+### PHASE 1 (Compositional)
 ```
 SECTION: [which part of the page]
 ISSUE: [what's wrong compositionally]
@@ -234,13 +214,22 @@ RECOMMENDED FIX: [specific change with values]
 WHY: [how this improves hierarchy/rhythm/clarity]
 ```
 
+### PHASE 2 (Technical)
+```
+FILE: [filename]
+LINE: [line number]
+ISSUE: [specific violation]
+CURRENT: [current value]
+FIX: [exact fix]
+```
+
 ---
 
 ## IMPLEMENTATION ORDER
 
-1. Fix Phase 2 compositional issues FIRST (hierarchy, sizing relationships)
-2. Then fix Phase 1 technical issues
-3. This order matters because Phase 2 changes may affect Phase 1 values
+1. Fix Phase 1 compositional issues FIRST (hierarchy, spacing relationships, rhythm)
+2. Then fix Phase 2 technical issues (contrast, minimums, grid values)
+3. This order matters because Phase 1 changes affect what Phase 2 values should be
 
 ---
 

@@ -9,10 +9,10 @@ A universal checklist for ensuring any interface has crisp readability, proper s
 **For Cursor Agent:** Use the prompt in `PROMPT_UX_AUDIT_V2.md` (two-phase audit: compositional first, then technical).
 
 **Quick version:**
-> "Audit this interface in TWO PHASES:
-> Phase 1 (Compositional): Fix visual hierarchy - headlines must be 2-3x body text, one obvious primary CTA, varied section spacing.
+> "Audit this interface in TWO PHASES (do Phase 1 first):
+> Phase 1 (Compositional): Fix visual hierarchy - headlines must be 2-3x body text, one obvious primary CTA, varied section spacing, proper spacing relationships (internal < external).
 > Phase 2 (Technical): Fix contrast (no gray lighter than #4B5563), typography minimums (16px body), spacing (4px grid), touch targets (44px minimum).
-> Fix Phase 1 FIRST because technical fixes can make compositional problems worse."
+> Phase 1 first because technical fixes can make compositional problems worse."
 
 **For manual review:** Start with Section 7 (Compositional Rules), then work through Sections 1-6.
 
@@ -88,10 +88,11 @@ Colored text is decorative. Readability is functional. When they conflict, reada
 
 Look for these patterns in CSS/Tailwind:
 ```
-❌ text-gray-400, text-gray-300, text-gray-200 (on light backgrounds)
-❌ text-gray-500 for body text (borderline, avoid)
-❌ opacity-50, opacity-60 on text
-❌ Thin font weights (font-light, font-extralight) on small text
+❌ text-gray-400, text-gray-300, text-gray-200 (FAIL - never use on light backgrounds)
+⚠️ text-gray-500 (borderline - only for non-essential metadata, never for body text)
+✓ text-gray-600 and darker (safe for all text)
+❌ opacity-50, opacity-60 on text (reduces effective contrast)
+❌ font-light, font-extralight on text under 24px
 ```
 
 ---
@@ -182,11 +183,49 @@ Based on Tailwind's battle-tested 4px base:
 | Element | Recommended Spacing |
 |---------|---------------------|
 | Card padding | `--space-4` to `--space-6` (16-24px) |
-| Section padding (vertical) | `--space-12` to `--space-20` (48-80px) |
+| Section padding (non-hero) | `--space-12` to `--space-16` (48-64px) |
+| Hero section padding | `--space-20` to `--space-24` (80-96px+) |
 | Gap between cards | `--space-4` to `--space-6` (16-24px) |
 | Gap between form fields | `--space-4` (16px) |
-| Button padding | `--space-2` `--space-4` (8px 16px) minimum |
+| Button padding | `--space-3` `--space-5` (12px 20px) minimum |
 | Text block spacing | `--space-4` to `--space-6` between paragraphs |
+
+### The Law of Proximity (Critical)
+
+**From Gestalt psychology:** Elements that are closer together are perceived as related.
+
+**The rule:** Space WITHIN a group must be SMALLER than space BETWEEN groups.
+
+```
+Internal padding < Gap between items < Gap between sections
+```
+
+**Specific ratios:**
+| Spacing Type | Relationship | Example (16px base) |
+|--------------|--------------|---------------------|
+| Card padding | 1x (baseline) | 16-20px |
+| Gap between related cards | 1.5x | 24px |
+| Gap between sections | 2-3x | 48-64px |
+
+**When this breaks:**
+- Card padding = gap between cards → Cards feel like isolated islands, not a group
+- Section gaps = within-section gaps → Everything blurs, no clear grouping
+
+**Diagnosis:**
+- Page feels **disconnected/floating**: Reduce gaps (internal spacing is fine, external is too big)
+- Page feels **cramped/cluttered**: Increase gaps (external spacing is too small)
+- **Both**: Check if internal ≈ external (they shouldn't be)
+
+### Content Density Affects Spacing
+
+**Whitespace should match content density:**
+
+| Content | Appropriate Spacing |
+|---------|---------------------|
+| Dense (paragraphs, tables, lots of text) | More generous spacing |
+| Sparse (single headline, one icon, few words) | Tighter spacing |
+
+A card with just an icon and two words doesn't need 80px padding—the space overwhelms the content.
 
 ### Common Violations to Fix
 
@@ -194,9 +233,11 @@ Based on Tailwind's battle-tested 4px base:
 |---------|-----|
 | Arbitrary values (13px, 17px, 23px) | Round to nearest scale value |
 | Insufficient padding on cards | Minimum 16px, prefer 20-24px |
-| Cramped buttons | Minimum 8px vertical, 16px horizontal padding |
+| Cramped buttons | Minimum 12px vertical, 20px horizontal padding |
 | Sections feel squished | Add more vertical padding (48px+) |
-| Inconsistent gaps | Use consistent gap values throughout |
+| Sections feel disconnected/floating | REDUCE gaps between elements |
+| Card padding ≈ gap between cards | Gap should be larger than padding |
+| Everything feels same distance apart | Vary spacing: tight within groups, loose between |
 
 ---
 
@@ -253,7 +294,7 @@ Based on Tailwind's battle-tested 4px base:
 
 | Problem | Fix |
 |---------|-----|
-| Tiny buttons (< 36px height) | Increase to 40px minimum |
+| Tiny buttons (< 44px height) | Increase to 44px minimum (Apple HIG standard) |
 | Small icon buttons | Ensure 44×44px touch area |
 | Links too close together | Add spacing or padding |
 | Input fields too short | Minimum 44px height |
@@ -454,9 +495,10 @@ If everything looks the same weight, go back and make the hierarchy more dramati
 **Spacing**
 - [ ] All values are multiples of 4px
 - [ ] Cards have minimum 16px padding
-- [ ] Hero section has generous padding (80-120px)
+- [ ] Internal padding < gap between cards < gap between sections
+- [ ] Sparse content has tighter spacing; dense content has more
 - [ ] Section spacing varies (major vs minor sections)
-- [ ] No cramped or cluttered areas
+- [ ] Nothing feels disconnected/floating OR cramped/cluttered
 
 **Touch Targets**
 - [ ] Buttons are minimum 44px (48px mobile)
