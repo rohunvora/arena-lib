@@ -1,1 +1,215 @@
-PGRpdiBhbGlnbj0iY2VudGVyIj4KICA8aW1nIHNyYz0iLy5naXRodWIvc29jaWFsLXByZXZpZXcucG5nIiBhbHQ9ImFyZW5hLWxpYiIgd2lkdGg9IjgwMCIgLz4KICA8cD48c3Ryb25nPkEgbW9iaWxlLWZpcnN0IFRpbmRlci1zdHlsZSBzd2lwZSBVSSBmb3IgbWFudWFsbHkgY2xhc3NpZnlpbmcgQXJlLm5hIGJsb2NrcyBpbnRvIGNoYW5uZWxzLjwvc3Ryb25nPjwvcD4KPC9kaXY+CgojIEFyZW5hIFJlZnMKCioqVHVybiB5b3VyIHZpc3VhbCB0YXN0ZSBpbnRvIEFJLXJlYWRhYmxlIHJ1bGVzLioqCgpZb3UgY29sbGVjdCByZWZlcmVuY2VzIGluIEFyZS5uYS4gVGhpcyBzeXN0ZW0gY29udmVydHMgdGhlbSBpbnRvIHN0cnVjdHVyZWQgZ3VpZGFuY2UgdGhhdCBtYWtlcyBBSSBjb2RpbmcgYXNzaXN0YW50cyAoQ3Vyc29yLCBDbGF1ZGUsIGV0Yy4pIGJ1aWxkIGludGVyZmFjZXMgdGhhdCBtYXRjaCB5b3VyIGFlc3RoZXRpYy4KCiMjIPCfmoAgTGl2ZSBDb21wb25lbnQgR2FsbGVyeQoKKipMaXZlKio6IFtzaXRlLXFocmUwcWowai1yb2h1bi12b3Jhcy1wcm9qZWN0cy52ZXJjZWwuYXBwXShodHRwczovL3NpdGUtcWhyZTBxajBqLXJvaHVuLXZvcmFzLXByb2plY3RzLnZlcmNlbC5hcHApCgpZb3VyIEFyZS5uYSBzYXZlcyDihpIgc3RydWN0dXJlZCwgcmVwbGljYWJsZSBjb21wb25lbnRzIOKGkiAqKmxpdmUtcmVuZGVyZWQgZGVzaWduIHN5c3RlbSoqLgoKIyMjIFdoYXQncyBOZXc6IExpdmUgUmVuZGVyaW5nCgpDb21wb25lbnRzIGFyZSBubyBsb25nZXIganVzdCBzY3JlZW5zaG90cyB3aXRoIG1ldGFkYXRhLiBUaGV5J3JlICoqcmVuZGVyZWQgbGl2ZSoqIHVzaW5nIGV4dHJhY3RlZCBkZXNpZ24gdG9rZW5zOgoKLSAqKkxpdmUgSGVybyBDb21wb3NpdGlvbnMqKiDigJQgc2VlIGVhY2ggY29tcG9uZW50IHJlbmRlcmVkIHdpdGggaXRzIGFjdHVhbCBjb2xvcnMsIHR5cG9ncmFwaHksIHNoYWRvd3MsIGFuZCBzcGFjaW5nCi0gKipJbnRlcmFjdGl2ZSBBdG9tIFByZXZpZXdzKiog4oCUIGJ1dHRvbnMgeW91IGNhbiBob3Zlciwgc3VyZmFjZXMgd2l0aCByZWFsIGdyYWRpZW50cywgdHlwb2dyYXBoeSBhdCB0cnVlIHNjYWxlCi0gKipObyBTY3JlZW5zaG90cyBGaXJzdCoqIOKAlCB0aGUgcmVmZXJlbmNlIGltYWdlIGlzIHR1Y2tlZCBhd2F5OyB5b3Ugc2VlIHRoZSAqaW1wbGVtZW50YXRpb24qIGZpcnN0CgojIyMgRmVhdHVyZXMKCi0gKioyNiBjb21wb25lbnRzKiogZXh0cmFjdGVkIHdpdGggQUkgZnJvbSBVSS9VWCBjaGFubmVsCi0gKioxMDQgYXRvbXMqKiAoYnV0dG9ucywgc3VyZmFjZXMsIGNhcmRzLCB0eXBvZ3JhcGh5KSBsaXZlLXJlbmRlcmVkIGFuZCBjb3B5YWJsZQotICoqOCBhZXN0aGV0aWMgZmFtaWxpZXMqKiAoRmxhdCBNaW5pbWFsLCBTb2Z0IEdyYWRpZW50LCBEYXJrIFByZW1pdW0sIGV0Yy4pCi0gKipDb3B5LXBhc3RlIENTUyoqIGZvciBldmVyeSBjb21wb25lbnQgYW5kIGF0b20KLSAqKkV4cG9ydCoqIHRvIGAuY3Vyc29ycnVsZXNgLCBDU1MgdmFyaWFibGVzLCBvciBUYWlsd2luZCBjb25maWcKLSAqKkRhcmsgbW9kZSoqIHdpdGggcmVmaW5lZCB0eXBvZ3JhcGh5IChJQk0gUGxleCBTYW5zL01vbm8pCgojIyMgUXVpY2sgU3RhcnQ6IEV4dHJhY3QgWW91ciBPd24gQ29tcG9uZW50cwoKYGBgYmFzaAojIEV4dHJhY3QgY29tcG9uZW50cyBmcm9tIHlvdXIgQXJlLm5hIGNoYW5uZWwKbnB4IHRzeCBjbGkvZXh0cmFjdC1jb21wb25lbnQudHMgLS1jaGFubmVsPXlvdXItY2hhbm5lbC1zbHVnCgojIFN0YXJ0IHRoZSBzaXRlIGxvY2FsbHkKY2Qgc2l0ZSAmJiBucG0gaW5zdGFsbCAmJiBucG0gcnVuIGRldgpgYGAKCi0tLQoKKipPcmlnaW5hbCBXZWIgQXBwKio6IFthcmVuYS1yZWZzLnZlcmNlbC5hcHBdKGh0dHBzOi8vYXJlbmEtcmVmcy52ZXJjZWwuYXBwKQoKLS0tCgojIyBXaGF0IFRoaXMgRW5hYmxlcyAoUGxhaW4gRW5nbGlzaCkKCioqVGhlIHByb2JsZW06KiogQUkgY29kaW5nIGFzc2lzdGFudHMgYXJlICJibGluZCIg4oCUIHRoZXkgZ2VuZXJhdGUgdGVjaG5pY2FsbHkgY29ycmVjdCBidXQgdmlzdWFsbHkgZ2VuZXJpYyBpbnRlcmZhY2VzLiBUaGV5IGRvbid0IGtub3cgeW91ciB0YXN0ZS4KCioqVGhlIHNvbHV0aW9uOioqIAoxLiBZb3UgY3VyYXRlIHZpc3VhbCByZWZlcmVuY2VzIGluIEFyZS5uYSAoc2NyZWVuc2hvdHMgb2YgVUkgeW91IGxvdmUpCjIuIFRoaXMgc3lzdGVtIGFuYWx5emVzIHRoZW0gYW5kIGV4dHJhY3RzIHBhdHRlcm5zIChjb2xvcnMsIHNwYWNpbmcsIHR5cG9ncmFwaHksIHZpYmUpCjMuIEl0IGdlbmVyYXRlcyBydWxlcyB5b3UgcGFzdGUgaW50byBDdXJzb3IgdGhhdCBtYWtlIHRoZSBBSSBidWlsZCBsaWtlIHlvdSB3b3VsZAoKKipFbmQgcmVzdWx0OioqIEluc3RlYWQgb2YgZ2V0dGluZyBnZW5lcmljICJBSSBzbG9wIiBpbnRlcmZhY2VzLCB5b3UgZ2V0IFVJcyB0aGF0IGZlZWwgZGVzaWduZWQgYmVjYXVzZSB0aGV5J3JlIGd1aWRlZCBieSB5b3VyIGFjdHVhbCBwcmVmZXJlbmNlcy4KCi0tLQoKIyMgV2hhdCdzIEluIFRoaXMgUmVwbwoKIyMjIPCfjq8gQ29yZSBUb29scyAoV2ViIEFwcCkKCnwgVG9vbCB8IFVSTCB8IFdoYXQgaXQgZG9lcyB8CnwtLS0tLS18LS0tLS18LS0tLS0tLS0tLS0tLS18CnwgKipSZWZlcmVuY2UgTWF0Y2hlcioqIHwgYC9gIHwgRHJvcCBhIHNjcmVlbnNob3Qgb2YgeW91ciBXSVAg4oaSIGdldCByZWxldmFudCByZWZlcmVuY2VzIGZyb20geW91ciBpbmRleGVkIGNvbGxlY3Rpb24gfAp8ICoqQmxvY2sgQ2xhc3NpZmllcioqIHwgYC9jbGFzc2lmeWAgfCBUaW5kZXItc3R5bGUgc3dpcGUgaW50ZXJmYWNlIGZvciBvcmdhbml6aW5nIEFyZS5uYSBibG9ja3MgfAoKIyMjIPCfk5AgVVggRm91bmRhdGlvbnMgKFVuaXZlcnNhbCBBdWRpdCBTeXN0ZW0pCgpBIGZyYW1ld29yayBmb3IgZW5zdXJpbmcgQU5ZIGludGVyZmFjZSBoYXMgcHJvcGVyIHJlYWRhYmlsaXR5LCBzaXppbmcsIGFuZCBjb21wb3NpdGlvbiDigJQgcmVnYXJkbGVzcyBvZiBzdHlsZS4KCnwgRmlsZSB8IFB1cnBvc2UgfAp8LS0tLS0tfC0tLS0tLS0tLXwKfCBgVVhfRk9VTkRBVElPTlMubWRgIHwgQ29tcGxldGUgcmVmZXJlbmNlOiBjb250cmFzdCByYXRpb3MsIHR5cGUgc2NhbGVzLCBzcGFjaW5nIHN5c3RlbXMsIHRvdWNoIHRhcmdldHMgfAp8IGBQUk9NUFRfVVhfQVVESVRfVjMubWRgIHwgKipSZWFkeS10by11c2UgcHJvbXB0Kiog4oCUIHBhc3RlIGludG8gQ3Vyc29yIHRvIGF1ZGl0L2ZpeCBhbnkgaW50ZXJmYWNlIHwKfCBgQ1VSU09SUlVMRVNfVVhfRk9VTkRBVElPTlMubWRgIHwgU25pcHBldCBmb3IgeW91ciBgLmN1cnNvcnJ1bGVzYCBmaWxlIHwKCioqVGhlIFYzIHByb21wdCBjYXRjaGVzOioqCi0gV2VhayB2aXN1YWwgaGllcmFyY2h5ICgiZXZlcnl0aGluZyBsb29rcyB0aGUgc2FtZSIpCi0gUG9vciBjb250cmFzdCAoZXNwZWNpYWxseSB3YXJtLW9uLXdhcm0gY29sb3IgY29tYm9zKQotIE1vbm90b25vdXMgc3BhY2luZyAobm8gcmh5dGhtIGJldHdlZW4gc2VjdGlvbnMpCi0gVW5jbGVhciBDVEFzIChidXR0b25zIHRoYXQgZG9uJ3Qgc3RhbmQgb3V0KQotIE1vYmlsZSBjb21wb3NpdGlvbiBpc3N1ZXMKCiMjIyDwn46oIFRhc3RlIEV4dHJhY3Rpb24gUGlwZWxpbmUKClRoZSBzeXN0ZW0gdGhhdCBjb252ZXJ0cyBBcmUubmEgY2hhbm5lbHMgaW50byBzdHJ1Y3R1cmVkIHRhc3RlIHByb2ZpbGVzOgoKYGBgCkFyZS5uYSBDaGFubmVsIOKGkiBHZW1pbmkgQW5hbHlzaXMg4oaSIFN0cnVjdHVyZWQgVGFncyDihpIgQ3Vyc29yIFJ1bGVzCmBgYAoKfCBGaWxlIHwgUHVycG9zZSB8CnwtLS0tLS18LS0tLS0tLS0tfAp8IGBzcmMvY2xhc3NpZmllci50c2AgfCBQcm9tcHRzIHRoYXQgYW5hbHl6ZSBpbWFnZXMgZm9yIHZpc3VhbCBwYXR0ZXJucyB8CnwgYFRBR1MubWRgIHwgVGhlIHRheG9ub215IChjb21wb25lbnQsIHN0eWxlLCBjb250ZXh0LCB2aWJlKSB8CnwgYHRhc3RlLXByb2ZpbGVzL2AgfCBHZW5lcmF0ZWQgb3V0cHV0cyBwZXIgY2hhbm5lbCAoZ2l0aWdub3JlZCkgfAp8IGBUQVNURV9JTVBMRU1FTlRBVElPTi5tZGAgfCBFeGFtcGxlOiBob3cgd2UgdHJhY2VkIHZpc3VhbCBkZWNpc2lvbnMgYmFjayB0byBBcmUubmEgZGF0YSB8CgotLS0KCiMjIFF1aWNrIFN0YXJ0CgojIyMgVXNlIHRoZSBVWCBBdWRpdCAoTm8gU2V0dXAgUmVxdWlyZWQpCgoxLiBPcGVuIGBQUk9NUFRfVVhfQVVESVRfVjMubWRgCjIuIENvcHkgdGhlIGVudGlyZSBwcm9tcHQKMy4gUGFzdGUgaW50byBDdXJzb3Igd2l0aCB5b3VyIHByb2plY3Qgb3Blbgo0LiBSdW4gaW4gQWdlbnQgbW9kZQo1LiBSZXZpZXcgYW5kIGFwcHJvdmUgdGhlIGZpeGVzCgojIyMgSW5kZXggWW91ciBPd24gQXJlLm5hIENoYW5uZWwKCmBgYGJhc2gKIyAxLiBTZXQgdXAgZW52aXJvbm1lbnQKY3AgLmVudi5leGFtcGxlIC5lbnYKIyBBZGQ6IEFSRU5BX1RPS0VOLCBBUkVOQV9VU0VSX1NMVUcsIEdFTUlOSV9BUElfS0VZCgojIDIuIEluc3RhbGwgYW5kIGJ1aWxkCm5wbSBpbnN0YWxsCm5wbSBydW4gYnVpbGQKCiMgMy4gSW5kZXggYSBjaGFubmVsCm5wbSBydW4gaW5kZXgtYmxvY2tzIC0tIC0tY2hhbm5lbD15b3VyLWNoYW5uZWwtc2x1ZwoKIyA0LiBSdW4gdGhlIHdlYiBhcHAKY2Qgd2ViICYmIG5wbSBpbnN0YWxsICYmIG5wbSBydW4gZGV2CmBgYAoKLS0tCgojIyBBcmNoaXRlY3R1cmUKCmBgYAphcmVuYS1yZWZzLwrilJzilIDilIAgY29yZS8gICAgICAgICAgICAgICAgICAgICAjIFBsYXRmb3JtLWFnbm9zdGljIGxvZ2ljIChjYW4gYmUgaW1wb3J0ZWQgYW55d2hlcmUpCuKUgiAgIOKUnOKUgOKUgCBhcmVuYS1jbGllbnQudHMgICAgICAgIyBBcmUubmEgQVBJIHdyYXBwZXIK4pSCICAg4pSc4pSA4pSAIG1hdGNoZXIudHMgICAgICAgICAgICAjIEltYWdlIOKGkiByZWZlcmVuY2UgbWF0Y2hpbmcK4pSCICAg4pSU4pSA4pSAIGNsYXNzaWZpZXIudHMgICAgICAgICAjIEJsb2NrIGNsYXNzaWZpY2F0aW9uCuKUggrilJzilIDilIAgd2ViLyAgICAgICAgICAgICAgICAgICAgICAjIE5leHQuanMgd2ViIGFwcArilIIgICDilJzilIDilIAgYXBwL3BhZ2UudHN4ICAgICAgICAgICMgUmVmZXJlbmNlIE1hdGNoZXIgKGhvbWUpCuKUgiAgIOKUnOKUgOKUgCBhcHAvY2xhc3NpZnkvICAgICAgICAgIyBCbG9jayBDbGFzc2lmaWVyCuKUgiAgIOKUlOKUgOKUgCBsaWIvdGhlbWUudHMgICAgICAgICAgIyBEZXNpZ24gdG9rZW5zCuKUggrilJzilIDilIAgY2xpLyAgICAgICAgICAgICAgICAgICAgICAjIENMSSB0b29scwrilIIgICDilJzilIDilIAgaW5kZXgtYmxvY2tzLnRzICAgICAgICMgSW5kZXggYmxvY2tzIHdpdGggQUkgdGFncwrilIIgICDilJTilIDilIAgYW50aS1wYXR0ZXJucy50cyAgICAgICMgRXh0cmFjdCBhbnRpLXBhdHRlcm5zCuKUggrilJzilIDilIAgdGFzdGUtcHJvZmlsZXMvICAgICAgICAgICAjIEdlbmVyYXRlZCBpbmRleGVzIChnaXRpZ25vcmVkKQrilIIK4pSc4pSA4pSAIFVYX0ZPVU5EQVRJT05TLm1kICAgICAgICAgIyBVbml2ZXJzYWwgcmVhZGFiaWxpdHkvc2l6aW5nIHJlZmVyZW5jZQrilJzilIDilIAgUFJPTVBUX1VYX0FVRElUX1YzLm1kICAgICAjIFJlYWR5LXRvLXVzZSBhdWRpdCBwcm9tcHQK4pSU4pSA4pSAIENVUlNPUlJVTEVTX1VYX0ZPVU5EQVRJT05TLm1kICAjIC5jdXJzb3JydWxlcyBzbmlwcGV0CmBgYAoKLS0tCgojIyBUYWcgVGF4b25vbXkKCldoZW4gaW5kZXhpbmcgQXJlLm5hIGJsb2NrcywgZWFjaCBpbWFnZSBnZXRzIHRhZ2dlZDoKCnwgQ2F0ZWdvcnkgfCBXaGF0IGl0IGNhcHR1cmVzIHwgRXhhbXBsZXMgfAp8LS0tLS0tLS0tLXwtLS0tLS0tLS0tLS0tLS0tLS18LS0tLS0tLS0tLXwKfCBgY29tcG9uZW50YCB8IFVJIGVsZW1lbnRzIHwgZGFzaGJvYXJkLCBjYXJkcywgaGVybywgcHJpY2luZyB8CnwgYHN0eWxlYCB8IFZpc3VhbCB0cmVhdG1lbnQgfCBkYXJrLW1vZGUsIG1pbmltYWwsIHJvdW5kZWQsIGdyYWRpZW50IHwKfCBgY29udGV4dGAgfCBXaGVyZSBpdCdzIHVzZWQgfCBzYWFzLCBtb2JpbGUtYXBwLCBsYW5kaW5nLXBhZ2UgfAp8IGB2aWJlYCB8IEVtb3Rpb25hbCBxdWFsaXR5IHwgcHJlbWl1bSwgcGxheWZ1bCwgcHJvZmVzc2lvbmFsIHwKCkZ1bGwgdGF4b25vbXkgaW4gW1RBR1MubWRdKC4vVEFHUy5tZCkuCgotLS0KCiMjIFRoZSBVWCBBdWRpdCBQcm9tcHQgRXhwbGFpbmVkCgpUaGUgYFBST01QVF9VWF9BVURJVF9WMy5tZGAgaXMgYSB0d28tcGhhc2UgYXVkaXQ6CgoqKlBoYXNlIDE6IENvbXBvc2l0aW9uIChEbyBGaXJzdCkqKgotIFZpc3VhbCBoaWVyYXJjaHkg4oCUIGlzIHRoZXJlIGEgY2xlYXIgZm9jYWwgcG9pbnQ/Ci0gU3BhY2luZyByaHl0aG0g4oCUIGRvZXMgdGhlIHBhZ2UgYnJlYXRoZSBvciBmZWVsIG1vbm90b25vdXM/Ci0gQ1RBIGNsYXJpdHkg4oCUIGlzIHRoZSBwcmltYXJ5IGFjdGlvbiBvYnZpb3VzPwotIENvbG9yIHRlbXBlcmF0dXJlIOKAlCBkb2VzIHRleHQgYWN0dWFsbHkgZmVlbCByZWFkYWJsZT8KCioqUGhhc2UgMjogVGVjaG5pY2FsIEZvdW5kYXRpb25zIChEbyBTZWNvbmQpKioKLSBDb250cmFzdCByYXRpb3MgKFdDQUcgY29tcGxpYW5jZSkKLSBUeXBlIHNjYWxlICgxNnB4IGJvZHkgbWluaW11bSkKLSBUb3VjaCB0YXJnZXRzICg0NHB4IG1pbmltdW0pCi0gNHB4IHNwYWNpbmcgZ3JpZAoKKipXaHkgdGhpcyBvcmRlcj8qKiBUZWNobmljYWwgZml4ZXMgY2FuIG1ha2UgY29tcG9zaXRpb25hbCBwcm9ibGVtcyB3b3JzZS4gIk1ha2UgZXZlcnl0aGluZyAxNnB4IiBjcmVhdGVzIHNhbWVuZXNzLiBGaXggdGhlIGNvbXBvc2l0aW9uIGZpcnN0LCB0aGVuIGVuc3VyZSB0ZWNobmljYWwgY29tcGxpYW5jZS4KCi0tLQoKIyMgV2hhdCdzIE5leHQKCi0gWyBdIEF1dG8tZ2VuZXJhdGUgYC5jdXJzb3JydWxlc2AgZnJvbSB0YXN0ZSBwcm9maWxlcwotIFsgXSBFeHBvcnQgdGFzdGUgcHJvZmlsZXMgYXMgZG93bmxvYWRhYmxlICJzdHlsZSBwYWNrcyIKLSBbIF0gU3VwcG9ydCBmb3IgbW9yZSBMTE1zIGJleW9uZCBHZW1pbmkKLSBbIF0gQnJvd3NlciBleHRlbnNpb24gZm9yIHF1aWNrIEFyZS5uYSBjYXB0dXJlCgotLS0KCiMjIEVudmlyb25tZW50IFZhcmlhYmxlcwoKYGBgCkFSRU5BX1RPS0VOPSAgICAgICAgIyBHZXQgZnJvbSBkZXYuYXJlLm5hL29hdXRoL2FwcGxpY2F0aW9ucwpBUkVOQV9VU0VSX1NMVUc9ICAgICMgWW91ciBBcmUubmEgdXNlcm5hbWUKR0VNSU5JX0FQSV9LRVk9ICAgICAjIEZvciBpbWFnZSBhbmFseXNpcwpgYGAKCi0tLQoKIyMgTGljZW5zZQoKTUlUCg==
+# Arena Refs
+
+**Turn your visual taste into AI-readable rules.**
+
+You collect references in Are.na. This system converts them into structured guidance that makes AI coding assistants (Cursor, Claude, etc.) build interfaces that match your aesthetic.
+
+## 🚀 Live Component Gallery
+
+**Live**: [site-qhre0qj0j-rohun-voras-projects.vercel.app](https://site-qhre0qj0j-rohun-voras-projects.vercel.app)
+
+Your Are.na saves → structured, replicable components → **live-rendered design system**.
+
+### What's New: Live Rendering
+
+Components are no longer just screenshots with metadata. They're **rendered live** using extracted design tokens:
+
+- **Live Hero Compositions** — see each component rendered with its actual colors, typography, shadows, and spacing
+- **Interactive Atom Previews** — buttons you can hover, surfaces with real gradients, typography at true scale
+- **No Screenshots First** — the reference image is tucked away; you see the *implementation* first
+
+### Features
+
+- **26 components** extracted with AI from UI/UX channel
+- **104 atoms** (buttons, surfaces, cards, typography) live-rendered and copyable
+- **8 aesthetic families** (Flat Minimal, Soft Gradient, Dark Premium, etc.)
+- **Copy-paste CSS** for every component and atom
+- **Export** to `.cursorrules`, CSS variables, or Tailwind config
+- **Dark mode** with refined typography (IBM Plex Sans/Mono)
+
+### Quick Start: Extract Your Own Components
+
+```bash
+# Extract components from your Are.na channel
+npx tsx cli/extract-component.ts --channel=your-channel-slug
+
+# Start the site locally
+cd site && npm install && npm run dev
+```
+
+---
+
+**Original Web App**: [arena-refs.vercel.app](https://arena-refs.vercel.app)
+
+---
+
+## What This Enables (Plain English)
+
+**The problem:** AI coding assistants are "blind" — they generate technically correct but visually generic interfaces. They don't know your taste.
+
+**The solution:** 
+1. You curate visual references in Are.na (screenshots of UI you love)
+2. This system analyzes them and extracts patterns (colors, spacing, typography, vibe)
+3. It generates rules you paste into Cursor that make the AI build like you would
+
+**End result:** Instead of getting generic "AI slop" interfaces, you get UIs that feel designed because they're guided by your actual preferences.
+
+---
+
+## What's In This Repo
+
+### 🎯 Core Tools (Web App)
+
+| Tool | URL | What it does |
+|------|-----|--------------|
+| **Reference Matcher** | `/` | Drop a screenshot of your WIP → get relevant references from your indexed collection |
+| **Block Classifier** | `/classify` | Tinder-style swipe interface for organizing Are.na blocks |
+
+### 📐 UX Foundations (Universal Audit System)
+
+A framework for ensuring ANY interface has proper readability, sizing, and composition — regardless of style.
+
+| File | Purpose |
+|------|---------|
+| `UX_FOUNDATIONS.md` | Complete reference: contrast ratios, type scales, spacing systems, touch targets |
+| `PROMPT_UX_AUDIT_V3.md` | **Ready-to-use prompt** — paste into Cursor to audit/fix any interface |
+| `CURSORRULES_UX_FOUNDATIONS.md` | Snippet for your `.cursorrules` file |
+
+**The V3 prompt catches:**
+- Weak visual hierarchy ("everything looks the same")
+- Poor contrast (especially warm-on-warm color combos)
+- Monotonous spacing (no rhythm between sections)
+- Unclear CTAs (buttons that don't stand out)
+- Mobile composition issues
+
+### 🎨 Taste Extraction Pipeline
+
+The system that converts Are.na channels into structured taste profiles:
+
+```
+Are.na Channel → Gemini Analysis → Structured Tags → Cursor Rules
+```
+
+| File | Purpose |
+|------|---------|
+| `src/classifier.ts` | Prompts that analyze images for visual patterns |
+| `TAGS.md` | The taxonomy (component, style, context, vibe) |
+| `taste-profiles/` | Generated outputs per channel (gitignored) |
+| `TASTE_IMPLEMENTATION.md` | Example: how we traced visual decisions back to Are.na data |
+
+---
+
+## Quick Start
+
+### Use the UX Audit (No Setup Required)
+
+1. Open `PROMPT_UX_AUDIT_V3.md`
+2. Copy the entire prompt
+3. Paste into Cursor with your project open
+4. Run in Agent mode
+5. Review and approve the fixes
+
+### Index Your Own Are.na Channel
+
+```bash
+# 1. Set up environment
+cp .env.example .env
+# Add: ARENA_TOKEN, ARENA_USER_SLUG, GEMINI_API_KEY
+
+# 2. Install and build
+npm install
+npm run build
+
+# 3. Index a channel
+npm run index-blocks -- --channel=your-channel-slug
+
+# 4. Run the web app
+cd web && npm install && npm run dev
+```
+
+---
+
+## Architecture
+
+```
+arena-refs/
+├── core/                     # Platform-agnostic logic (can be imported anywhere)
+│   ├── arena-client.ts       # Are.na API wrapper
+│   ├── matcher.ts            # Image → reference matching
+│   └── classifier.ts         # Block classification
+│
+├── web/                      # Next.js web app
+│   ├── app/page.tsx          # Reference Matcher (home)
+│   ├── app/classify/         # Block Classifier
+│   └── lib/theme.ts          # Design tokens
+│
+├── cli/                      # CLI tools
+│   ├── index-blocks.ts       # Index blocks with AI tags
+│   └── anti-patterns.ts      # Extract anti-patterns
+│
+├── taste-profiles/           # Generated indexes (gitignored)
+│
+├── UX_FOUNDATIONS.md         # Universal readability/sizing reference
+├── PROMPT_UX_AUDIT_V3.md     # Ready-to-use audit prompt
+└── CURSORRULES_UX_FOUNDATIONS.md  # .cursorrules snippet
+```
+
+---
+
+## Tag Taxonomy
+
+When indexing Are.na blocks, each image gets tagged:
+
+| Category | What it captures | Examples |
+|----------|------------------|----------|
+| `component` | UI elements | dashboard, cards, hero, pricing |
+| `style` | Visual treatment | dark-mode, minimal, rounded, gradient |
+| `context` | Where it's used | saas, mobile-app, landing-page |
+| `vibe` | Emotional quality | premium, playful, professional |
+
+Full taxonomy in [TAGS.md](./TAGS.md).
+
+---
+
+## The UX Audit Prompt Explained
+
+The `PROMPT_UX_AUDIT_V3.md` is a two-phase audit:
+
+**Phase 1: Composition (Do First)**
+- Visual hierarchy — is there a clear focal point?
+- Spacing rhythm — does the page breathe or feel monotonous?
+- CTA clarity — is the primary action obvious?
+- Color temperature — does text actually feel readable?
+
+**Phase 2: Technical Foundations (Do Second)**
+- Contrast ratios (WCAG compliance)
+- Type scale (16px body minimum)
+- Touch targets (44px minimum)
+- 4px spacing grid
+
+**Why this order?** Technical fixes can make compositional problems worse. "Make everything 16px" creates sameness. Fix the composition first, then ensure technical compliance.
+
+---
+
+## What's Next
+
+- [ ] Auto-generate `.cursorrules` from taste profiles
+- [ ] Export taste profiles as downloadable "style packs"
+- [ ] Support for more LLMs beyond Gemini
+- [ ] Browser extension for quick Are.na capture
+
+---
+
+## Environment Variables
+
+```
+ARENA_TOKEN=        # Get from dev.are.na/oauth/applications
+ARENA_USER_SLUG=    # Your Are.na username
+GEMINI_API_KEY=     # For image analysis
+```
+
+---
+
+## License
+
+MIT
