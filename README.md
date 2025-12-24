@@ -71,9 +71,9 @@ A framework for ensuring ANY interface has proper readability, sizing, and compo
 
 | File | Purpose |
 |------|---------|
-| `UX_FOUNDATIONS.md` | Complete reference: contrast ratios, type scales, spacing systems, touch targets |
+| `docs/UX_FOUNDATIONS.md` | Complete reference: contrast ratios, type scales, spacing systems, touch targets |
 | `prompts/audit/UX_AUDIT.md` | **Full audit prompt** — paste into Cursor to audit/fix any interface |
-| `CURSORRULES_UX_FOUNDATIONS.md` | Snippet for your `.cursorrules` file |
+| `docs/CURSORRULES_UX_FOUNDATIONS.md` | Snippet for your `.cursorrules` file |
 
 ### 🔧 Repair Prompts (NEW)
 
@@ -100,9 +100,9 @@ Are.na Channel → Gemini Analysis → Structured Tags → Cursor Rules
 | File | Purpose |
 |------|---------|
 | `src/classifier.ts` | Prompts that analyze images for visual patterns |
-| `TAGS.md` | The taxonomy (component, style, context, vibe) |
+| `docs/TAGS.md` | The taxonomy (component, style, context, vibe) |
 | `taste-profiles/` | Generated outputs per channel (gitignored) |
-| `TASTE_IMPLEMENTATION.md` | Example: how we traced visual decisions back to Are.na data |
+| `docs/TASTE_IMPLEMENTATION.md` | Example: how we traced visual decisions back to Are.na data |
 
 ---
 
@@ -166,12 +166,15 @@ arena-refs/
 │       ├── screenshot-to-code.md
 │       └── component-extraction-v2.md
 │
+├── docs/                     # Reference documentation
+│   ├── UX_FOUNDATIONS.md     # Complete UX reference
+│   ├── CURSORRULES_UX_FOUNDATIONS.md  # .cursorrules snippet
+│   ├── TAGS.md               # Taxonomy for tagging
+│   └── TASTE_IMPLEMENTATION.md # Case study
+│
 ├── web/                      # Next.js web app
 ├── cli/                      # CLI tools
-├── taste-profiles/           # Generated indexes (gitignored)
-│
-├── UX_FOUNDATIONS.md         # Complete reference document
-└── CURSORRULES_UX_FOUNDATIONS.md  # .cursorrules snippet
+└── taste-profiles/           # Generated indexes (gitignored)
 ```
 
 ---
@@ -187,7 +190,7 @@ When indexing Are.na blocks, each image gets tagged:
 | `context` | Where it's used | saas, mobile-app, landing-page |
 | `vibe` | Emotional quality | premium, playful, professional |
 
-Full taxonomy in [TAGS.md](./TAGS.md).
+Full taxonomy in [docs/TAGS.md](./docs/TAGS.md).
 
 ---
 
