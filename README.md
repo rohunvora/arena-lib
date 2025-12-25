@@ -89,6 +89,18 @@ Symptom-based prompts for fixing specific UX problems. Paste when you see the sy
 | `prompts/fix/FIX_BUTTONS.md` | Unclear which button to click |
 | `prompts/fix/FIX_TYPOGRAPHY.md` | Text too small, cramped, or inconsistent |
 
+### 🧠 Strategy Prompts
+
+Higher-level prompts for UX thinking and planning (extracted from UX Education channel):
+
+| Prompt | When to Use |
+|--------|-------------|
+| `prompts/strategy/REFRAME.md` | You're stuck and obvious solutions aren't working |
+| `prompts/strategy/STRUCTURE_APP.md` | Starting a complex app or fixing messy IA |
+| `prompts/strategy/PRIORITIZE_UX.md` | Deciding what UX work to do first |
+| `prompts/strategy/WRITE_SCENARIOS.md` | Designs feel abstract, need real context |
+| `prompts/strategy/PICK_FLOW.md` | Need to make a diagram but not sure what type |
+
 ### 🎨 Taste Extraction Pipeline
 
 The system that converts Are.na channels into structured taste profiles:
@@ -162,6 +174,12 @@ arena-refs/
 │   │   ├── FIX_TOUCH_TARGETS.md  # Small tap targets
 │   │   ├── FIX_BUTTONS.md    # Button hierarchy
 │   │   └── FIX_TYPOGRAPHY.md # Typography issues
+│   ├── strategy/             # Higher-level UX thinking
+│   │   ├── REFRAME.md        # Get unstuck with reframing
+│   │   ├── STRUCTURE_APP.md  # Object-oriented IA
+│   │   ├── PRIORITIZE_UX.md  # Business value mapping
+│   │   ├── WRITE_SCENARIOS.md # Context-driven design
+│   │   └── PICK_FLOW.md      # Choose diagram types
 │   └── extraction/           # Component/pattern extraction
 │       ├── screenshot-to-code.md
 │       └── component-extraction-v2.md
