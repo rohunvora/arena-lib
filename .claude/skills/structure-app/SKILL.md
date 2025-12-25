@@ -5,16 +5,23 @@ description: Structure an app around objects when starting a complex app from sc
 
 # Structure App Around Objects (OOUX)
 
-## When This Activates
+## When to Use
 
-User describes structural problems like:
-- "Starting a new complex app"
-- "Navigation is a mess"
-- "Users can't find things"
-- "IA is getting worse"
-- "Features are scattered"
-- "Same data shown inconsistently"
-- "How should I structure this?"
+Activate when the user describes:
+- Starting a new complex app
+- Apps with multiple related data types
+- Products where users manage "things"
+- Navigation feeling messy
+- Users can't find things
+- Information architecture getting worse as features are added
+- Features scattered across the interface
+- Same data shown inconsistently across screens
+- Rebuilding a messy existing app
+
+**Skip when:**
+- Building simple single-purpose tools
+- Creating marketing/content sites
+- Hierarchy matters more than objects
 
 ## Instructions
 
@@ -155,16 +162,3 @@ The "OOUX Structure" with Objects/Relationships/Screens is the signature of this
 - **Verb-based screens:** "Create Task" as destination instead of modal
 - **Orphan data:** Showing data where users can't act on it
 - **Inconsistent objects:** Same object looking different in different places
-
-## When to Use
-
-- Apps with multiple related data types
-- Products where users manage "things"
-- Rebuilding a messy existing app
-- Starting new complex application
-
-## When to Skip
-
-- Simple single-purpose tools
-- Marketing/content sites
-- Hierarchy matters more than objects

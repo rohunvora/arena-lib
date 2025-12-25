@@ -1,6 +1,6 @@
 ---
 name: prompt-engineering
-description: Use this skill when you writing commands, hooks, skills for Agent, or prompts for sub agents or any other LLM interaction, including optimizing prompts, improving LLM outputs, or designing production prompt templates.
+description: Use this skill when writing commands, hooks, skills for Agent, or prompts for sub agents or any other LLM interaction, including optimizing prompts, improving LLM outputs, or designing production prompt templates.
 ---
 
 # Prompt Engineering Patterns
@@ -11,7 +11,7 @@ Advanced prompt engineering techniques to maximize LLM performance, reliability,
 
 ### 1. Few-Shot Learning
 
-Teach the model by showing examples instead of explaining rules. Include 2-5 input-output pairs that demonstrate the desired behavior. Use when you need consistent formatting, specific reasoning patterns, or handling of edge cases. More examples improve accuracy but consume tokens—balance based on task complexity.
+Teach the model by showing examples instead of explaining rules. Include 2-5 input-output pairs that demonstrate the desired behavior. Use when consistent formatting is required, specific reasoning patterns are needed, or handling of edge cases is necessary. More examples improve accuracy but consume tokens—balance based on task complexity.
 
 **Example:**
 
@@ -29,7 +29,7 @@ Now process: "Can't upload files larger than 10MB, getting timeout"
 
 ### 2. Chain-of-Thought Prompting
 
-Request step-by-step reasoning before the final answer. Add "Let's think step by step" (zero-shot) or include example reasoning traces (few-shot). Use for complex problems requiring multi-step logic, mathematical reasoning, or when you need to verify the model's thought process. Improves accuracy on analytical tasks by 30-50%.
+Request step-by-step reasoning before the final answer. Add "Let's think step by step" (zero-shot) or include example reasoning traces (few-shot). Use for complex problems requiring multi-step logic, mathematical reasoning, or when verification of the model's thought process is needed. Improves accuracy on analytical tasks by 30-50%.
 
 **Example:**
 
@@ -221,7 +221,7 @@ Based on Anthropic's official best practices for agent prompting.
 
 ### Context Window
 
-The “context window” refers to the entirety of the amount of text a language model can look back on and reference when generating new text plus the new text it generates. This is different from the large corpus of data the language model was trained on, and instead represents a “working memory” for the model. A larger context window allows the model to understand and respond to more complex and lengthy prompts, while a smaller context window may limit the model’s ability to handle longer prompts or maintain coherence over extended conversations.
+The "context window" refers to the entirety of the amount of text a language model can look back on and reference when generating new text plus the new text it generates. This is different from the large corpus of data the language model was trained on, and instead represents a "working memory" for the model. A larger context window allows the model to understand and respond to more complex and lengthy prompts, while a smaller context window may limit the model's ability to handle longer prompts or maintain coherence over extended conversations.
 
 - Progressive token accumulation: As the conversation advances through turns, each user message and assistant response accumulates within the context window. Previous turns are preserved completely.
 - Linear growth pattern: The context usage grows linearly with each turn, with previous turns preserved completely.
@@ -349,211 +349,6 @@ Do not modify the command or add additional flags.
 - **Narrow bridge with cliffs on both sides**: There's only one safe way forward. Provide specific guardrails and exact instructions (low freedom). Example: database migrations that must run in exact sequence.
 - **Open field with no hazards**: Many paths lead to success. Give general direction and trust Claude to find the best route (high freedom). Example: code reviews where context determines the best approach.
 
-# Persuasion Principles for Agent Communication
+## Persuasion Principles
 
-Usefull for writing prompts, including but not limited to: commands, hooks, skills for Claude Code, or prompts for sub agents or any other LLM interaction.
-
-## Overview
-
-LLMs respond to the same persuasion principles as humans. Understanding this psychology helps you design more effective skills - not to manipulate, but to ensure critical practices are followed even under pressure.
-
-**Research foundation:** Meincke et al. (2025) tested 7 persuasion principles with N=28,000 AI conversations. Persuasion techniques more than doubled compliance rates (33% → 72%, p < .001).
-
-## The Seven Principles
-
-### 1. Authority
-
-**What it is:** Deference to expertise, credentials, or official sources.
-
-**How it works in prompts:**
-
-- Imperative language: "YOU MUST", "Never", "Always"
-- Non-negotiable framing: "No exceptions"
-- Eliminates decision fatigue and rationalization
-
-**When to use:**
-
-- Discipline-enforcing skills (TDD, verification requirements)
-- Safety-critical practices
-- Established best practices
-
-**Example:**
-
-```markdown
-✅ Write code before test? Delete it. Start over. No exceptions.
-❌ Consider writing tests first when feasible.
-```
-
-### 2. Commitment
-
-**What it is:** Consistency with prior actions, statements, or public declarations.
-
-**How it works in prompts:**
-
-- Require announcements: "Announce skill usage"
-- Force explicit choices: "Choose A, B, or C"
-- Use tracking: TodoWrite for checklists
-
-**When to use:**
-
-- Ensuring skills are actually followed
-- Multi-step processes
-- Accountability mechanisms
-
-**Example:**
-
-```markdown
-✅ When you find a skill, you MUST announce: "I'm using [Skill Name]"
-❌ Consider letting your partner know which skill you're using.
-```
-
-### 3. Scarcity
-
-**What it is:** Urgency from time limits or limited availability.
-
-**How it works in prompts:**
-
-- Time-bound requirements: "Before proceeding"
-- Sequential dependencies: "Immediately after X"
-- Prevents procrastination
-
-**When to use:**
-
-- Immediate verification requirements
-- Time-sensitive workflows
-- Preventing "I'll do it later"
-
-**Example:**
-
-```markdown
-✅ After completing a task, IMMEDIATELY request code review before proceeding.
-❌ You can review code when convenient.
-```
-
-### 4. Social Proof
-
-**What it is:** Conformity to what others do or what's considered normal.
-
-**How it works in prompts:**
-
-- Universal patterns: "Every time", "Always"
-- Failure modes: "X without Y = failure"
-- Establishes norms
-
-**When to use:**
-
-- Documenting universal practices
-- Warning about common failures
-- Reinforcing standards
-
-**Example:**
-
-```markdown
-✅ Checklists without TodoWrite tracking = steps get skipped. Every time.
-❌ Some people find TodoWrite helpful for checklists.
-```
-
-### 5. Unity
-
-**What it is:** Shared identity, "we-ness", in-group belonging.
-
-**How it works in prompts:**
-
-- Collaborative language: "our codebase", "we're colleagues"
-- Shared goals: "we both want quality"
-
-**When to use:**
-
-- Collaborative workflows
-- Establishing team culture
-- Non-hierarchical practices
-
-**Example:**
-
-```markdown
-✅ We're colleagues working together. I need your honest technical judgment.
-❌ You should probably tell me if I'm wrong.
-```
-
-### 6. Reciprocity
-
-**What it is:** Obligation to return benefits received.
-
-**How it works:**
-
-- Use sparingly - can feel manipulative
-- Rarely needed in prompts
-
-**When to avoid:**
-
-- Almost always (other principles more effective)
-
-### 7. Liking
-
-**What it is:** Preference for cooperating with those we like.
-
-**How it works:**
-
-- **DON'T USE for compliance**
-- Conflicts with honest feedback culture
-- Creates sycophancy
-
-**When to avoid:**
-
-- Always for discipline enforcement
-
-## Principle Combinations by Prompt Type
-
-| Prompt Type | Use | Avoid |
-|------------|-----|-------|
-| Discipline-enforcing | Authority + Commitment + Social Proof | Liking, Reciprocity |
-| Guidance/technique | Moderate Authority + Unity | Heavy authority |
-| Collaborative | Unity + Commitment | Authority, Liking |
-| Reference | Clarity only | All persuasion |
-
-## Why This Works: The Psychology
-
-**Bright-line rules reduce rationalization:**
-
-- "YOU MUST" removes decision fatigue
-- Absolute language eliminates "is this an exception?" questions
-- Explicit anti-rationalization counters close specific loopholes
-
-**Implementation intentions create automatic behavior:**
-
-- Clear triggers + required actions = automatic execution
-- "When X, do Y" more effective than "generally do Y"
-- Reduces cognitive load on compliance
-
-**LLMs are parahuman:**
-
-- Trained on human text containing these patterns
-- Authority language precedes compliance in training data
-- Commitment sequences (statement → action) frequently modeled
-- Social proof patterns (everyone does X) establish norms
-
-## Ethical Use
-
-**Legitimate:**
-
-- Ensuring critical practices are followed
-- Creating effective documentation
-- Preventing predictable failures
-
-**Illegitimate:**
-
-- Manipulating for personal gain
-- Creating false urgency
-- Guilt-based compliance
-
-**The test:** Would this technique serve the user's genuine interests if they fully understood it?
-
-## Quick Reference
-
-When designing a prompt, ask:
-
-1. **What type is it?** (Discipline vs. guidance vs. reference)
-2. **What behavior am I trying to change?**
-3. **Which principle(s) apply?** (Usually authority + commitment for discipline)
-4. **Am I combining too many?** (Don't use all seven)
-5. **Is this ethical?** (Serves user's genuine interests?)
+For detailed persuasion principles, see references/persuasion-principles.md

@@ -5,7 +5,7 @@ description: Automatically creates user-facing changelogs from git commits by an
 
 # Changelog Generator
 
-This skill transforms technical git commits into polished, user-friendly changelogs that your customers and users will actually understand and appreciate.
+Transform technical git commits into polished, user-friendly changelogs that customers and users will actually understand and appreciate.
 
 ## When to Use This Skill
 
@@ -24,13 +24,50 @@ This skill transforms technical git commits into polished, user-friendly changel
 3. **Translates Technical → User-Friendly**: Converts developer commits into customer language
 4. **Formats Professionally**: Creates clean, structured changelog entries
 5. **Filters Noise**: Excludes internal commits (refactoring, tests, etc.)
-6. **Follows Best Practices**: Applies changelog guidelines and your brand voice
+6. **Follows Best Practices**: Applies changelog guidelines and brand voice
+
+## Process
+
+Follow these steps to generate a changelog:
+
+1. **Retrieve Git Commit History**
+   - Run `git log --oneline --since="<date>"` for date-based ranges
+   - Run `git log --oneline <tag1>..<tag2>` for version-based ranges
+   - Run `git log --oneline -n <number>` for last N commits
+
+2. **Filter and Categorize Commits**
+   - **Features**: New capabilities (look for "add", "implement", "create" keywords)
+   - **Improvements**: Enhancements to existing features (look for "improve", "enhance", "update", "optimize")
+   - **Bug Fixes**: Corrections (look for "fix", "resolve", "correct")
+   - **Breaking Changes**: API/behavior changes requiring user action
+   - **Security**: Security-related updates
+   - **Skip**: Internal changes (refactor, test, build, docs, chore)
+
+3. **Transform Technical Language to User-Friendly**
+   - Convert: "Add OAuth2 authentication provider" → "Sign in with Google, GitHub, or Microsoft accounts"
+   - Convert: "Implement lazy loading for image components" → "Images now load faster as you scroll"
+   - Convert: "Fix race condition in sync worker" → "Resolved sync reliability issues"
+   - Focus on user impact, not implementation details
+   - Use active voice and present tense
+   - Remove technical jargon (API, SDK, refactor, etc.)
+
+4. **Format the Changelog**
+   - Group by category with emoji/icons (✨ Features, 🔧 Improvements, 🐛 Fixes)
+   - Use bullet points with bold titles
+   - Include brief descriptions of user benefit
+   - Add version number and date
+
+5. **Review and Refine**
+   - Ensure clarity for non-technical users
+   - Check for consistent tone and voice
+   - Verify all user-impacting changes are included
+   - Remove or consolidate minor changes
 
 ## How to Use
 
 ### Basic Usage
 
-From your project repository:
+From the project repository:
 
 ```
 Create a changelog from commits since last release
@@ -53,7 +90,7 @@ Create a changelog for all commits between March 1 and March 15
 ### With Custom Guidelines
 
 ```
-Create a changelog for commits since v2.4.0, using my changelog 
+Create a changelog for commits since v2.4.0, using changelog
 guidelines from CHANGELOG_STYLE.md
 ```
 
@@ -67,10 +104,10 @@ guidelines from CHANGELOG_STYLE.md
 
 ## ✨ New Features
 
-- **Team Workspaces**: Create separate workspaces for different 
+- **Team Workspaces**: Create separate workspaces for different
   projects. Invite team members and keep everything organized.
 
-- **Keyboard Shortcuts**: Press ? to see all available shortcuts. 
+- **Keyboard Shortcuts**: Press ? to see all available shortcuts.
   Navigate faster without touching your mouse.
 
 ## 🔧 Improvements
@@ -89,9 +126,9 @@ guidelines from CHANGELOG_STYLE.md
 
 ## Tips
 
-- Run from your git repository root
+- Run from git repository root
 - Specify date ranges for focused changelogs
-- Use your CHANGELOG_STYLE.md for consistent formatting
+- Use CHANGELOG_STYLE.md for consistent formatting
 - Review and adjust the generated changelog before publishing
 - Save output directly to CHANGELOG.md
 
@@ -101,4 +138,3 @@ guidelines from CHANGELOG_STYLE.md
 - Writing app store update descriptions
 - Generating email updates for users
 - Creating social media announcement posts
-

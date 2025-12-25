@@ -1,16 +1,20 @@
 ---
 name: fix-spacing
-description: Fix spacing issues when elements feel disconnected, cards float like islands, or groupings are unclear. Applies Law of Proximity, Law of Common Region, and Law of Uniform Connectedness.
+description: This skill should be used when elements feel disconnected, cards float like islands, or groupings are unclear. Applies Law of Proximity, Law of Common Region, and Law of Uniform Connectedness.
 ---
 
 # Fix Spacing Issues
+
+## Purpose
+
+This skill diagnoses and fixes spacing issues that make interfaces feel disconnected or unclear. It applies three fundamental perceptual laws to create proper visual grouping and hierarchy through strategic use of whitespace, boundaries, and visual connections.
 
 Applies these laws from lawsofux.com:
 - **Law of Proximity**: Objects near each other appear grouped
 - **Law of Common Region**: Elements sharing a boundary appear related
 - **Law of Uniform Connectedness**: Visually connected elements seem more related
 
-## When This Activates
+## When to Use
 
 - "Cards feel like islands"
 - "Everything is the same distance apart"

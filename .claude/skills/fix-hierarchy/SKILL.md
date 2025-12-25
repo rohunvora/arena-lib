@@ -1,6 +1,6 @@
 ---
 name: fix-hierarchy
-description: Fix visual hierarchy when everything looks equally important, CTAs don't stand out, or users miss key information. Applies Von Restorff Effect, Serial Position Effect, and Law of Prägnanz.
+description: This skill should be used to fix visual hierarchy when everything looks equally important, CTAs don't stand out, or users miss key information. Applies Von Restorff Effect, Serial Position Effect, and Law of Prägnanz.
 ---
 
 # Fix Visual Hierarchy
@@ -10,13 +10,20 @@ Applies these laws from lawsofux.com:
 - **Serial Position Effect**: First and last items are most memorable
 - **Law of Prägnanz**: People interpret complex images in the simplest way
 
-## When This Activates
+## When to Use
 
 - "Everything looks the same"
 - "CTA doesn't stand out"
 - "Users miss important info"
 - "Page feels flat"
 - "Too much competing for attention"
+
+## How to Use
+
+1. Analyze the interface against the three laws (Von Restorff, Serial Position, Prägnanz)
+2. Identify hierarchy violations in the diagnosis
+3. Apply the recommended fixes from the output format
+4. Verify that exactly ONE element stands out and hierarchy is immediately clear
 
 ## The Laws
 

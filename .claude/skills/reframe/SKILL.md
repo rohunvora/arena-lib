@@ -1,6 +1,6 @@
 ---
 name: reframe
-description: Reframe a problem when you're stuck, the obvious solutions aren't working, constraints feel impossible, or you keep circling back to bad options. Use when designs keep getting rejected or you're solving symptoms instead of root causes.
+description: This skill should be used when the user is stuck, obvious solutions aren't working, constraints feel impossible, or they keep circling back to bad options. Use when designs keep getting rejected or the user is solving symptoms instead of root causes.
 ---
 
 # Reframe the Problem
@@ -19,7 +19,7 @@ User describes being stuck like:
 
 ### Step 1: State the Current Problem
 
-First, get clarity on the trap they're in:
+First, get clarity on the trap the user is in:
 
 ```
 CURRENT FRAMING:
@@ -30,7 +30,7 @@ Failed attempts: [What has already not worked?]
 
 ### Step 2: Reframe by Changing WHO
 
-Ask: What if this wasn't for the current user?
+Consider alternative users:
 
 ```
 REFRAME PROMPTS:
@@ -41,11 +41,11 @@ REFRAME PROMPTS:
 - Internal user vs external customer?
 ```
 
-Design the solution for the alternate user. Does it reveal anything?
+Design the solution for the alternate user. Identify revealed insights.
 
 ### Step 3: Reframe by Changing WHERE
 
-Ask: What if the context was different?
+Explore different contexts:
 
 ```
 REFRAME PROMPTS:
@@ -57,11 +57,11 @@ REFRAME PROMPTS:
 - In public where others can see their screen?
 ```
 
-What simplifications does the constraint force?
+Identify what simplifications the constraint forces.
 
 ### Step 4: Reframe by Changing WHAT
 
-Ask: What if it wasn't a [current solution type] at all?
+Consider if it wasn't a [current solution type] at all:
 
 ```
 REFRAME PROMPTS:
@@ -73,7 +73,7 @@ REFRAME PROMPTS:
 - Something someone else prepares for them?
 ```
 
-Which reframe makes the core job easier?
+Identify which reframe makes the core job easier.
 
 ### Step 5: Try Inversion
 

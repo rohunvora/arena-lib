@@ -1,6 +1,6 @@
 ---
 name: improve-flow
-description: Improve user flow and experience when users drop off mid-task, motivation fades, or experiences feel flat. Applies Peak-End Rule, Goal-Gradient Effect, and Zeigarnik Effect.
+description: This skill should be used when users drop off mid-task, motivation fades, or experiences feel flat. Applies Peak-End Rule, Goal-Gradient Effect, and Zeigarnik Effect.
 ---
 
 # Improve Flow & Experience
@@ -10,14 +10,21 @@ Applies these laws from lawsofux.com:
 - **Goal-Gradient Effect**: Motivation increases as goal approaches
 - **Zeigarnik Effect**: Incomplete tasks are remembered better
 
-## When This Activates
+## When to Use
 
-- "Users drop off mid-flow"
-- "Onboarding feels flat"
-- "No sense of progress"
-- "Experience is forgettable"
-- "Users don't come back"
-- "Checkout abandonment"
+- Diagnose user drop-off patterns in mid-flow
+- Identify flat or forgettable onboarding experiences
+- Address lack of visible progress indicators
+- Improve retention when users don't return
+- Reduce checkout or form abandonment rates
+
+## How to Use
+
+1. **Analyze the current flow** - Map out the user journey from start to finish
+2. **Run diagnosis** - Apply the three diagnostic frameworks below to identify gaps
+3. **Identify improvements** - Use the law-specific techniques to address each issue
+4. **Apply fixes** - Implement changes following the output format structure
+5. **Validate with checklist** - Ensure all flow stages are optimized per the design checklist
 
 ## The Laws
 
@@ -80,11 +87,13 @@ USE INCOMPLETENESS STRATEGICALLY:
 
 ## Diagnosis
 
-```
-1. PEAK-END: Where's the peak? How does it end?
-2. GOAL-GRADIENT: Is progress visible? Accelerating?
-3. ZEIGARNIK: Does incompleteness invite return or frustrate?
-```
+Apply these diagnostic frameworks to identify flow issues:
+
+1. **Assess Peak-End Rule** - Locate the peak moment in the experience and evaluate the ending quality
+2. **Evaluate Goal-Gradient Effect** - Check if progress is visible and if momentum accelerates toward completion
+3. **Examine Zeigarnik Effect** - Determine whether incompleteness creates productive return triggers or frustration
+4. **Map flow stages** - Identify which stages lack appropriate law applications
+5. **Document current state** - Record findings using the output format below
 
 ## Output Format
 

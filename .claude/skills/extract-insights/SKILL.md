@@ -1,13 +1,12 @@
 ---
 name: extract-insights
-description: Extract actionable insights from curated reference collections (Are.na channels, bookmarks, saved articles). Use when user wants to learn from their collected references, synthesize patterns across sources, or turn research into frameworks.
+description: This skill should be used when user wants to learn from their collected references, synthesize patterns across sources, or turn research into frameworks from curated reference collections (Are.na channels, bookmarks, saved articles).
 ---
 
 # Extract Insights from Reference Collections
 
 ## When This Activates
 
-- "What can I learn from this channel?"
 - "Extract insights from my Are.na"
 - "Synthesize these articles"
 - "Turn my bookmarks into something useful"
@@ -17,7 +16,7 @@ description: Extract actionable insights from curated reference collections (Are
 
 ### Phase 1: Audit
 
-First, understand what you're working with.
+Understand the collection contents.
 
 ```
 AUDIT CHECKLIST:
@@ -43,13 +42,10 @@ AUDIT CHECKLIST:
 ```
 FETCH STRATEGY:
 1. Direct fetch (WebFetch)
-2. If 403/blocked:
-   - Try archive.org: web.archive.org/web/[url]
-   - Try Google cache: webcache.googleusercontent.com/search?q=cache:[url]
-3. If still blocked:
+2. If blocked or inaccessible:
    - Flag for manual review
    - Note: "[url] - blocked, needs manual access"
-4. If success:
+3. If success:
    - Extract key insights (not full content)
    - Note source for citation
 ```
@@ -166,9 +162,10 @@ SKIPPED (too large or unsupported):
 
 ## When to Stop
 
+Stop when sufficient insights are extracted:
 - You've extracted 10+ actionable insights
 - Remaining sources are blocked/inaccessible
 - Themes are repeating (saturation)
 - User has enough to work with
 
-Don't boil the ocean. Extract what's accessible, flag what's not, move on.
+Extract what's accessible, flag what's not, move on.
