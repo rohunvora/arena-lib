@@ -13,7 +13,13 @@
     "anti-patterns": "node dist/anti-patterns.js",
     "index-blocks": "node dist/index-blocks.js",
     "extract-styles": "node dist/extract-styles.js",
-    "ab-test": "node dist/ab-test.js"
+    "ab-test": "node dist/ab-test.js",
+    "export": "tsc && node dist/export-blocks.js",
+    "export:backfill": "tsc && node dist/export-blocks.js --backfill",
+    "export:images": "tsc && node dist/export-blocks.js --images",
+    "enrich": "tsc && node dist/enrich-blocks.js",
+    "enrich:all": "tsc && node dist/enrich-blocks.js --all",
+    "enrich:dry-run": "tsc && node dist/enrich-blocks.js --dry-run"
   },
   "dependencies": {
     "@google/generative-ai": "^0.21.0",

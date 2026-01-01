@@ -161,7 +161,7 @@ export default function HomePage() {
                     key={name} 
                     href={`/aesthetics/${name}`}
                     className="group"
-                  >
+          >
                     <div className="card overflow-hidden">
                       {sampleComponent?.render ? (
                         <div 

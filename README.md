@@ -1,261 +1,223 @@
-# Arena Refs
+# arena-cli
 
-**Turn your visual taste into AI-readable rules.**
-
-You collect references in Are.na. This system converts them into structured guidance that makes AI coding assistants (Cursor, Claude, etc.) build interfaces that match your aesthetic.
-
-## 🚀 Live Component Gallery
-
-**Live**: [site-qhre0qj0j-rohun-voras-projects.vercel.app](https://site-qhre0qj0j-rohun-voras-projects.vercel.app)
-
-Your Are.na saves → structured, replicable components → **live-rendered design system**.
-
-### What's New: Live Rendering
-
-Components are no longer just screenshots with metadata. They're **rendered live** using extracted design tokens:
-
-- **Live Hero Compositions** — see each component rendered with its actual colors, typography, shadows, and spacing
-- **Interactive Atom Previews** — buttons you can hover, surfaces with real gradients, typography at true scale
-- **No Screenshots First** — the reference image is tucked away; you see the *implementation* first
-
-### Features
-
-- **26 components** extracted with AI from UI/UX channel
-- **104 atoms** (buttons, surfaces, cards, typography) live-rendered and copyable
-- **8 aesthetic families** (Flat Minimal, Soft Gradient, Dark Premium, etc.)
-- **Copy-paste CSS** for every component and atom
-- **Export** to `.cursorrules`, CSS variables, or Tailwind config
-- **Dark mode** with refined typography (IBM Plex Sans/Mono)
-
-### Quick Start: Extract Your Own Components
-
-```bash
-# Extract components from your Are.na channel
-npx tsx cli/extract-component.ts --channel=your-channel-slug
-
-# Start the site locally
-cd site && npm install && npm run dev
-```
-
----
-
-**Original Web App**: [arena-refs.vercel.app](https://arena-refs.vercel.app)
-
----
-
-## What This Enables (Plain English)
-
-**The problem:** AI coding assistants are "blind" — they generate technically correct but visually generic interfaces. They don't know your taste.
-
-**The solution:** 
-1. You curate visual references in Are.na (screenshots of UI you love)
-2. This system analyzes them and extracts patterns (colors, spacing, typography, vibe)
-3. It generates rules you paste into Cursor that make the AI build like you would
-
-**End result:** Instead of getting generic "AI slop" interfaces, you get UIs that feel designed because they're guided by your actual preferences.
-
----
-
-## What's In This Repo
-
-### 🎯 Core Tools (Web App)
-
-| Tool | URL | What it does |
-|------|-----|--------------|
-| **Reference Matcher** | `/` | Drop a screenshot of your WIP → get relevant references from your indexed collection |
-| **Block Classifier** | `/classify` | Tinder-style swipe interface for organizing Are.na blocks |
-
-### 📐 UX Foundations (Universal Audit System)
-
-A framework for ensuring ANY interface has proper readability, sizing, and composition — regardless of style.
-
-| File | Purpose |
-|------|---------|
-| `docs/UX_FOUNDATIONS.md` | Complete reference: contrast ratios, type scales, spacing systems, touch targets |
-| `prompts/audit/UX_AUDIT.md` | **Full audit prompt** — paste into Cursor to audit/fix any interface |
-| `docs/CURSORRULES_UX_FOUNDATIONS.md` | Snippet for your `.cursorrules` file |
-
-### 🔧 Repair Prompts (NEW)
-
-Symptom-based prompts for fixing specific UX problems. Paste when you see the symptom:
-
-| Prompt | When to Use |
-|--------|-------------|
-| `prompts/fix/FIX_HIERARCHY.md` | Everything looks the same weight/importance |
-| `prompts/fix/FIX_SPACING.md` | Page feels cramped, floating, or monotonous |
-| `prompts/fix/FIX_CONTRAST.md` | Text is hard to read, looks washed out |
-| `prompts/fix/FIX_MOBILE.md` | Mobile version is cramped or broken |
-| `prompts/fix/FIX_TOUCH_TARGETS.md` | Buttons/inputs are hard to tap |
-| `prompts/fix/FIX_BUTTONS.md` | Unclear which button to click |
-| `prompts/fix/FIX_TYPOGRAPHY.md` | Text too small, cramped, or inconsistent |
-
-### 🧠 Strategy Prompts
-
-Higher-level prompts for UX thinking and planning (extracted from UX Education channel):
-
-| Prompt | When to Use |
-|--------|-------------|
-| `prompts/strategy/REFRAME.md` | You're stuck and obvious solutions aren't working |
-| `prompts/strategy/STRUCTURE_APP.md` | Starting a complex app or fixing messy IA |
-| `prompts/strategy/PRIORITIZE_UX.md` | Deciding what UX work to do first |
-| `prompts/strategy/WRITE_SCENARIOS.md` | Designs feel abstract, need real context |
-| `prompts/strategy/PICK_FLOW.md` | Need to make a diagram but not sure what type |
-
-### 🎨 Taste Extraction Pipeline
-
-The system that converts Are.na channels into structured taste profiles:
-
-```
-Are.na Channel → Gemini Analysis → Structured Tags → Cursor Rules
-```
-
-| File | Purpose |
-|------|---------|
-| `src/classifier.ts` | Prompts that analyze images for visual patterns |
-| `docs/TAGS.md` | The taxonomy (component, style, context, vibe) |
-| `taste-profiles/` | Generated outputs per channel (gitignored) |
-| `docs/TASTE_IMPLEMENTATION.md` | Example: how we traced visual decisions back to Are.na data |
-
----
+CLI tools for [Are.na](https://are.na): export blocks, enrich with vision AI, generate browsable views.
 
 ## Quick Start
 
-### Use the UX Audit (No Setup Required)
-
-**For a full audit:**
-1. Open `prompts/audit/UX_AUDIT.md`
-2. Copy the entire prompt
-3. Paste into Cursor with your project open
-4. Run in Agent mode
-5. Review and approve the fixes
-
-**For a specific problem:**
-1. Identify your symptom (e.g., "buttons look equal")
-2. Open the matching FIX_*.md file
-3. Paste and run
-
-### Index Your Own Are.na Channel
-
 ```bash
-# 1. Set up environment
+# 1. Setup environment
 cp .env.example .env
 # Add: ARENA_TOKEN, ARENA_USER_SLUG, GEMINI_API_KEY
 
-# 2. Install and build
-npm install
-npm run build
+# 2. Export blocks from your channels
+npx ts-node cli/export-blocks.ts
 
-# 3. Index a channel
-npm run index-blocks -- --channel=your-channel-slug
+# 3. Enrich with vision AI
+npx ts-node cli/enrich-blocks.ts
 
-# 4. Run the web app
-cd web && npm install && npm run dev
+# 4. Generate browsable view
+node cli/gen-view.cjs --open
+```
+
+## CLI Commands
+
+### export-blocks.ts
+
+Export blocks from your Are.na channels incrementally.
+
+```bash
+npx ts-node cli/export-blocks.ts              # All channels
+npx ts-node cli/export-blocks.ts --channel=X  # Specific channel
+npx ts-node cli/export-blocks.ts --images     # Download images locally
+```
+
+**Output:** `arena-export/blocks/{id}.json`
+
+**Features:**
+- Incremental: only fetches new blocks on subsequent runs
+- Tracks watermarks for efficient updates
+- Saves after each page (resilient to interruption)
+
+---
+
+### enrich-blocks.ts
+
+Analyze block images with Gemini Vision AI to generate metadata.
+
+```bash
+npx ts-node cli/enrich-blocks.ts              # All image blocks
+npx ts-node cli/enrich-blocks.ts --channel=X  # Specific channel
+npx ts-node cli/enrich-blocks.ts --dry-run    # Preview without saving
+npx ts-node cli/enrich-blocks.ts --force      # Re-enrich already processed
+```
+
+**Adds to each block:**
+```json
+{
+  "vision": {
+    "suggested_title": "Dark Trading Dashboard",
+    "description": "Crypto dashboard with real-time charts",
+    "tags": ["dashboard", "dark-mode", "trading"],
+    "ui_patterns": ["metric-cards", "time-series-chart"]
+  }
+}
 ```
 
 ---
 
-## Architecture
+### gen-view.cjs
 
-```
-arena-refs/
-├── core/                     # Platform-agnostic logic
-│   ├── arena-client.ts       # Are.na API wrapper
-│   ├── matcher.ts            # Image → reference matching
-│   └── classifier.ts         # Block classification
-│
-├── prompts/                  # All AI prompts, organized by purpose
-│   ├── audit/                # Full interface audits
-│   │   └── UX_AUDIT.md       # Two-phase composition + technical audit
-│   ├── fix/                  # Symptom-based repair prompts
-│   │   ├── FIX_HIERARCHY.md  # Weak visual hierarchy
-│   │   ├── FIX_SPACING.md    # Spacing issues
-│   │   ├── FIX_CONTRAST.md   # Readability/contrast
-│   │   ├── FIX_MOBILE.md     # Mobile responsiveness
-│   │   ├── FIX_TOUCH_TARGETS.md  # Small tap targets
-│   │   ├── FIX_BUTTONS.md    # Button hierarchy
-│   │   └── FIX_TYPOGRAPHY.md # Typography issues
-│   ├── strategy/             # Higher-level UX thinking
-│   │   ├── REFRAME.md        # Get unstuck with reframing
-│   │   ├── STRUCTURE_APP.md  # Object-oriented IA
-│   │   ├── PRIORITIZE_UX.md  # Business value mapping
-│   │   ├── WRITE_SCENARIOS.md # Context-driven design
-│   │   └── PICK_FLOW.md      # Choose diagram types
-│   └── extraction/           # Component/pattern extraction
-│       ├── screenshot-to-code.md
-│       └── component-extraction-v2.md
-│
-├── docs/                     # Reference documentation
-│   ├── UX_FOUNDATIONS.md     # Complete UX reference
-│   ├── CURSORRULES_UX_FOUNDATIONS.md  # .cursorrules snippet
-│   ├── TAGS.md               # Taxonomy for tagging
-│   └── TASTE_IMPLEMENTATION.md # Case study
-│
-├── web/                      # Next.js web app
-├── cli/                      # CLI tools
-└── taste-profiles/           # Generated indexes (gitignored)
+Generate an HTML gallery to browse your enriched blocks.
+
+```bash
+node cli/gen-view.cjs          # Generate view.html
+node cli/gen-view.cjs --open   # Generate and open in browser
 ```
 
----
+**Output:** `arena-export/view.html`
 
-## Tag Taxonomy
-
-When indexing Are.na blocks, each image gets tagged:
-
-| Category | What it captures | Examples |
-|----------|------------------|----------|
-| `component` | UI elements | dashboard, cards, hero, pricing |
-| `style` | Visual treatment | dark-mode, minimal, rounded, gradient |
-| `context` | Where it's used | saas, mobile-app, landing-page |
-| `vibe` | Emotional quality | premium, playful, professional |
-
-Full taxonomy in [docs/TAGS.md](./docs/TAGS.md).
+**Features:**
+- Search by title, tags, patterns
+- Filter by UI pattern or tag
+- Lightbox for image zoom
+- Dark mode support
 
 ---
 
-## The UX Audit Prompt Explained
+### gen-search-view.cjs
 
-The `prompts/audit/UX_AUDIT.md` is a two-phase audit:
+Visual search results with selection mode for validating matches.
 
-**Phase 1: Composition (Do First)**
-- Visual hierarchy — is there a clear focal point?
-- Spacing rhythm — does the page breathe or feel monotonous?
-- CTA clarity — is the primary action obvious?
-- Color temperature — does text actually feel readable?
+```bash
+# Ad-hoc search
+node cli/gen-search-view.cjs "dashboard,metric-cards" --open
 
-**Phase 2: Technical Foundations (Do Second)**
-- Contrast ratios (WCAG compliance)
-- Type scale (16px body minimum)
-- Touch targets (44px minimum)
-- 4px spacing grid
+# Multiple pattern groups
+node cli/gen-search-view.cjs "avatar" "progress-bar" --open
 
-**Why this order?** Technical fixes can make compositional problems worse. "Make everything 16px" creates sameness. Fix the composition first, then ensure technical compliance.
+# From config file with selection mode
+node cli/gen-search-view.cjs --config=searches.json --select --open
+```
+
+**Config file format:**
+```json
+[
+  { "name": "Dashboards", "patterns": ["dashboard", "metric-cards"] },
+  { "name": "Progress", "patterns": ["progress-bar", "progress-percentage"] }
+]
+```
+
+**Selection mode (`--select`):**
+- Checkboxes on each card
+- Click image to zoom (lightbox)
+- Copy-able JSON output grouped by category
+
+**Output format:**
+```json
+{
+  "_context": "Gap references selected from Are.na",
+  "selections": {
+    "Dashboards": [{ "id": 123, "title": "Dark Trading Dashboard" }]
+  }
+}
+```
 
 ---
 
-## What's Next
+## Block Schema
 
-- [ ] Auto-generate `.cursorrules` from taste profiles
-- [ ] Export taste profiles as downloadable "style packs"
-- [ ] Support for more LLMs beyond Gemini
-- [ ] Browser extension for quick Are.na capture
+```json
+{
+  "id": 12345,
+  "title": "original-filename.png",
+  "class": "Image",
+  "image_url": "https://...",
+  "channels": ["ui-ux-abc"],
+  "connected_at": "2024-01-15T10:30:00.000Z",
+  "vision": {
+    "suggested_title": "Dark Trading Dashboard",
+    "description": "Crypto dashboard with real-time charts",
+    "tags": ["dashboard", "dark-mode", "trading"],
+    "ui_patterns": ["metric-cards", "time-series-chart"]
+  }
+}
+```
 
 ---
 
 ## Environment Variables
 
-```
+```bash
 ARENA_TOKEN=        # Get from dev.are.na/oauth/applications
 ARENA_USER_SLUG=    # Your Are.na username
-GEMINI_API_KEY=     # For image analysis
+GEMINI_API_KEY=     # For vision AI enrichment
+ARENA_EXPORT_DIR=   # Optional: custom export path (default: ./arena-export)
 ```
 
 ---
 
-## 🤖 Claude Code Skills
+## Searching Blocks
 
-Claude Code skills for this project have been moved to a separate repo:
+### Using grep
 
-**[rohunvora/my-claude-skills](https://github.com/rohunvora/my-claude-skills)** — 22 skills for context engineering, UX design, and development workflows.
+```bash
+# Search by UI pattern
+grep -l "inline-stats" arena-export/blocks/*.json
+
+# Search by tag
+grep -l '"dashboard"' arena-export/blocks/*.json
+
+# Search with context
+grep -B2 -A2 "leaderboard" arena-export/blocks/*.json
+```
+
+### Using visual search
+
+```bash
+# Generate visual results for pattern matching
+node cli/gen-search-view.cjs "pattern1,pattern2" --select --open
+```
+
+---
+
+## Other CLI Tools
+
+| Script | Purpose |
+|--------|---------|
+| `extract-component.ts` | Extract design tokens from blocks |
+| `extract-styles.ts` | Extract CSS styles from components |
+| `index-blocks.ts` | Index blocks with AI-generated tags |
+| `classifier.ts` | Classify blocks by visual patterns |
+| `taste-profile.ts` | Generate taste profiles from channels |
+
+---
+
+## UX Prompts
+
+This repo includes prompts for UX auditing and fixing:
+
+| Prompt | Purpose |
+|--------|---------|
+| `prompts/audit/UX_AUDIT.md` | Full two-phase UX audit |
+| `prompts/fix/FIX_*.md` | Symptom-based repair prompts |
+| `prompts/strategy/*.md` | Higher-level UX thinking |
+
+See `docs/UX_FOUNDATIONS.md` for complete UX reference.
+
+---
+
+## Web App
+
+The repo also includes a Next.js web app for visual exploration:
+
+```bash
+cd site && npm install && npm run dev
+```
+
+**Features:**
+- Reference Matcher: drop a screenshot → get relevant references
+- Block Classifier: Tinder-style swipe interface
+- Component Gallery: live-rendered design system
 
 ---
 
